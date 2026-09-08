@@ -5,6 +5,31 @@ versioning once the manifest and report contracts reach public v0.1.
 
 ## Unreleased
 
+## 0.3.0-alpha.14 - 2026-09-08
+
+### Added
+
+- Expanded contract-oracle generation study v0.1: 48 fresh, unrepaired RTL
+  candidates across eight task clusters, three model configurations, and two
+  calls per model-task cell, each evaluated by an Icarus functional smoke test,
+  one contributing specialized oracle, and contextual Verilator lint. The
+  configured oracles changed the outcome for 11 of 40 functionally accepted
+  candidates with a determinate specialized result. This is a
+  taskpack-conditional automated detection fraction, not an estimate of defect
+  prevalence in generated RTL.
+- Frozen candidate-level replay artifact for the study under
+  `artifacts/contract-oracle-study-v0.1/`, with content hashes and a
+  deterministic artifact verifier, alongside the frozen `contract-oracles-v0.1`
+  taskpack.
+- Whole-task clustered sensitivity analysis for the reset and expanded-contract
+  studies: a 100,000-replicate bootstrap resampled over whole tasks and
+  reported as explicit dependence-aware intervals, plus source-generated paper
+  figures.
+- Real-fix prompt-depth study taskpack and runner, and the `power-on-v0.2`
+  taskpack.
+- `docs/contract-oracle-study-result.md`, documenting the expanded study with
+  per-oracle-class strata and directly inspectable counterexamples.
+
 ## 0.3.0-alpha.13 - 2026-08-24
 
 ### Added
