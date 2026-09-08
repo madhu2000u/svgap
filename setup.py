@@ -19,6 +19,10 @@ class BuildPyWithResearchAssets(build_py):
                 Path(self.build_lib) / "svgap/resources/taskpacks/reset-replication-v0.2",
             ),
             (
+                ROOT / "taskpacks/power-on-v0.2",
+                Path(self.build_lib) / "svgap/resources/taskpacks/power-on-v0.2",
+            ),
+            (
                 ROOT / "challenges/v0.1",
                 Path(self.build_lib) / "svgap/resources/challenges/v0.1",
             ),
