@@ -163,6 +163,19 @@ members without a finding. That controlled result does not establish a general
 lint recall rate; it shows why ordinary lint and the specialized contract
 oracles must remain separate evidence classes.
 
+## Fresh-generation follow-up
+
+The controlled witnesses now have an eight-task, 48-candidate generation
+follow-up covering two protocol tasks, four temporal tasks, and two
+synthesized-equivalence tasks. Forty-one candidates pass the finite functional
+harness; 40 of those have determinate specialized results; and 11 fail the
+configured protocol or temporal oracle. All 11 retain Verilator lint status
+`pass`. The equivalence stratum is a bounded `0/12` null.
+
+See the full [expanded contract-oracle result](contract-oracle-study-result.md)
+for task-level outcomes, clustered sensitivity analysis, exclusions, exact
+model interfaces, and the replayable candidate artifact.
+
 `formal-yosys` runs bounded SAT with explicit property sources, assumptions,
 zero initialization, and `clk2fflogic`. `equivalence-yosys` compares a candidate
 and reference after Yosys RTL synthesis. Both are controlled reference

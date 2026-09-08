@@ -67,6 +67,19 @@ This grouping is more informative than treating 72 calls as independent
 replications. The result demonstrates recurrence across several interfaces, but
 eight hand-authored tasks are not a representative population.
 
+### Task-clustered sensitivity interval
+
+A 100,000-replicate nonparametric bootstrap resamples whole tasks while
+retaining all candidates within each sampled task. The candidate-weighted point
+estimate is `14/57 = 24.6%` and the 95% percentile interval is **8.8% to
+42.9%** (seed `20260824`).
+
+![Task-clustered sensitivity intervals](assets/research/task-clustered-intervals.svg)
+
+This is a finite-task sensitivity analysis, not a population-prevalence
+confidence interval. The frozen machine-readable result is
+[`reports/reset-replication-v0.1-clustered.json`](https://github.com/shsridhar-beep/svgap/blob/main/reports/reset-replication-v0.1-clustered.json).
+
 ## Measurement caveats
 
 Six functional nonpasses are Icarus elaboration errors on enum-valued ternary
@@ -105,3 +118,11 @@ Recovery and removal timing constrain the asynchronous pin, so the
 synchronous use does not change the hazard.
 `python scripts/verify_synchronizer_bypass.py` recomputes both the
 per-configuration counts and the consumer roles from the frozen artifact.
+
+Recompute the clustered analysis with:
+
+```bash
+.venv/bin/python scripts/analyze_clustered_results.py \
+  artifacts/reset-replication-v0.1/candidates \
+  --output reports/reset-replication-v0.1-clustered.json
+```

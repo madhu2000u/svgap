@@ -39,7 +39,8 @@ SV-Gap intentionally favors auditable conclusions over broad coverage.
   but is not independently certified coverage.
 - Ordinary lint warnings are retained as lint evidence and do not become
   structural CDC/RDC findings. The published 0/14 calibration applies only to
-  the recorded Verilator/Verible versions and default configurations.
+  the recorded Verilator/Verible versions and default configurations. The
+  expanded-study 0/11 result is likewise candidate- and configuration-bound.
 - `formal-yosys` proves only the explicit immediate properties within the
   configured bound, with assumptions honored, initial registers forced to
   zero, and clocked logic lowered through `clk2fflogic`. It does not prove
@@ -52,11 +53,18 @@ SV-Gap intentionally favors auditable conclusions over broad coverage.
   explicitly requires that reference behavior.
 - Benchmark interface/scoring detection is heuristic. Reported negative counts
   are not a validated census until negative samples are manually reviewed.
+- The reset and expanded-contract generation taskpacks each contain only eight
+  hand-authored tasks. Whole-task bootstrap intervals are finite-task
+  sensitivity analyses, not population-prevalence intervals.
+- The 48 expanded-contract candidates do not yet have independent human
+  adjudication. The two equivalence tasks produced a bounded null result, so
+  naturally generated synthesis-semantics divergences remain an empirical gap.
 - The core evaluator and shipped EDA dependencies are open source, but the
-  generation study and synthetic robustness panel used proprietary model
-  endpoints. Their prompts, normalized artifacts, schemas, and analysis code
-  are public; exact model replay is not an open-tool-only workflow and is not a
-  runtime dependency of SV-Gap.
+  generation studies include proprietary hosted model configurations, and the
+  synthetic robustness panel used proprietary endpoints. The expanded study
+  also includes two local open-weight configurations. Prompts, normalized
+  artifacts, schemas, and analysis code are public; exact hosted-model replay
+  is not an open-tool-only workflow and is not a runtime dependency of SV-Gap.
 
 The absence of a mature, broadly accessible open-source CDC/RDC signoff tool is
 itself an ecosystem limitation. SV-Gap therefore keeps checker execution behind

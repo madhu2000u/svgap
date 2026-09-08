@@ -46,6 +46,29 @@ contributing without labeling it structural. A lint failure therefore remains
 visible but cannot silently redefine the configured gap. Required and optional
 execution policy is separate from contribution policy.
 
+## Clustered recurrence analysis
+
+Generated candidates that share a task also share its prompt, harness, intent,
+and specialized oracle. They are not independent task replications. When an
+empirical study reports an interval, SV-Gap therefore uses the task as the
+cluster:
+
+1. sample tasks with replacement;
+2. retain every candidate belonging to each sampled task;
+3. recompute the candidate-weighted gap fraction; and
+4. report the percentile interval, replicate count, seed, and any
+   zero-denominator replicates.
+
+The candidate remains the analysis unit for the numerator and denominator; the
+task is the resampling unit. Model-specific values are descriptive unless the
+study was explicitly designed and powered for model comparison.
+
+Because the current taskpacks are hand-authored rather than random samples from
+a defined task population, these intervals are **finite-task sensitivity
+analyses**. They describe how strongly the result depends on the observed task
+mix. They are not population-prevalence confidence intervals. Raw per-task
+counts remain primary and must be reported beside any interval.
+
 ## Evidence policy
 
 - `pass`: the configured oracle completed and emitted no failing finding.

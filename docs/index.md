@@ -79,5 +79,6 @@ defect-rate estimate or silicon signoff.
 - [Benchmark audit](benchmark-audit.md)
 - [Power-on and unknown-state benchmark audit](power-on-benchmark-audit.md)
 - [Temporal and synthesis-equivalence benchmark audit](temporal-equivalence-benchmark-audit.md)
+- [Expanded contract-oracle generation result](contract-oracle-study-result.md)
 - [Methodology](methodology.md)
 - [Limitations](limitations.md)

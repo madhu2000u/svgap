@@ -7,13 +7,13 @@ Audit date: 2026-08-24
 - Apache-2.0 license, notice, and third-party inventory are present.
 - The quickstart, limitations, security warning, contribution guide, and conduct
   policy are present.
-- The 197-test suite completes with one expected environment-dependent skip
-  under local Yosys 0.66 and Icarus Verilog 13.0. GitHub repeats the applicable
-  tests with Python 3.11, 3.12, and 3.13 and Ubuntu Yosys 0.33.
+- The 209-test suite completes with one expected environment-dependent skip.
+  GitHub repeats the applicable tests with Python 3.11, 3.12, and 3.13 and
+  Ubuntu Yosys 0.33.
 - A wheel builds and installs successfully in a clean temporary environment.
-- The controlled witnesses, 508-task benchmark audit, exploratory pilot, and
-  72-candidate reset replication have tracked summaries and interpretation
-  boundaries.
+- The 22 controlled witness pairs, 508-task benchmark audits, exploratory
+  pilot, 72-candidate reset replication, and 48-candidate expanded-contract
+  study have tracked summaries and interpretation boundaries.
 - Raw provider responses, private adjudication mappings, and blinded review
   packets are excluded from Git. The normalized public candidate artifact is
   intentionally versioned.
@@ -25,6 +25,11 @@ Audit date: 2026-08-24
 - A deterministic 72-candidate bundle is versioned at
   `artifacts/reset-replication-v0.1`; manifest SHA-256 is
   `e523a03b604864d276b35d88d097c45f0a17ed3f9650bd2c3dcb9a9d4ea0f132`.
+- A deterministic 48-candidate bundle is versioned at
+  `artifacts/contract-oracle-study-v0.1`; manifest SHA-256 is
+  `4ad0c240de30e8ade42ec188d2921da41fc8b26bef8e753d7844e20990dc6fe9`.
+  Its verifier scans every artifact file for local paths, replays report
+  invariants, and recomputes the whole-task bootstrap analysis.
 - Public issue templates and bounded `good first issue` entry points cover
   demos, registry work, documentation, and oracle-review contributions.
 - The public repository is `https://github.com/shsridhar-beep/svgap`. Releases

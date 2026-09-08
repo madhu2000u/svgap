@@ -157,9 +157,14 @@ manifest and imported-result path. Python integrations can call
   not new prevalence evidence.
 - A frozen 72-call reset-release study contains 57 functional passes; at least
   14 contain the declared raw-reset pattern.
+- A frozen 48-call follow-up across protocol, temporal, and
+  synthesis-equivalence tasks contains 41 functional passes. Forty have a
+  determinate contributing-oracle result; 11 fail the configured protocol or
+  temporal property. The equivalence stratum is a bounded `0/12` null.
 - Default Verilator and Verible lint configurations emit no RDC-specific
   diagnostic for any of those 14 functionally passing reset-gap candidates;
-  schema v2 can now retain those lint results beside structural evidence.
+  Verilator likewise identifies none of the 11 expanded-study failures.
+  Schema v2 retains lint beside the contributing evidence without conflation.
 - A heuristic inventory covers 508 public RTL-generation tasks across
   VerilogEval, RTLLM, and CVDP.
 - A separate audit of those 508 tasks inventories stated power-on intent and
@@ -177,6 +182,7 @@ manifest and imported-result path. Python integrations can call
 [Benchmark audit](https://shsridhar-beep.github.io/svgap/benchmark-audit/) ·
 [Power-on audit](https://shsridhar-beep.github.io/svgap/power-on-benchmark-audit/) ·
 [Temporal/equivalence audit](https://shsridhar-beep.github.io/svgap/temporal-equivalence-benchmark-audit/) ·
+[Expanded contract result](https://shsridhar-beep.github.io/svgap/contract-oracle-study-result/) ·
 [Evidence profiles](https://shsridhar-beep.github.io/svgap/results/) ·
 [Compact research note](https://shsridhar-beep.github.io/svgap/compact-research-note/)
 
