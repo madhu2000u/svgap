@@ -113,6 +113,13 @@ def render_demo_summary(summary: dict[str, Any], output: Path | None) -> str:
     ]
     if output is not None:
         lines.extend(["", f"Artifacts: {output.resolve()}"])
+    lines.extend(
+        [
+            "",
+            "If this was useful, starring the repository helps other hardware "
+            "teams find it: https://github.com/shsridhar-beep/svgap",
+        ]
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -135,4 +142,11 @@ def render_all_demo_summary(summaries: dict[str, dict[str, Any]], status: str, o
     lines.extend(["", f"overall: {status}"])
     if output is not None:
         lines.extend(["", f"Artifacts: {output.resolve()}"])
+    lines.extend(
+        [
+            "",
+            "If this was useful, starring the repository helps other hardware "
+            "teams find it: https://github.com/shsridhar-beep/svgap",
+        ]
+    )
     return "\n".join(lines) + "\n"

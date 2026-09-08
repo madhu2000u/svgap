@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -32,7 +33,7 @@ DEFAULT_TASKS = (
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("provider", choices=("codex", "claude", "command"))
+    parser.add_argument("provider", choices=("codex", "claude", "ollama", "command"))
     parser.add_argument("--model", help="provider model name; omit for provider default")
     parser.add_argument("--label", required=True, help="stable configuration label")
     parser.add_argument(
@@ -50,6 +51,21 @@ def main() -> int:
     parser.add_argument("--task-root", type=Path, default=DEFAULT_TASK_ROOT)
     parser.add_argument("--tasks", nargs="+", default=list(DEFAULT_TASKS))
     parser.add_argument("--samples", type=int, default=1)
+    parser.add_argument(
+        "--ollama-temperature",
+        type=float,
+        help="sampling temperature recorded and sent to the Ollama HTTP API",
+    )
+    parser.add_argument(
+        "--ollama-seed-base",
+        type=int,
+        help="sample N uses seed base + N; omit to leave the seed unspecified",
+    )
+    parser.add_argument(
+        "--codex-reasoning-effort",
+        choices=("low", "medium", "high", "xhigh", "max"),
+        help="explicit Codex reasoning effort, recorded and passed as configuration",
+    )
     parser.add_argument(
         "--generate-only",
         action="store_true",
@@ -70,6 +86,14 @@ def main() -> int:
     else:
         if args.command:
             parser.error("--command is only valid with the 'command' provider")
+        if args.provider == "ollama" and not args.model:
+            parser.error("the 'ollama' provider requires --model")
+        if args.provider != "ollama" and (
+            args.ollama_temperature is not None or args.ollama_seed_base is not None
+        ):
+            parser.error("--ollama-* options require the 'ollama' provider")
+        if args.provider != "codex" and args.codex_reasoning_effort is not None:
+            parser.error("--codex-reasoning-effort requires the 'codex' provider")
         interface_version = provider_version(args.provider)
     failures = 0
     with tempfile.TemporaryDirectory(prefix="svgap-model-") as sandbox:
@@ -82,9 +106,17 @@ def main() -> int:
                 prompt = (task_dir / "prompt.md").read_text(encoding="utf-8")
                 try:
                     response, command = generate(
-                        args.provider, args.model, prompt, Path(sandbox), args.command
+                        args.provider,
+                        args.model,
+                        prompt,
+                        Path(sandbox),
+                        args.command,
+                        sample=sample,
+                        ollama_temperature=args.ollama_temperature,
+                        ollama_seed_base=args.ollama_seed_base,
+                        codex_reasoning_effort=args.codex_reasoning_effort,
                     )
-                except (OSError, subprocess.SubprocessError) as exc:
+                except (OSError, ValueError, subprocess.SubprocessError) as exc:
                     print(
                         f"GENERATION_ERROR {args.label}/{task_name}: {exc}",
                         file=sys.stderr,
@@ -104,6 +136,20 @@ def main() -> int:
                     "generated_at": datetime.now(timezone.utc).isoformat(),
                     "command": command,
                 }
+                if args.provider == "ollama":
+                    metadata["generation_options"] = {
+                        "temperature": args.ollama_temperature,
+                        "seed": (
+                            args.ollama_seed_base + sample
+                            if args.ollama_seed_base is not None
+                            else None
+                        ),
+                        "stream": False,
+                    }
+                if args.provider == "codex":
+                    metadata["generation_options"] = {
+                        "reasoning_effort": args.codex_reasoning_effort,
+                    }
                 metadata_payload = json.dumps(metadata, indent=2, sort_keys=True) + "\n"
                 response_path.with_suffix(".generation.json").write_text(
                     metadata_payload, encoding="utf-8"
@@ -146,6 +192,11 @@ def generate(
     prompt: str,
     sandbox: Path,
     command_line: str | None = None,
+    *,
+    sample: int = 1,
+    ollama_temperature: float | None = None,
+    ollama_seed_base: int | None = None,
+    codex_reasoning_effort: str | None = None,
 ) -> tuple[str, list[str]]:
     if provider == "command":
         if not command_line:
@@ -167,6 +218,34 @@ def generate(
             raise subprocess.SubprocessError("generation command produced empty stdout")
         return completed.stdout, [command_line]
 
+    if provider == "ollama":
+        if not model:
+            raise OSError("the 'ollama' provider requires a model")
+        options: dict[str, int | float] = {}
+        if ollama_temperature is not None:
+            options["temperature"] = ollama_temperature
+        if ollama_seed_base is not None:
+            options["seed"] = ollama_seed_base + sample
+        body: dict[str, object] = {
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+        }
+        if options:
+            body["options"] = options
+        request = urllib.request.Request(
+            "http://127.0.0.1:11434/api/generate",
+            data=json.dumps(body).encode(),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=600) as response:
+            payload = json.loads(response.read())
+        text = payload.get("response")
+        if not isinstance(text, str) or not text.strip():
+            raise subprocess.SubprocessError("Ollama produced an empty response")
+        return text, ["ollama-http", "/api/generate", model]
+
     if provider == "codex":
         binary = require_executable("codex")
         output = sandbox / "last-message.txt"
@@ -185,6 +264,10 @@ def generate(
             "--output-last-message",
             str(output),
         ]
+        if codex_reasoning_effort is not None:
+            command.extend(
+                ["--config", f'model_reasoning_effort="{codex_reasoning_effort}"']
+            )
         if model:
             command.extend(["--model", model])
         command.append(prompt)
@@ -229,7 +312,15 @@ def redact_command(command: list[str]) -> list[str]:
 
 
 def provider_version(provider: str) -> str:
-    binary = require_executable("codex" if provider == "codex" else "claude")
+    if provider == "codex":
+        executable = "codex"
+    elif provider == "claude":
+        executable = "claude"
+    elif provider == "ollama":
+        executable = "ollama"
+    else:
+        raise OSError(f"provider has no version command: {provider}")
+    binary = require_executable(executable)
     completed = subprocess.run(
         [binary, "--version"], capture_output=True, text=True, timeout=30, check=False
     )

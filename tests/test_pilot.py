@@ -33,6 +33,113 @@ class PilotTests(TestCase):
             self.assertTrue((manifest_path.parent / "provenance.json").is_file())
             self.assertEqual(manifest_path.parent.parent.name, "run-01")
 
+    def test_materializes_schema_v2_task_with_support_files(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            task = root / "task"
+            task.mkdir()
+            (task / "prompt.md").write_text("Return module advanced; endmodule\n")
+            (task / "tb.sv").write_text("module tb; endmodule\n")
+            (task / "properties.sv").write_text("module properties; endmodule\n")
+            (task / "manifest.toml").write_text(
+                '''schema_version = "2.0"
+candidate_id = "advanced"
+[design]
+top = "advanced"
+sources = ["design.sv"]
+[functional]
+commands = [["iverilog", "-g2012", "-o", "${SVGAP_BUILD}/sim.vvp", "design.sv", "task-testbench.sv"]]
+[[oracles]]
+id = "bounded"
+class = "temporal"
+backend = "formal-yosys"
+contributes_to_gap = true
+required = true
+[oracles.options]
+property_sources = ["properties.sv"]
+property_top = "properties"
+[intent]
+[output]
+report = "report.json"
+''',
+                encoding="utf-8",
+            )
+            (task / "task.toml").write_text(
+                '''id = "advanced"
+top = "advanced"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["properties.sv"]
+''',
+                encoding="utf-8",
+            )
+            response = root / "response.txt"
+            response.write_text("module advanced; endmodule\n")
+            manifest_path = materialize_candidate(
+                task, response, "model", root / "runs", "run-01"
+            )
+            manifest = load_manifest(manifest_path)
+            self.assertEqual(manifest.schema_version, "2.0")
+            self.assertEqual(manifest.oracles[0].oracle_class, "temporal")
+            self.assertTrue((manifest_path.parent / "properties.sv").is_file())
+            provenance = json.loads(
+                (manifest_path.parent / "provenance.json").read_text(encoding="utf-8")
+            )
+            self.assertIn("manifest", provenance["task_inputs"])
+            self.assertIn("support/properties.sv", provenance["task_inputs"])
+
+    def test_materializes_a_named_prompt_level_and_records_it(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            task = root / "task"
+            (task / "prompts").mkdir(parents=True)
+            (task / "prompt.md").write_text("fallback\n")
+            (task / "prompts/brief.md").write_text("module named; endmodule\n")
+            (task / "tb.sv").write_text("module tb; endmodule\n")
+            (task / "task.toml").write_text(
+                '''id = "named"
+top = "named"
+testbench = "tb.sv"
+default_prompt_level = "brief"
+[prompt_levels]
+brief = "prompts/brief.md"
+''',
+                encoding="utf-8",
+            )
+            response = root / "response.txt"
+            response.write_text("module named; endmodule\n")
+            manifest = materialize_candidate(
+                task,
+                response,
+                "model",
+                root / "runs",
+                prompt_level="brief",
+            )
+            provenance = json.loads(
+                (manifest.parent / "provenance.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(provenance["prompt_level"], "brief")
+            self.assertEqual(provenance["prompt_file"], "prompts/brief.md")
+
+    def test_task_support_file_cannot_escape_task_directory(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            task = root / "task"
+            task.mkdir()
+            (task / "prompt.md").write_text("prompt\n")
+            (task / "tb.sv").write_text("module tb; endmodule\n")
+            (root / "outside.sv").write_text("module outside; endmodule\n")
+            (task / "task.toml").write_text(
+                '''id = "advanced"
+top = "advanced"
+testbench = "tb.sv"
+support_files = ["../outside.sv"]
+''',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "escapes the task directory"):
+                load_task(task)
+
     def test_reset_replication_pack_is_complete(self) -> None:
         root = ROOT / "taskpacks/reset-replication-v0.1/tasks"
         task_dirs = sorted(path for path in root.iterdir() if path.is_dir())
@@ -85,9 +192,26 @@ class PilotTests(TestCase):
                         (run / "design.sv").write_text(
                             f'module {task["top"]}; endmodule\n', encoding="utf-8"
                         )
+                        shutil.copy2(
+                            (task_dir / str(task["testbench"])).resolve(),
+                            run / "task-testbench.sv",
+                        )
+                        for relative in task.get("support_files", []):
+                            target = run / relative
+                            target.parent.mkdir(parents=True, exist_ok=True)
+                            shutil.copy2(task_dir / relative, target)
                         manifest_path = run / "manifest.toml"
                         manifest_path.write_text(
-                            render_manifest(task, task_dir), encoding="utf-8"
+                            render_manifest(
+                                task,
+                                task_dir,
+                                testbench=(
+                                    "task-testbench.sv"
+                                    if "manifest" in task
+                                    else task_dir / str(task["testbench"])
+                                ),
+                            ),
+                            encoding="utf-8",
                         )
                         try:
                             manifest = load_manifest(manifest_path)

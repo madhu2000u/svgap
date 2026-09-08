@@ -5,6 +5,7 @@ import base64
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
+from unittest.mock import patch
 
 from scripts.run_generation_pilot import generate
 
@@ -84,3 +85,33 @@ class CommandProviderTests(TestCase):
             self.assertFalse((root / "test-model--sample-01/reset_config/report.json").exists())
             metadata = json.loads(response.with_suffix(".generation.json").read_text())
             self.assertEqual(metadata["interface_version"], "test-harness")
+
+    def test_ollama_provider_sends_recorded_sample_options(self) -> None:
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return None
+
+            def read(self) -> bytes:
+                return b'{"response":"module m; endmodule"}'
+
+        with TemporaryDirectory() as sandbox, patch(
+            "scripts.run_generation_pilot.urllib.request.urlopen",
+            return_value=Response(),
+        ) as urlopen:
+            response, command = generate(
+                "ollama",
+                "example:1b",
+                "prompt",
+                Path(sandbox),
+                sample=2,
+                ollama_temperature=0.2,
+                ollama_seed_base=100,
+            )
+        self.assertEqual(response, "module m; endmodule")
+        self.assertEqual(command, ["ollama-http", "/api/generate", "example:1b"])
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data)
+        self.assertEqual(payload["options"], {"seed": 102, "temperature": 0.2})
