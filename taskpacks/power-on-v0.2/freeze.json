@@ -1,0 +1,11 @@
+{
+  "canonical_digest": "sha256:5212feac31413ade93b2e2806c47bcacdf2af9ef8e32d9c3d294b85340fe3d84",
+  "digest_excludes": [
+    "freeze.json"
+  ],
+  "property": "REF-XPROP-001",
+  "reference_variants_per_task": 2,
+  "schema_version": "1.0",
+  "status": "repository freeze candidate; power-on prevalence study (issue #22)",
+  "tasks": 8
+}

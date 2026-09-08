@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nCVA6's memory management unit (MMU) reports load/store misaligned exceptions on a one-cycle-delayed interface to the load/store unit (LSU). The LSU consumes the MMU response one cycle after the request phase, but the misaligned-exception state is not kept with the originating request across that delay. As a result, the exception seen with an LSU response can come from the wrong request cycle instead of the memory access that actually faulted.\n\n## Expected Behavior\nFor RISC-V load and store address-misaligned faults, the exception reported by the MMU-to-LSU response path must belong to the same memory access that caused it. A response for a misaligned access should appear on the following LSU response cycle with the correct misaligned exception, and a cycle with no pending LSU response must not expose a leftover misaligned exception.\n\n## Actual Behavior\nThe MMU can present a misaligned exception from the wrong cycle. This can misattribute the exception to a different load/store response, and in the boundary case where the original misaligned access is followed by a cycle with no LSU request, a stale misaligned exception can still remain visible.\n\n## Affected Function\nThe MMU-to-LSU load/store response path for misaligned-access exception reporting.\n\n## Trigger Condition\nThis occurs when a misaligned load or store enters the MMU and the corresponding LSU response is consumed one cycle later. If the next cycle does not match the original request context, especially when there is no new LSU request, the misaligned exception can be reported on the wrong cycle or leak into the idle cycle."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Pipeline request validity and its misaligned flag together so the response exception belongs to the originating access.",
+    "preserved_mechanism": "A one-cycle-delayed MMU response could use the misalignment state from the wrong request cycle or leak it into an idle cycle."
+  },
+  "schema_version": "1.0",
+  "task_id": "cva6_2802_delayed_misaligned",
+  "upstream": {
+    "base_sha": "ab89beaebbcb5ade0a9f3dd51f0f79ffadad5bbd",
+    "fix_patch_sha256": "bc9a0ded70b96fee490c361d50566545438f6af129c0923ba536063d6b65dc69",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "d971232cd7797b032aa3237a7ecc5465032bd9eb",
+    "modified_files": [
+      "core/cva6_mmu/cva6_mmu.sv"
+    ],
+    "org": "openhwgroup",
+    "pull_request": 2802,
+    "repo": "cva6",
+    "title": "mmu: Use latched value to determine if misaligned exception occurred",
+    "url": "https://github.com/openhwgroup/cva6/pull/2802"
+  }
+}

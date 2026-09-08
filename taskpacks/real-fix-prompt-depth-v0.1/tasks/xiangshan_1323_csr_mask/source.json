@@ -1,0 +1,36 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "Observed behavior: in XiangShan's Control and Status Register (CSR) unit, writing `mstatus` with the `XS` bits set changes the read-only extension-status state (`xstatus.xs`), so a subsequent `mstatus` read can report non-zero `XS` and set `SD`. A write to `satp` can also preserve `PPN` bits above the implementation's supported physical-address width. Expected behavior: software writes must not modify the read-only `XS` field, so `mstatus` readback should leave `XS` unchanged and should not set `SD` because of that write. `satp.ppn` should be limited to the implemented physical-page-number width and discard unsupported high bits on readback. Affected function: CSR read/write handling for `mstatus`/`xstatus` and `satp` in XiangShan. Trigger condition: the bug appears when software writes `mstatus` with `XS` bits set, or writes `satp` with high `PPN` bits set on configurations whose physical address width is narrower than the architectural `satp.ppn` field."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Preserve old_mstatus_i[5:4] across writes and accept all other mstatus bits. Keep only satp_ppn_i[11:0], forcing its upper four output bits to zero.",
+    "preserved_mechanism": "CSR writes could modify a read-only status field and preserve page-number bits above the implementation's physical-address width."
+  },
+  "schema_version": "1.0",
+  "task_id": "xiangshan_1323_csr_mask",
+  "upstream": {
+    "base_sha": "b6358f8fdca9b3c1c2bc6904b72859aeddb696e7",
+    "fix_patch_sha256": "20c749c34fb472486f6a6a2f03e5a80dfc57828fb826541f2127bf6a193e5a3c",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_SPEC",
+    "merge_commit_sha": "705cbec3975d95e047cf65c6338bac06dbfaddbe",
+    "modified_files": [
+      "ready-to-run",
+      "scripts/xiangshan.py",
+      "src/main/scala/xiangshan/backend/fu/CSR.scala",
+      "src/main/scala/xiangshan/backend/fu/util/CSRConst.scala"
+    ],
+    "org": "OpenXiangShan",
+    "pull_request": 1323,
+    "repo": "XiangShan",
+    "title": "csr: add write mask to satp.ppn & xstatus.xs",
+    "url": "https://github.com/OpenXiangShan/XiangShan/pull/1323"
+  }
+}

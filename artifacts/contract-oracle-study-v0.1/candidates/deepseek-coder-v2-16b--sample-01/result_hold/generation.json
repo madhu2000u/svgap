@@ -1,0 +1,15 @@
+{
+  "configuration_label": "deepseek-coder-v2-16b",
+  "generated_at": "2026-08-25T17:38:55.697601+00:00",
+  "generation_options": {
+    "seed": 2026082401,
+    "stream": false,
+    "temperature": 0.2
+  },
+  "interface_version": "ollama version is 0.31.1",
+  "provider": "ollama",
+  "requested_model": "deepseek-coder-v2:16b",
+  "sample": 1,
+  "schema_version": "1.0",
+  "task": "result_hold"
+}

@@ -1,0 +1,369 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+
+-- Executing script file `build/contract-property.ys' --
+
+1. Executing Verilog-2005 frontend: design.sv
+Parsing formal SystemVerilog input from `design.sv' to AST representation.
+Generating RTLIL representation for module `\stream_hold'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: properties.sv
+Parsing formal SystemVerilog input from `properties.sv' to AST representation.
+Generating RTLIL representation for module `\stream_hold_properties'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \stream_hold_properties
+Used module:     \stream_hold
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \stream_hold_properties
+Used module:     \stream_hold
+Removed 0 unused modules.
+Module stream_hold_properties directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$properties.sv:8$12 in module stream_hold_properties.
+Marked 1 switch rules as full_case in process $proc$design.sv:14$3 in module stream_hold.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 3 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~5 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\stream_hold_properties.$proc$properties.sv:8$12'.
+     1/4: $assert$properties.sv:13$21_EN
+     2/4: $assert$properties.sv:12$20_EN
+     3/4: $assume$properties.sv:10$18_EN
+     4/4: $assume$properties.sv:10$16_EN
+Creating decoders for process `\stream_hold.$proc$design.sv:14$3'.
+     1/2: $0\m_data[7:0]
+     2/2: $0\m_valid[0:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\stream_hold_properties.\f_past_valid' using process `\stream_hold_properties.$proc$properties.sv:8$12'.
+  created $dff cell `$procdff$48' with positive edge clock.
+Creating register for signal `\stream_hold_properties.$past$properties.sv:11$5$0' using process `\stream_hold_properties.$proc$properties.sv:8$12'.
+  created $dff cell `$procdff$49' with positive edge clock.
+Creating register for signal `\stream_hold_properties.$past$properties.sv:13$6$0' using process `\stream_hold_properties.$proc$properties.sv:8$12'.
+  created $dff cell `$procdff$50' with positive edge clock.
+Creating register for signal `\stream_hold.\m_valid' using process `\stream_hold.$proc$design.sv:14$3'.
+  created $dff cell `$procdff$51' with positive edge clock.
+Creating register for signal `\stream_hold.\m_data' using process `\stream_hold.$proc$design.sv:14$3'.
+  created $dff cell `$procdff$52' with positive edge clock.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\stream_hold_properties.$proc$properties.sv:8$12'.
+Removing empty process `stream_hold_properties.$proc$properties.sv:8$12'.
+Found and cleaned up 3 empty switches in `\stream_hold.$proc$design.sv:14$3'.
+Removing empty process `stream_hold.$proc$design.sv:14$3'.
+Cleaned up 5 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+<suppressed ~2 debug messages>
+Optimizing module stream_hold.
+<suppressed ~2 debug messages>
+
+3.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module stream_hold.
+<suppressed ~1 debug messages>
+
+3.4. Executing FUTURE pass.
+
+3.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+
+3.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+Removed 2 unused cells and 26 unused wires.
+<suppressed ~3 debug messages>
+
+3.7. Executing CHECK pass (checking for obvious problems).
+Checking module stream_hold_properties...
+Found and reported 0 problems.
+
+3.8. Executing OPT pass (performing simple optimizations).
+
+3.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+
+3.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\stream_hold_properties'.
+Computing hashes of 32 cells of `\stream_hold_properties'.
+Finding duplicate cells in `\stream_hold_properties'.
+Removed a total of 0 cells.
+
+3.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \stream_hold_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~15 debug messages>
+
+3.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \stream_hold_properties.
+Performed a total of 0 changes.
+
+3.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\stream_hold_properties'.
+Computing hashes of 32 cells of `\stream_hold_properties'.
+Finding duplicate cells in `\stream_hold_properties'.
+Computing hashes of 31 cells of `\stream_hold_properties'.
+Finding duplicate cells in `\stream_hold_properties'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+3.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+3.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+
+3.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \stream_hold_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~13 debug messages>
+
+3.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \stream_hold_properties.
+Performed a total of 0 changes.
+
+3.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\stream_hold_properties'.
+Computing hashes of 31 cells of `\stream_hold_properties'.
+Finding duplicate cells in `\stream_hold_properties'.
+Removed a total of 0 cells.
+
+3.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+
+3.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+
+3.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+3.9. Executing WREDUCE pass (reducing word size of cells).
+
+3.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+
+3.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.12. Executing OPT pass (performing simple optimizations).
+
+3.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module stream_hold_properties.
+
+3.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\stream_hold_properties'.
+Computing hashes of 31 cells of `\stream_hold_properties'.
+Finding duplicate cells in `\stream_hold_properties'.
+Removed a total of 0 cells.
+
+3.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+
+3.12.4. Finished fast OPT passes.
+
+3.13. Executing SORT pass.
+
+3.14. Printing statistics.
+
+=== stream_hold_properties ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       34 wires
+       90 wire bits
+       17 public wires
+       45 public wire bits
+       31 cells
+        5   $anyseq
+        4   $check
+        5   $dff
+        1   $eq
+        3   $logic_and
+        2   $logic_not
+        1   $logic_or
+        8   $mux
+        1   $not
+        1   $scopeinfo
+
+3.15. Executing CHECK pass (checking for obvious problems).
+Checking module stream_hold_properties...
+Found and reported 0 problems.
+
+4. Executing CLK2FFLOGIC pass (convert clocked FFs to generic $ff cells).
+
+4.1. Executing PEEPOPT pass (run peephole optimizers).
+Replacing stream_hold_properties.$flatten\dut.$procdff$51 ($dff): CLK=\clk, D=$flatten\dut.$0\m_valid[0:0], Q=\dut.m_valid
+Replacing stream_hold_properties.$flatten\dut.$procdff$52 ($dff): CLK=\clk, D=$flatten\dut.$0\m_data[7:0], Q=\dut.m_data
+Replacing stream_hold_properties.$procdff$48 ($dff): CLK=\clk, D=1'1, Q=\f_past_valid
+Replacing stream_hold_properties.$procdff$49 ($dff): CLK=\clk, D=$0$past$properties.sv:11$5$0[0:0]$13, Q=$past$properties.sv:11$5$0
+Replacing stream_hold_properties.$procdff$50 ($dff): CLK=\clk, D=\dut.m_data, Q=$past$properties.sv:13$6$0
+
+5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \stream_hold_properties..
+Removed 12 unused cells and 17 unused wires.
+<suppressed ~13 debug messages>
+
+6. Executing SAT pass (solving SAT problems in the circuit).
+Using SAT solver `minisat`.
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$154 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$134 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$132 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.m_data#sampled$152 = 8'00000000
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$124 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\m_data[7:0]#sampled$122 = 8'00000000
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$114 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\m_valid[0:0]#sampled$112 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:10$18_EN#sampled$102 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$96 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:10$16_EN#sampled$88 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$82 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:12$20_EN#sampled$74 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$144 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$68 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:12$20_EN#sampled$60 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$0$past$properties.sv:11$5$0[0:0]$13#sampled$142 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$54 = 1'1
+Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$110 $auto$clk2fflogic.cc:101:sample_data$\dut.m_data#sampled$120 $auto$clk2fflogic.cc:101:sample_data$\f_past_valid#sampled$130 $auto$clk2fflogic.cc:101:sample_data$$past$properties.sv:11$5$0#sampled$140 $auto$clk2fflogic.cc:101:sample_data$$past$properties.sv:13$6$0#sampled$150 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$54 $auto$clk2fflogic.cc:101:sample_data$$0$past$properties.sv:11$5$0[0:0]$13#sampled$142 $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:12$20_EN#sampled$60 $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$68 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$144 $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:12$20_EN#sampled$74 $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$82 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:10$16_EN#sampled$88 $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$96 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:10$18_EN#sampled$102 $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\m_valid[0:0]#sampled$112 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$114 $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\m_data[7:0]#sampled$122 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$124 $auto$clk2fflogic.cc:101:sample_data$\dut.m_data#sampled$152 $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$132 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$134 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$154 } = 55'0000000000000000000100111011011010100000000100000000011
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 9:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Setting up time step 10:
+Final constraint equation: { } = { }
+Imported 75 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:10$17_Y#sampled$94 when $auto$rtlil.cc:3302:And$93.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$108 when $auto$rtlil.cc:3302:And$107.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$\dut.m_valid#sampled$66 when $auto$rtlil.cc:3302:And$65.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$eq$properties.sv:13$22_Y#sampled$80 when $auto$rtlil.cc:3302:And$79.
+
+Solving problem with 7179 variables and 18712 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+
+End of script. Logfile hash: 9089544a34, time: 0.03s, user: 0.02s, system: 0.00s, MEM: 22.05 MB peak
+Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+Time spent: 81% 1x sat (0 sec), 3% 6x opt_clean (0 sec), ...
+

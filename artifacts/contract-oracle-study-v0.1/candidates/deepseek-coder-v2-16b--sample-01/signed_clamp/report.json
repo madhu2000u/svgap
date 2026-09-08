@@ -1,0 +1,98 @@
+{
+  "candidate_id": "signed_clamp",
+  "functional": {
+    "commands": [
+      [
+        "iverilog",
+        "-g2012",
+        "-o",
+        "${SVGAP_BUILD}/sim.vvp",
+        "design.sv",
+        "tb.sv"
+      ],
+      [
+        "vvp",
+        "${SVGAP_BUILD}/sim.vvp"
+      ]
+    ],
+    "evidence": {},
+    "imported_from": null,
+    "returncodes": [
+      0,
+      0
+    ],
+    "status": "pass",
+    "stderr": "\n",
+    "stdout": "\nPASS\ntb.sv:10: $finish called at 3000 (1ps)\n",
+    "tool_versions": {
+      "iverilog": "Icarus Verilog version 13.0 (stable) (v13_0)",
+      "vvp": "Icarus Verilog runtime version 13.0 (stable) (v13_0)"
+    }
+  },
+  "gap_member": false,
+  "generated_at": "2026-08-25T17:39:38.121418+00:00",
+  "manifest": "manifest.toml",
+  "oracle_results": [
+    {
+      "backend": "equivalence-yosys",
+      "backend_version": "0.1",
+      "contributes_to_gap": true,
+      "coverage": {
+        "bound": 1,
+        "class": "equivalence",
+        "comparison_stage": "post-yosys-rtl-synthesis",
+        "engine": "yosys-sat-miter",
+        "initial_state": "zero",
+        "proof_scope": "combinational",
+        "reference_only": true,
+        "rules": [
+          "REF-EQUIV-001"
+        ],
+        "signoff_grade": false
+      },
+      "diagnostics": [],
+      "findings": [],
+      "oracle_class": "equivalence",
+      "oracle_id": "synthesized-reference",
+      "required": true,
+      "status": "pass",
+      "tool_versions": {
+        "yosys": "Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)"
+      }
+    },
+    {
+      "backend": "lint-verilator",
+      "backend_version": "0.1",
+      "contributes_to_gap": false,
+      "coverage": {
+        "calibrations": [
+          {
+            "cases": 14,
+            "configuration": "--lint-only --Wall --Wno-fatal",
+            "id": "rdc-lint-baseline-v0.1",
+            "population": "functionally passing REF-RDC-001 gaps",
+            "rdc_specific_detections": 0,
+            "tool_version": "Verilator 5.050"
+          }
+        ],
+        "class": "lint",
+        "extra_args": [
+          "-Wno-DECLFILENAME"
+        ],
+        "ruleset": "--Wall",
+        "source_count": 1,
+        "source_scope": "manifest.design.sources"
+      },
+      "diagnostics": [],
+      "findings": [],
+      "oracle_class": "lint",
+      "oracle_id": "ordinary-lint",
+      "required": false,
+      "status": "pass",
+      "tool_versions": {
+        "verilator": "Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701"
+      }
+    }
+  ],
+  "schema_version": "2.0"
+}

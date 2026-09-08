@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "The Ibex load-store unit mishandles a store whose address is not naturally aligned and therefore has to be split into two internal memory transactions. If the first transaction returns a memory fault, the unit can report the store as complete and raise the store fault immediately, even though the second half of the split access is still outstanding. The expected behavior is that the second transaction is still issued and allowed to finish, and the store fault is reported only after responses for both halves of the split access have been received."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Always issue and finish the second half after the first response. Latch any first-half error and report completion/fault only with second_done_i.",
+    "preserved_mechanism": "A misaligned store split into two requests could report the first-half error before the second half had completed."
+  },
+  "schema_version": "1.0",
+  "task_id": "ibex_377_split_store",
+  "upstream": {
+    "base_sha": "4a1806f16ffd87bded3201bc923da5317aec8210",
+    "fix_patch_sha256": "d98169c25f816e739c9e412e2f39f7564d993e2ee38bc28eaa181577e4d0caf0",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "c33525ae804e5c6200bab582f7e5d80da2aebbf9",
+    "modified_files": [
+      "rtl/ibex_load_store_unit.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 377,
+    "repo": "ibex",
+    "title": "[RTL LSU] Change unaligned error behaviour",
+    "url": "https://github.com/lowRISC/ibex/pull/377"
+  }
+}

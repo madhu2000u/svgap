@@ -1,0 +1,34 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "The Access Control Range Check (`ac_range_check`) IP filters TileLink Uncached Lightweight (TL-UL) requests against configured address ranges and permissions. If a request matches multiple enabled ranges, the lowest-index matching range has priority and is supposed to determine whether that specific access type is allowed.\n\nThe current RTL can violate that priority rule when overlapping enabled ranges disagree on permissions by access type. In particular, a higher-priority range that denies reads but allows writes can be overridden by a lower-priority overlapping range that allows reads but denies writes, causing a read request that hits both ranges to be forwarded even though the higher-priority range should block it.\n\nExpected behavior is that `ac_range_check` resolves permissions per requested access type using the highest-priority matching range. In the overlapping-range scenario above, the read must be denied: the filtered TL-UL request must not be forwarded, the module must generate its deny response, and, when deny logging is enabled, `LOG_STATUS.deny_range_index` must report the index of the range that actually caused the deny. The same overlap must still allow the write request, because the highest-priority matching range permits writes.\n\nTrigger condition: at least two enabled `ac_range_check` ranges overlap on the same address, the lower-index range has higher priority, and the overlapping ranges grant different access types for that address. The bug is visible when a request uses an access type that the highest-priority matching range denies but a lower-priority matching range allows."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Choose the first enabled matching range, index 0 before index 1. Use only that range's read or write permission for the requested access type.",
+    "preserved_mechanism": "An overlapping lower-priority access-control range could override the per-access permission of the lower-index winning range."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_26589_range_priority",
+  "upstream": {
+    "base_sha": "09dd1474be0e3111ff21d3c0d00a9778c1605e34",
+    "fix_patch_sha256": "7de056b474690603ef67f5a08d33a69f132a4d7ca4986cba07a51eef9c7c95cd",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "25a464bd884852c36425bdb0c075ef1a47d45990",
+    "modified_files": [
+      "hw/ip_templates/ac_range_check/rtl/ac_range_check.sv.tpl",
+      "hw/top_darjeeling/ip_autogen/ac_range_check/rtl/ac_range_check.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 26589,
+    "repo": "opentitan",
+    "title": "[ac_range_check/rtl] Fix permission checking and deny index",
+    "url": "https://github.com/lowRISC/opentitan/pull/26589"
+  }
+}

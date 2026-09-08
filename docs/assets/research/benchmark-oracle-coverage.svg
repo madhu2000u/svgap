@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Lower-bound oracle coverage audit</title>
+<desc id="desc">Four categories of explicit production intent were found in a 508-task public RTL inventory, while none had recognizable scoring by the corresponding specialized oracle.</desc>
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#172033" flood-opacity="0.10"/>
+  </filter>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8793A5"/>
+  </marker>
+  <style>
+    text { font-family: Inter, "IBM Plex Sans", Helvetica, Arial, sans-serif; fill: #172033; }
+    .title { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; }
+    .subtitle { font-size: 16px; fill: #5E6B7D; }
+    .heading { font-size: 17px; font-weight: 700; }
+    .body { font-size: 15px; }
+    .small { font-size: 13px; fill: #5E6B7D; }
+    .tiny { font-size: 11px; fill: #5E6B7D; }
+    .number { font-size: 25px; font-weight: 750; }
+    .mono { font-family: "IBM Plex Mono", Menlo, Consolas, monospace; }
+  </style>
+</defs>
+<rect width="1280" height="720" fill="#FFFFFF"/>
+<text x="60" y="58" class="title" text-anchor="start">Explicit production intent, absent specialized scoring</text>
+<text x="60" y="88" class="subtitle" text-anchor="start">Conservative lower bounds in a frozen 508-task inventory: VerilogEval, RTLLM, and an audited open-tool CVDP subset.</text>
+<text x="60" y="140" class="small" text-anchor="start" font-weight="700">Category</text>
+<text x="430" y="140" class="small" text-anchor="start" font-weight="700">Contract-positive tasks</text>
+<text x="720" y="140" class="small" text-anchor="start" font-weight="700">Matching scored oracle</text>
+<text x="1000" y="140" class="small" text-anchor="start" font-weight="700">Observed coverage gap</text>
+<line x1="60" y1="155" x2="1220" y2="155" stroke="#D8E0EB" stroke-width="1"/>
+<rect x="50" y="175" width="1180" height="92" rx="10" fill="#F7F9FC" stroke="#E8EDF4" stroke-width="1" opacity="1"/>
+<text x="72" y="209" class="heading" text-anchor="start">CDC / RDC intent</text>
+<text x="72" y="236" class="small" text-anchor="start">structural intent sufficient</text>
+<text x="430" y="218" class="number" text-anchor="start" fill="#356AE6" style="fill:#356AE6">11</text>
+<text x="475" y="218" class="body" text-anchor="start">/ 508</text>
+<rect x="710" y="196" width="245" height="48" rx="8" fill="#EEF2F6" stroke="#D5DCE6" stroke-width="1" opacity="1"/>
+<text x="733" y="226" class="number" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0</text>
+<text x="770" y="224" class="small" text-anchor="start">CDC/RDC checker</text>
+<rect x="990" y="196" width="210" height="48" rx="8" fill="#FBE9E1" stroke="#F1BBA5" stroke-width="1" opacity="1"/>
+<text x="1095" y="226" class="heading" text-anchor="middle" fill="#D7653B" style="fill:#D7653B">11 / 11</text>
+<rect x="50" y="287" width="1180" height="92" rx="10" fill="#FFFFFF" stroke="#E8EDF4" stroke-width="1" opacity="1"/>
+<text x="72" y="321" class="heading" text-anchor="start">Power-on state</text>
+<text x="72" y="348" class="small" text-anchor="start">explicit initial-state contract</text>
+<text x="430" y="330" class="number" text-anchor="start" fill="#356AE6" style="fill:#356AE6">28</text>
+<text x="475" y="330" class="body" text-anchor="start">/ 508</text>
+<rect x="710" y="308" width="245" height="48" rx="8" fill="#EEF2F6" stroke="#D5DCE6" stroke-width="1" opacity="1"/>
+<text x="733" y="338" class="number" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0</text>
+<text x="770" y="336" class="small" text-anchor="start">randomized / X-aware</text>
+<rect x="990" y="308" width="210" height="48" rx="8" fill="#FBE9E1" stroke="#F1BBA5" stroke-width="1" opacity="1"/>
+<text x="1095" y="338" class="heading" text-anchor="middle" fill="#D7653B" style="fill:#D7653B">28 / 28</text>
+<rect x="50" y="399" width="1180" height="92" rx="10" fill="#F7F9FC" stroke="#E8EDF4" stroke-width="1" opacity="1"/>
+<text x="72" y="433" class="heading" text-anchor="start">Temporal correctness</text>
+<text x="72" y="460" class="small" text-anchor="start">bounded, persistence, progress, protocol</text>
+<text x="430" y="442" class="number" text-anchor="start" fill="#356AE6" style="fill:#356AE6">98</text>
+<text x="475" y="442" class="body" text-anchor="start">/ 508</text>
+<rect x="710" y="420" width="245" height="48" rx="8" fill="#EEF2F6" stroke="#D5DCE6" stroke-width="1" opacity="1"/>
+<text x="733" y="450" class="number" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0</text>
+<text x="770" y="448" class="small" text-anchor="start">native property / formal</text>
+<rect x="990" y="420" width="210" height="48" rx="8" fill="#FBE9E1" stroke="#F1BBA5" stroke-width="1" opacity="1"/>
+<text x="1095" y="450" class="heading" text-anchor="middle" fill="#D7653B" style="fill:#D7653B">98 / 98</text>
+<rect x="50" y="511" width="1180" height="92" rx="10" fill="#FFFFFF" stroke="#E8EDF4" stroke-width="1" opacity="1"/>
+<text x="72" y="545" class="heading" text-anchor="start">Synthesis equivalence</text>
+<text x="72" y="572" class="small" text-anchor="start">original RTL + synthesis required</text>
+<text x="430" y="554" class="number" text-anchor="start" fill="#356AE6" style="fill:#356AE6">16</text>
+<text x="475" y="554" class="body" text-anchor="start">/ 508</text>
+<rect x="710" y="532" width="245" height="48" rx="8" fill="#EEF2F6" stroke="#D5DCE6" stroke-width="1" opacity="1"/>
+<text x="733" y="562" class="number" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0</text>
+<text x="770" y="560" class="small" text-anchor="start">equivalence / post-synth compare</text>
+<rect x="990" y="532" width="210" height="48" rx="8" fill="#FBE9E1" stroke="#F1BBA5" stroke-width="1" opacity="1"/>
+<text x="1095" y="562" class="heading" text-anchor="middle" fill="#D7653B" style="fill:#D7653B">16 / 16</text>
+<rect x="50" y="636" width="1180" height="45" rx="9" fill="#FFF3D6" stroke="#EBCB82" stroke-width="1" opacity="1"/>
+<text x="70" y="664" class="body" text-anchor="start">These are missing-evidence counts, not defective-design counts; finite simulation remains valuable but does not instantiate the named oracle.</text>
+</svg>

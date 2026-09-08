@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "When Rocket Chip is elaborated with Sv57 virtual memory (five page-table levels) and hypervisor support enabled together, the PTW (page-table walker) can build cached page-table-entry addresses by extracting an index from a shifted address fragment that is narrower than the requested slice width. The observed behavior is that hardware elaboration fails with an out-of-range bit-index error in the PTW instead of generating the design. The expected behavior is that the Sv57-plus-hypervisor configuration should elaborate successfully, and PTW cached PTE address generation should not index past the available bits. The affected function is the PTW cached page-table-entry address generation used during hypervisor page-table walks. The trigger condition is enabling both Sv57 (`PgLevels = 5`) and hypervisor support in the same Rocket Chip configuration."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Form the 56-bit address by zero-extending the complete 35-bit VPN fragment with nine high zeros and twelve low page-offset zeros.",
+    "preserved_mechanism": "Sv57 plus hypervisor configuration built a page-table address from a fragment narrower than the slice assumed by the implementation."
+  },
+  "schema_version": "1.0",
+  "task_id": "rocket_3065_ptw_address",
+  "upstream": {
+    "base_sha": "44b0b8249279d25bd75ea693b725d9ff1b96e2ab",
+    "fix_patch_sha256": "1d0c944149dddf5e27926d0cd3d73add5fd1f3551e0ed677622e3dadadd535c1",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_CONFIG_INTEG",
+    "merge_commit_sha": "7c1f50691950e43e530b14263cf2706983a5a9f8",
+    "modified_files": [
+      "src/main/scala/rocket/PTW.scala"
+    ],
+    "org": "chipsalliance",
+    "pull_request": 3065,
+    "repo": "rocket-chip",
+    "title": "PTW: pte_cache_addr vpn_idxs shift/pad/extract for Sv57",
+    "url": "https://github.com/chipsalliance/rocket-chip/pull/3065"
+  }
+}

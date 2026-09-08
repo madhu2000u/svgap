@@ -1,0 +1,15 @@
+{
+  "configuration_label": "qwen2.5-coder-7b",
+  "generated_at": "2026-08-25T17:37:35.741014+00:00",
+  "generation_options": {
+    "seed": 2026082402,
+    "stream": false,
+    "temperature": 0.2
+  },
+  "interface_version": "ollama version is 0.31.1",
+  "provider": "ollama",
+  "requested_model": "qwen2.5-coder:7b",
+  "sample": 2,
+  "schema_version": "1.0",
+  "task": "command_deadline"
+}

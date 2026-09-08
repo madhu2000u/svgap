@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:3e7a920bc361f76855f7aafb7396766a60e8ca99c93ceabd6c48a6fd52449cfa",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "11937af75f0b0c3722a9a54139080a26554d2d439f3a636efcfe0973aa237aa6",
+    "evidence/synthesized-reference.log": "a7e57a8cbaf3d195f8fb5ff749c9f3f3b7768a875eb5db1da7bc4f8826500194",
+    "evidence/synthesized-reference.ys": "69baa45619dae3d263e4081b008468304b0a791d5599dcae953e4df338ee4eec",
+    "generation.json": "8ca34816ddbec34c7feb1f7c15e91f65b8b17ca347dfb2bd3687b325a59297db",
+    "manifest.toml": "d3473fda5233a0ec53fd2a7b7ddf87d45b49400463d1f09ef1d9a50a3ed80b31",
+    "prompt.md": "0441a99e9c41dbf03f0bcdfe25dc343b23de17f7d3288ea8826aef66cdc26c15",
+    "reference.sv": "fb2be6e742629edda386fef0d44b39c6172840f8d32507e98365fa5d0a8d75e5",
+    "report.json": "83e27291b3d4584c9b61403f634260334b832bd393588ed5bd005b6913ac1819",
+    "task.toml": "adc3a483fbaeb381f129734b2596472f5f54aeb688ebcafc166048940ee4a5c4",
+    "tb.sv": "ad7db700b4412e3ac0f479d53db5da2804170a3e6ce9117eab0ac948a8477383"
+  },
+  "model_configuration": "deepseek-coder-v2-16b",
+  "run_id": "deepseek-coder-v2-16b--sample-01",
+  "schema_version": "2.0",
+  "task_id": "opcode_unit"
+}

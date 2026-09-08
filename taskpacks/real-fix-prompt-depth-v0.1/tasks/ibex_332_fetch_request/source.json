@@ -1,0 +1,39 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "The Ibex instruction-fetch prefetch buffer can change the address on the external instruction request interface before the current request has completed its request/grant handshake. When an instruction fetch request is still pending and a branch redirects fetching to a different address, `instr_req_o` remains asserted but `instr_addr_o` can incorrectly switch from the original fetch address to the branch target before `instr_gnt_i` arrives. This affects the prefetch buffer and instruction-side request path. The correct behavior is that, once an instruction fetch request is pending, the corresponding `instr_addr_o` must remain stable until the `instr_req_o`/`instr_gnt_i` handshake completes."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Once a fetch request is issued, preserve its request and address until the request/grant handshake completes; queue no redirect into that beat.",
+    "preserved_mechanism": "A branch redirect could replace the address of an instruction request that had not yet received a grant."
+  },
+  "schema_version": "1.0",
+  "task_id": "ibex_332_fetch_request",
+  "upstream": {
+    "base_sha": "1e8381bfa1a1e70056cc25cc1d55c306d1eba680",
+    "fix_patch_sha256": "c5566d9177048526217995c99a998842dcaa8dea1495c9a4077243cbfbc9a095",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "f2fccaadbc6aaedf08bec73b7386ffce3aaeb618",
+    "modified_files": [
+      "doc/instruction_fetch.rst",
+      "lint/verilator_waiver.vlt",
+      "rtl/ibex_controller.sv",
+      "rtl/ibex_core.sv",
+      "rtl/ibex_fetch_fifo.sv",
+      "rtl/ibex_id_stage.sv",
+      "rtl/ibex_prefetch_buffer.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 332,
+    "repo": "ibex",
+    "title": "[Prefetch buffer] - various bug fixes",
+    "url": "https://github.com/lowRISC/ibex/pull/332"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:0b485492145fcd7bac57afaee57f5837586d883db60bc70b962c87a4d68197da",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "11937af75f0b0c3722a9a54139080a26554d2d439f3a636efcfe0973aa237aa6",
+    "evidence/synthesized-reference.log": "dca6fbfcb9dcd3fdf2a899a9c3b8e70344e33f8ec71a6e7e6cff2b89688438aa",
+    "evidence/synthesized-reference.ys": "69baa45619dae3d263e4081b008468304b0a791d5599dcae953e4df338ee4eec",
+    "generation.json": "d961b03eaabe932c3d6ed81eec8b5a94e8005932c08c3febc3fbc9c9f5ccc1d1",
+    "manifest.toml": "d3473fda5233a0ec53fd2a7b7ddf87d45b49400463d1f09ef1d9a50a3ed80b31",
+    "prompt.md": "0441a99e9c41dbf03f0bcdfe25dc343b23de17f7d3288ea8826aef66cdc26c15",
+    "reference.sv": "fb2be6e742629edda386fef0d44b39c6172840f8d32507e98365fa5d0a8d75e5",
+    "report.json": "95256c199cbf591179386b98644a8d93270c628b406d5a417560c4c77c5805d8",
+    "task.toml": "adc3a483fbaeb381f129734b2596472f5f54aeb688ebcafc166048940ee4a5c4",
+    "tb.sv": "ad7db700b4412e3ac0f479d53db5da2804170a3e6ce9117eab0ac948a8477383"
+  },
+  "model_configuration": "qwen2.5-coder-7b",
+  "run_id": "qwen2.5-coder-7b--sample-02",
+  "schema_version": "2.0",
+  "task_id": "opcode_unit"
+}

@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "Observed behavior: Rocket Chip can compute the Tile input widths for HartID (the per-hart identifier) and ResetVector (the tile boot address) incorrectly. When a design elaborates and connects per-tile HartID and reset-vector values, especially in a heterogeneous tile configuration, elaboration can fail because the Tile ports are narrower than the supplied signals. Expected behavior: the Tile-facing HartID and ResetVector ports should use the full configured widths, so those connections are width-correct and heterogeneous tile configurations elaborate successfully. Affected function: HartID/ResetVector width calculation for signals entering a Tile. Trigger condition: elaborating a configuration that propagates HartID and reset-vector values into one or more tiles, particularly when different tile types are present."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Preserve the full 16-bit HartID and full 48-bit reset vector on the corresponding Tile-facing outputs.",
+    "preserved_mechanism": "Tile HartID and reset-vector ports could be narrower than the configured values in heterogeneous elaborations."
+  },
+  "schema_version": "1.0",
+  "task_id": "rocket_2543_tile_widths",
+  "upstream": {
+    "base_sha": "c9d851f2ffd9bfee52d3354b6b2e65ba225facb9",
+    "fix_patch_sha256": "49330bc93ced4d6895e8956bb2b3349dba3fb8598afdc86475a8acd0810a91df",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_CONFIG_INTEG",
+    "merge_commit_sha": "4d95a4521681874f9643f6e471618b0864993c1f",
+    "modified_files": [
+      "src/main/scala/tile/Core.scala"
+    ],
+    "org": "chipsalliance",
+    "pull_request": 2543,
+    "repo": "rocket-chip",
+    "title": "HartId/ResetVector: Correct the input width calculation",
+    "url": "https://github.com/chipsalliance/rocket-chip/pull/2543"
+  }
+}

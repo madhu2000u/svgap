@@ -1,0 +1,833 @@
+[
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "`ibex_icache` violates its documented core-side instruction response handshake: `valid_o` can depend on `ready_i`, so the cache may withhold an instruction response that is already available internally until the core raises `ready_i`. The expected behavior is concrete and testable: once the cache has assembled a response for the current fetch, it must assert `valid_o` even while `ready_i` is low; `ready_i` should only control when the core consumes that response. This affects the icache output path back to the core and is exposed when fetch is redirected to a half-word-aligned address. In a design that supports 16-bit compressed instructions, a 32-bit instruction can start on a 16-bit boundary and must then be assembled from two fetch words; that completed 32-bit response must still be presented with `valid_o` independent of `ready_i`."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Buffer each available response. Assert valid as soon as it is buffered, independent of ready, and retain the response until accepted.",
+      "preserved_mechanism": "A completed instruction response could be withheld while the consumer was not ready, coupling response availability to acceptance."
+    },
+    "schema_version": "1.0",
+    "task_id": "ibex_882_icache_response",
+    "upstream": {
+      "base_sha": "d5ee96fff670cfaf15b9d77a629f9ed450cd8ef3",
+      "fix_patch_sha256": "63f13d24d6d2211491a0b6e427f886b486ad1b17ec45f3ce53a3f1e0bc47d798",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "db149880bd0e5a551859f0a854de6417d35261e8",
+      "modified_files": [
+        "dv/uvm/icache/dv/ibex_icache_core_agent/ibex_icache_core_driver.sv",
+        "dv/uvm/icache/dv/ibex_icache_core_agent/ibex_icache_core_protocol_checker.sv",
+        "rtl/ibex_icache.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 882,
+      "repo": "ibex",
+      "title": "[rtl] Various small icache bugfixes",
+      "url": "https://github.com/lowRISC/ibex/pull/882"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "The Ibex instruction-fetch prefetch buffer can change the address on the external instruction request interface before the current request has completed its request/grant handshake. When an instruction fetch request is still pending and a branch redirects fetching to a different address, `instr_req_o` remains asserted but `instr_addr_o` can incorrectly switch from the original fetch address to the branch target before `instr_gnt_i` arrives. This affects the prefetch buffer and instruction-side request path. The correct behavior is that, once an instruction fetch request is pending, the corresponding `instr_addr_o` must remain stable until the `instr_req_o`/`instr_gnt_i` handshake completes."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Once a fetch request is issued, preserve its request and address until the request/grant handshake completes; queue no redirect into that beat.",
+      "preserved_mechanism": "A branch redirect could replace the address of an instruction request that had not yet received a grant."
+    },
+    "schema_version": "1.0",
+    "task_id": "ibex_332_fetch_request",
+    "upstream": {
+      "base_sha": "1e8381bfa1a1e70056cc25cc1d55c306d1eba680",
+      "fix_patch_sha256": "c5566d9177048526217995c99a998842dcaa8dea1495c9a4077243cbfbc9a095",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "f2fccaadbc6aaedf08bec73b7386ffce3aaeb618",
+      "modified_files": [
+        "doc/instruction_fetch.rst",
+        "lint/verilator_waiver.vlt",
+        "rtl/ibex_controller.sv",
+        "rtl/ibex_core.sv",
+        "rtl/ibex_fetch_fifo.sv",
+        "rtl/ibex_id_stage.sv",
+        "rtl/ibex_prefetch_buffer.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 332,
+      "repo": "ibex",
+      "title": "[Prefetch buffer] - various bug fixes",
+      "url": "https://github.com/lowRISC/ibex/pull/332"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "In Caliptra's `ahb_slv_sif` block, which bridges the AMBA Advanced High-performance Bus (AHB) to an internal client request interface, the downstream request-valid signal `dv` remains asserted for one extra clock after an outstanding transfer receives an error response. The bug is triggered when an AHB transfer has already been accepted, the internal client holds the request for at least one cycle, and then the client reports an error during the first AHB error-response cycle while the AHB bus is still not ready. The observed incorrect behavior is that `dv` stays high on that error cycle instead of clearing. The expected behavior is that as soon as the outstanding request completes with an error, `dv` must deassert in that same cycle and remain low until a new valid AHB transfer is accepted."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Assert dv_o for an accepted transfer and clear it as soon as either a normal or error completion is sampled.",
+      "preserved_mechanism": "An internal AHB request-valid signal remained asserted for an extra cycle after an outstanding request completed with an error."
+    },
+    "schema_version": "1.0",
+    "task_id": "caliptra_747_ahb_error_completion",
+    "upstream": {
+      "base_sha": "888de1024627aae02f2c90a9c21544e52a45678b",
+      "fix_patch_sha256": "67a1142d8bc1214ef87bed1fcc58482146d7d4df24cfd906069b0efc21f13a8b",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "f14fde905ae7b50d7b062d90806c125413f564ea",
+      "modified_files": [
+        ".github/workflow_metadata/pr_hash",
+        ".github/workflow_metadata/pr_timestamp",
+        "src/axi/rtl/axi_dma_ctrl.sv",
+        "src/libs/rtl/ahb_slv_sif.sv",
+        "src/soc_ifc/rtl/mbox.sv",
+        "src/soc_ifc/rtl/sha512_acc_top.sv",
+        "src/soc_ifc/rtl/soc_ifc_top.sv",
+        "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/sequences/mbox/soc_ifc/soc_ifc_env_mbox_uc_reg_access_sequence.svh",
+        "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/soc_ifc_env_pkg.sv",
+        "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/src/soc_ifc_predictor.svh"
+      ],
+      "org": "chipsalliance",
+      "pull_request": 747,
+      "repo": "caliptra-rtl",
+      "title": "[RTL] Bug fixes for AHB slave module, fe/uds hw load signals, and AXI wstrb usage",
+      "url": "https://github.com/chipsalliance/caliptra-rtl/pull/747"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "In Caliptra's AXI subordinate arbiter (`axi_sub_arb`), overlapping read and write traffic can be arbitrated incorrectly when a read request has already been selected but is still blocked by downstream backpressure. If a write request becomes valid in the same cycle that the downstream hold is released, the arbiter can switch to the write too early and the pending read can be lost. This affects the AXI block that merges read and write requests onto a shared downstream request interface. The expected behavior is testable: once a read or write beat has won arbitration, that winner must remain selected until the downstream interface actually accepts that beat; only after the accepted transfer completes may the arbiter apply its normal write-over-read priority to choose the next request. Under this trigger condition, the stalled read must complete first, and the write may be issued only afterward."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Apply write-over-read priority only when choosing a new beat. Latch the winner and its address until the downstream transfer is accepted.",
+      "preserved_mechanism": "A newly arriving write could replace a previously selected read while the shared downstream request was stalled."
+    },
+    "schema_version": "1.0",
+    "task_id": "caliptra_757_axi_sub_arbiter",
+    "upstream": {
+      "base_sha": "d1a3be59fdadce8169398fd77acc717dc33d282c",
+      "fix_patch_sha256": "461a4711257e5655ac64551fa2a90f8fdd7e32c4ae1ea79255b416b32fc1f94c",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "38173c67b106fe49465344e24cf7214123d041f4",
+      "modified_files": [
+        "docs/CaliptraIntegrationSpecification.md",
+        "src/axi/rtl/axi_dma_reg.rdl",
+        "src/axi/rtl/axi_sub_arb.sv",
+        "src/entropy_src/config/compile.yml",
+        "src/entropy_src/config/entropy_src_tb.vf",
+        "src/integration/rtl/caliptra_top.sv",
+        "src/integration/tb/caliptra_top_tb.sv",
+        "src/integration/uvmf_caliptra_top/uvmf_template_output/project_benches/caliptra_top/tb/testbench/hdl_top.sv",
+        "src/soc_ifc/rtl/soc_ifc_reg.sv",
+        "src/soc_ifc/rtl/soc_ifc_subsystem_reg.rdl",
+        "src/soc_ifc/stimulus/testsuites/uvmf_soc_ifc_promote_regression.yml"
+      ],
+      "org": "chipsalliance",
+      "pull_request": 757,
+      "repo": "caliptra-rtl",
+      "title": "[RTL] AXI Sub Arb fix. Add recovery inf synchros. Export trace signals. Move SS dbg unlock reg to pwrgood.",
+      "url": "https://github.com/chipsalliance/caliptra-rtl/pull/757"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe OpenTitan ROM Controller (`rom_ctrl`) performs a boot-time integrity check by reading ROM words in order and presenting them to KMAC (Keccak Message Authentication Code). The affected functionality is the `rom_ctrl_counter` / ROM-address generation path that drives `rom_addr_o` for this ROM-to-KMAC stream.\n\n## Expected Behavior\nWhen a ROM word is already valid and KMAC accepts it by asserting ready, `rom_addr_o` must advance to the next sequential ROM word in that same cycle so the next ROM fetch starts immediately. In particular, if the first pending word is at address 0 and KMAC changes from not ready to ready, `rom_addr_o` must become 1 immediately rather than remaining at 0 for an extra cycle.\n\n## Actual Behavior\nAfter KMAC applies back-pressure and then becomes ready again, the ROM Controller keeps `rom_addr_o` on the previous address for one extra cycle. In the reset-start case, address 0 is presented for an extra cycle when KMAC first accepts data, so the first ROM word is fetched twice instead of the read stream advancing immediately to the next word.\n\n## Trigger Condition\nThis bug is triggered while `rom_ctrl` is streaming ROM contents to KMAC and KMAC temporarily deasserts ready while a valid ROM word is pending, then reasserts ready. A concrete edge case is immediately after reset release: the first ROM word is pending at address 0, KMAC is initially not ready, and then KMAC asserts ready."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Advance the ROM address once for each valid/ready word handshake, including the first handshake after a stall.",
+      "preserved_mechanism": "After KMAC released backpressure, the ROM stream address remained on the accepted word for one extra cycle and fetched it twice."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_6473_rom_kmac_counter",
+    "upstream": {
+      "base_sha": "ca950b43a0e9ef5013b8e2e5de765bc34fb59b74",
+      "fix_patch_sha256": "8934b3f29b7feff360028d7e443d7ef2ad36f8ce6afcb9d9c55fdc2486236deb",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "dd0157d326dba00c8cb8227c643074708c67099a",
+      "modified_files": [
+        "hw/ip/rom_ctrl/rtl/rom_ctrl_counter.sv",
+        "hw/ip/rom_ctrl/rtl/rom_ctrl_fsm.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 6473,
+      "repo": "opentitan",
+      "title": "[rom_ctrl] Fix KMAC back pressure handling",
+      "url": "https://github.com/lowRISC/opentitan/pull/6473"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\n`prim_packer` is an OpenTitan primitive that packs masked input data into fixed-width output words and connects them with valid/ready handshakes on both its input and output sides. Its backpressure handling is incorrect when a single accepted input transfer already fills one complete output word while the downstream side is stalled.\n\n## Expected Behavior\nIf an accepted input transfer causes `prim_packer` to buffer at least one complete `OutW`-bit output word, `valid_o` must assert and remain asserted until the downstream side accepts that word with `ready_i`. While that full output word is pending and `ready_i` is low, `ready_o` must deassert so the upstream side cannot send another input transfer, unless the pending output word is accepted in the same cycle.\n\nThis must also hold when one input transfer alone provides the full output word, for example when `InW == OutW` and `mask_i` selects the entire input word.\n\n## Actual Behavior\nIn the current implementation, when `ready_i` is low and one accepted input transfer already provides a full output word, `prim_packer` can behave as though no complete output word is pending on the following cycle. `valid_o` can drop even though a complete output word is already buffered, and `ready_o` can remain asserted instead of applying backpressure.\n\n## Trigger Condition\nThe bug is triggered when the downstream interface is stalled (`ready_i` low) at the same time that an accepted input transfer makes the buffered data reach or exceed one full `OutW`-bit output word. A minimal case is `InW == OutW`, `valid_i` asserted for one input transfer, `mask_i` all ones, and `ready_i` held low until the pending output word is accepted.\n\n## Affected Function\nThe affected logic is the `prim_packer` primitive's output-valid generation and upstream-ready/backpressure behavior when a complete packed output word has been buffered but has not yet been acknowledged by the downstream interface."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Treat an all-masked input as one complete buffered word. Hold the word and apply upstream backpressure until it is accepted.",
+      "preserved_mechanism": "A full packed word could stop appearing valid and upstream ready could remain asserted when the downstream interface was stalled."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_634_masked_packer",
+    "upstream": {
+      "base_sha": "e2dc7da55c962d5c9e76e2c06cdd24f6b8185160",
+      "fix_patch_sha256": "ac5a28ba8de34d2fb1bc710080ea09797655717a5c1de8d796cf5ee6a0889319",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "d91831ff0fbcd59519019ae67687eb5122ef9a75",
+      "modified_files": [
+        "hw/ip/prim/rtl/prim_packer.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 634,
+      "repo": "opentitan",
+      "title": "[prim/packer] Enhance the behavior based on FPV result",
+      "url": "https://github.com/lowRISC/opentitan/pull/634"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe bug is in OpenTitan's `prim_arbiter` primitive. If one requester has already been selected but the downstream interface keeps `arb_ready` low, a later higher-priority requester can replace the first requester before any `arb_valid && arb_ready` handshake occurs. This changes the granted requester and `arb_data` for a transfer that is still pending. The problem can appear on TileLink Uncached Lightweight (TL-UL) request paths such as `tlul_socket_m1`, where the downstream side may observe request information change without a new handshake.\n\n## Expected Behavior\nAfter `prim_arbiter` raises `arb_valid` for a requester, that same requester and its associated `arb_data` must remain selected until the transfer is accepted with `arb_valid && arb_ready`. If another requester asserts later while the first transfer is stalled, it must wait for the next arbitration opportunity. On TL-UL paths, this means request fields carried through the arbiter, such as address or write data, must not change while `valid` remains asserted and `ready` is low.\n\n## Actual Behavior\nWhile a transfer is stalled by `arb_ready == 0`, asserting a later higher-priority request can change the arbiter output before the original transfer is accepted. The pending transfer can therefore appear to switch to the newer request, changing the observed grant and forwarded data without an acceptance handshake.\n\n## Affected Function\nThe affected functionality is `prim_arbiter`'s handling of a request that has already been selected but has not yet been accepted.\n\n## Trigger Condition\nThis occurs when a requester is selected, `arb_valid` remains high, the downstream interface applies backpressure with `arb_ready == 0`, and another requester with higher priority becomes active before the stalled transfer is accepted."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Select the highest active requester when idle, then hold the one-hot grant and selected data until ack_i.",
+      "preserved_mechanism": "A later higher-priority request could replace the requester and data of an already-selected transfer before acknowledgement."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_172_sticky_arbiter",
+    "upstream": {
+      "base_sha": "3eaebb67af70c14885e7e8990a39605a4b42da4b",
+      "fix_patch_sha256": "838225097effe8b4b1357e118f45bd6556081b500b4c042410e97581405e3d59",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "97e45dd4388caaf3a67ec3578df944c9a05b0619",
+      "modified_files": [
+        "hw/ip/prim/rtl/prim_arbiter.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 172,
+      "repo": "opentitan",
+      "title": "[prim/arbiter] Keep current request until acked",
+      "url": "https://github.com/lowRISC/opentitan/pull/172"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe Entropy Distribution Network (EDN) hardware-controlled command path to the Cryptographically Secure Random Number Generator (CSRNG) can violate the CSRNG command valid/ready protocol when CSRNG reports an acknowledge/status error while an EDN hardware command is already pending. The affected logic is the EDN path that issues hardware-controlled CSRNG commands, including the boot request mode sequence.\n\n## Expected Behavior\nAfter EDN asserts the CSRNG command-valid signal for a hardware command, it must keep that request asserted until CSRNG raises the corresponding ready signal and the valid/ready handshake completes. If CSRNG reports an acknowledge/status error before that handshake completes, EDN must still finish the outstanding handshake first. Only after the handshake is complete should EDN record the CSRNG acknowledge error, raise its recovery status, and move into its reject/error state.\n\n## Actual Behavior\nIf CSRNG signals an acknowledge/status error while the request is stalled and CSRNG is still not ready, EDN can drop the command-valid signal immediately. This cancels the in-flight hardware command before the handshake completes and violates the EDN-to-CSRNG valid/ready protocol.\n\n## Trigger Conditions\nThis happens when EDN is issuing a hardware-controlled CSRNG command, CSRNG is backpressuring the interface so the request is waiting with valid high and ready low, and a CSRNG acknowledge/status error is reported during that stall. A representative case is boot request mode, where EDN has started a boot-time instantiate or generate command and CSRNG is not yet ready to accept it."
+    },
+    "reduction": {
+      "category": "protocol",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "protocol",
+      "preserved_contract": "Hold command valid and payload until ready completes the handshake. An error may be recorded but cannot cancel the in-flight command.",
+      "preserved_mechanism": "An acknowledge-status error could cancel a pending CSRNG command while the receiver was still applying backpressure."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_23607_csrng_command",
+    "upstream": {
+      "base_sha": "a480eb1f0efef6d6b9f5a00c4d880e0ccb0f6d01",
+      "fix_patch_sha256": "08bcb5f9d8abeb40d020c3fd0ad47201f946f952930e1e3565bc3cf5f18b673e",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "04a79b68da9a3605982ef276745cc4de71aea022",
+      "modified_files": [
+        "hw/ip/edn/dv/edn_sim_cfg.hjson",
+        "hw/ip/edn/dv/env/seq_lib/edn_alert_vseq.sv",
+        "hw/ip/edn/rtl/edn_core.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 23607,
+      "repo": "opentitan",
+      "title": "[edn] Hold csrng_req_valid until valid/ready handshake completes",
+      "url": "https://github.com/lowRISC/opentitan/pull/23607"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "Reading the `cause` field of the RISC-V Debug Control and Status Register (`DCSR.cause`) can report the wrong reason for entering debug mode. In the failing behavior, Ibex records a single-step cause (`DBG_CAUSE_STEP`) even though debug mode was entered because of an external debug request (`debug_req_i`), which should be reported as `DBG_CAUSE_HALTREQ`. This affects the debug-entry cause recording logic in `ibex_controller`. The bug is triggered when the core decides to enter debug mode because `debug_req_i` is asserted, but `debug_req_i` is de-asserted before the later cycle that saves the cause into `DCSR.cause`; the issue was observed after a debug return instruction (`dret`) followed by immediate re-entry into debug mode. In that situation, `DCSR.cause` must still read back as `DBG_CAUSE_HALTREQ`, because the debug entry was caused by the halt request rather than by single-step execution."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Capture the halt-request cause when debug entry is decided and use that captured cause when save_cause_i arrives later.",
+      "preserved_mechanism": "A debug halt request could disappear before a later CSR-save cycle, causing the saved entry cause to describe the wrong event."
+    },
+    "schema_version": "1.0",
+    "task_id": "ibex_1816_debug_cause",
+    "upstream": {
+      "base_sha": "7b1be3354d650bc5b23dff6f439459c353288e4f",
+      "fix_patch_sha256": "747b30bc2b8de5d588bbffd3364e6b1a27b66df791ccf60cd474d6cc9c6ec184",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_TIMING_SYNC",
+      "merge_commit_sha": "75a93dbed0dbe340b637c82e2a8e3ba1b841ecc3",
+      "modified_files": [
+        "rtl/ibex_controller.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 1816,
+      "repo": "ibex",
+      "title": "[rtl] Change how we record debug causes",
+      "url": "https://github.com/lowRISC/ibex/pull/1816"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "The Ibex load-store unit mishandles a store whose address is not naturally aligned and therefore has to be split into two internal memory transactions. If the first transaction returns a memory fault, the unit can report the store as complete and raise the store fault immediately, even though the second half of the split access is still outstanding. The expected behavior is that the second transaction is still issued and allowed to finish, and the store fault is reported only after responses for both halves of the split access have been received."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Always issue and finish the second half after the first response. Latch any first-half error and report completion/fault only with second_done_i.",
+      "preserved_mechanism": "A misaligned store split into two requests could report the first-half error before the second half had completed."
+    },
+    "schema_version": "1.0",
+    "task_id": "ibex_377_split_store",
+    "upstream": {
+      "base_sha": "4a1806f16ffd87bded3201bc923da5317aec8210",
+      "fix_patch_sha256": "d98169c25f816e739c9e412e2f39f7564d993e2ee38bc28eaa181577e4d0caf0",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "c33525ae804e5c6200bab582f7e5d80da2aebbf9",
+      "modified_files": [
+        "rtl/ibex_load_store_unit.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 377,
+      "repo": "ibex",
+      "title": "[RTL LSU] Change unaligned error behaviour",
+      "url": "https://github.com/lowRISC/ibex/pull/377"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nCVA6's memory management unit (MMU) reports load/store misaligned exceptions on a one-cycle-delayed interface to the load/store unit (LSU). The LSU consumes the MMU response one cycle after the request phase, but the misaligned-exception state is not kept with the originating request across that delay. As a result, the exception seen with an LSU response can come from the wrong request cycle instead of the memory access that actually faulted.\n\n## Expected Behavior\nFor RISC-V load and store address-misaligned faults, the exception reported by the MMU-to-LSU response path must belong to the same memory access that caused it. A response for a misaligned access should appear on the following LSU response cycle with the correct misaligned exception, and a cycle with no pending LSU response must not expose a leftover misaligned exception.\n\n## Actual Behavior\nThe MMU can present a misaligned exception from the wrong cycle. This can misattribute the exception to a different load/store response, and in the boundary case where the original misaligned access is followed by a cycle with no LSU request, a stale misaligned exception can still remain visible.\n\n## Affected Function\nThe MMU-to-LSU load/store response path for misaligned-access exception reporting.\n\n## Trigger Condition\nThis occurs when a misaligned load or store enters the MMU and the corresponding LSU response is consumed one cycle later. If the next cycle does not match the original request context, especially when there is no new LSU request, the misaligned exception can be reported on the wrong cycle or leak into the idle cycle."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Pipeline request validity and its misaligned flag together so the response exception belongs to the originating access.",
+      "preserved_mechanism": "A one-cycle-delayed MMU response could use the misalignment state from the wrong request cycle or leak it into an idle cycle."
+    },
+    "schema_version": "1.0",
+    "task_id": "cva6_2802_delayed_misaligned",
+    "upstream": {
+      "base_sha": "ab89beaebbcb5ade0a9f3dd51f0f79ffadad5bbd",
+      "fix_patch_sha256": "bc9a0ded70b96fee490c361d50566545438f6af129c0923ba536063d6b65dc69",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "d971232cd7797b032aa3237a7ecc5465032bd9eb",
+      "modified_files": [
+        "core/cva6_mmu/cva6_mmu.sv"
+      ],
+      "org": "openhwgroup",
+      "pull_request": 2802,
+      "repo": "cva6",
+      "title": "mmu: Use latched value to determine if misaligned exception occurred",
+      "url": "https://github.com/openhwgroup/cva6/pull/2802"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "Observed behavior: in XiangShan's backend floating-point fused multiply-add (FMA) path, an instruction can use the wrong rounding mode (`rm`) after its multiply stage completes. If the external `rm` input changes before the add stage consumes the intermediate result, the FMA may be rounded using the newer mode instead of the mode that was present when the instruction was issued, so the final value can be wrong. Expected behavior: an FMA must keep its original `rm` for the entire operation. When an instruction is issued under one rounding mode and the `rm` input changes before the add stage, the completed result must still match the rounding mode captured at issue time. Affected function: the backend FPU FMA unit, specifically the handoff from the multiply stage to the add stage. Trigger condition: a multi-stage FMA is in flight and the `rm` input changes between the mul and add stages, especially on operands where different rounding modes produce different final results."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Capture rm_i at issue_i and report that captured mode when complete_i finishes the same in-flight operation.",
+      "preserved_mechanism": "A multi-stage FMA could use a newer live rounding mode in its add stage instead of the mode present when the instruction issued."
+    },
+    "schema_version": "1.0",
+    "task_id": "xiangshan_2781_fma_round_mode",
+    "upstream": {
+      "base_sha": "8efab1b78b9599f3fce11db720cf6f68c12ef378",
+      "fix_patch_sha256": "f5d98500ec8681a819e394d7eae558024ab7c3e1756873d1c5efa186321a93e5",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "769a83a9ac03cd460e8261f20d3cb6ad6a2b266e",
+      "modified_files": [
+        "fudian",
+        "src/main/scala/xiangshan/backend/fu/fpu/FMA.scala"
+      ],
+      "org": "OpenXiangShan",
+      "pull_request": 2781,
+      "repo": "XiangShan",
+      "title": "Fix fma rm",
+      "url": "https://github.com/OpenXiangShan/XiangShan/pull/2781"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "During memory-mapped I/O (MMIO) instruction fetches in the Instruction Fetch Unit (IFU), the MMIO state machine can leave its instruction TLB (iTLB) request step before the current iTLB response is valid. If the iTLB returns the translation one or more cycles after the request handshake, the IFU can treat stale response bits from an earlier request as the current result and resend the MMIO fetch on the uncache path with the wrong physical address. The affected logic is the IFU MMIO fetch/resend state machine around the iTLB handshake. The expected behavior is that, after issuing an iTLB request for an MMIO fetch, the IFU waits for the corresponding iTLB response to become valid before consuming the translation result or issuing the resend, so a delayed iTLB response still produces the correct resend address."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "After request_i, remain pending until tlb_valid_i. Pulse done_o only when the corresponding translation is valid.",
+      "preserved_mechanism": "An MMIO fetch state machine could leave its translation step before the current iTLB response was valid."
+    },
+    "schema_version": "1.0",
+    "task_id": "xiangshan_3329_itlb_wait",
+    "upstream": {
+      "base_sha": "9230e37915224bb9de6f570c351fe04f5a5a3027",
+      "fix_patch_sha256": "38ca2a24ccfbbe29a62ef135e4435a2b10806c040ad43f9c68465751ee4536e9",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "7b7232f9835c5d30c12e3212e9676f79b283dccd",
+      "modified_files": [
+        "src/main/scala/xiangshan/frontend/IFU.scala"
+      ],
+      "org": "OpenXiangShan",
+      "pull_request": 3329,
+      "repo": "XiangShan",
+      "title": "IFU: fix mmio fsm for itlb handshake",
+      "url": "https://github.com/OpenXiangShan/XiangShan/pull/3329"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "The OpenTitan always-on timer (AON timer) wakeup request path does not satisfy the power manager (`pwrmgr`) wakeup protocol. The power manager does not latch incoming wakeup requests, so each wakeup source must hold its wakeup output high until software acknowledges the event by clearing that source's recorded wakeup cause.\n\nFor the AON timer, when its wakeup threshold expires while sleep mode is active, the timer records the wakeup cause and asserts its wakeup request. If the system then exits sleep because of that wakeup before software clears the AON timer wakeup cause register (`WKUP_CAUSE`), the wakeup request must remain asserted. It should deassert only after software clears `WKUP_CAUSE`. The observed bug is that the AON timer wakeup request can drop as soon as sleep mode is exited, even though the wakeup cause is still set and software has not acknowledged it."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Latch each wakeup_event_i and keep wakeup_o asserted until clear_cause_i, independent of the current sleeping_i value.",
+      "preserved_mechanism": "A timer wakeup request could drop when sleep ended even though software had not cleared the recorded wakeup cause."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_7701_wakeup_latch",
+    "upstream": {
+      "base_sha": "9b381418fc061683538822ae0efe6b7e123488b0",
+      "fix_patch_sha256": "55a91cd4805d566daf3db9ca90b239184b9636c03464a99127935cb120fa1fd9",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "b3d08450722f2cdbd228cccc56209c34f1f0e534",
+      "modified_files": [
+        "hw/ip/aon_timer/rtl/aon_timer.sv",
+        "hw/ip/pinmux/rtl/pinmux.sv",
+        "hw/ip/usbdev/rtl/usbdev_aon_wake.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 7701,
+      "repo": "opentitan",
+      "title": "[wkup] Add assertion to ensure latching of wakeup signals",
+      "url": "https://github.com/lowRISC/opentitan/pull/7701"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe affected module is the OpenTitan Entropy Source IP, specifically the shared recoverable alert output (`recov_alert`) associated with the Entropy Source `*_FIELD_ALERTS` checks. These checks detect invalid MuBi (multi-bit boolean) encodings written into MuBi-protected control fields.\n\n## Expected Behavior\nIf software writes an invalid MuBi value to a protected Entropy Source control field, the corresponding `*_FIELD_ALERTS` status bit should latch and `recov_alert` should be emitted as a single alert pulse for that event. After the alert receiver completes the alert handshake, `recov_alert` should return low even if the invalid register value is still present, so one bad programmed state does not immediately retrigger additional recoverable alerts. This behavior must hold for firmware-controlled MuBi fields such as `FIPS_ENABLE`.\n\n## Actual Behavior\n`recov_alert` behaves as a level derived from the latched field-alert condition instead of as a pulse. After an invalid MuBi value is written, the alert keeps re-firing or staying asserted until software corrects the bad register value, so a single field-validation failure produces repeated recoverable alerts.\n\n## Trigger Condition\nThe bug is triggered by programming an invalid MuBi encoding into a MuBi-protected Entropy Source control field that raises a `*_FIELD_ALERTS` condition, including the `FIPS_ENABLE` case."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Emit one alert_o pulse on the rising edge of bad_field_i. Do not retrigger while the same bad condition remains high.",
+      "preserved_mechanism": "A recoverable alert was driven as a level from a latched invalid-field condition, repeatedly alerting for one software error."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_13760_alert_pulse",
+    "upstream": {
+      "base_sha": "45f56546c54cae125a8c7bd077cdf596adb27940",
+      "fix_patch_sha256": "0bd078bc6dc0bc14ac43b76f690c98b1b6293be65925e6b8e9777ef1e06c34e7",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_INTERFACE",
+      "merge_commit_sha": "e9ea5d1f887e1e184da6b6ef45422a2dcf86067d",
+      "modified_files": [
+        "hw/ip/entropy_src/entropy_src.core",
+        "hw/ip/entropy_src/rtl/entropy_src_core.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 13760,
+      "repo": "opentitan",
+      "title": "[entropy_src/rtl] create recov alert pulses",
+      "url": "https://github.com/lowRISC/opentitan/pull/13760"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe bug is in the OpenTitan ENTROPY_SRC (Entropy Source) IP's hardware-conditioned FIPS seed generation path, specifically the handoff from the health-test completion logic to the SHA3 conditioner when `RNG_BIT_ENABLE` selects a single RNG lane. In this mode, the completion of a health-test window can be signaled before the final word from that window has been accepted from the pre-conditioner FIFO.\n\n## Affected Function\nThe affected logic is the ENTROPY_SRC main state machine and SHA3 conditioning interface that convert health-tested raw entropy into a conditioned seed output in single-lane FIPS operation.\n\n## Expected Behavior\nWhen ENTROPY_SRC is generating hardware-conditioned FIPS seeds from a single RNG lane, SHA3 must not start processing until every word belonging to the completed health-test window has been accepted from the pre-conditioner FIFO. The resulting conditioned seed must therefore be derived from the entire completed window, including its final word.\n\n## Actual Behavior\nIn single-lane mode, the health-test completion pulse can arrive one cycle too early. This causes SHA3 `process_i` to assert before the last word from the pre-conditioner FIFO has been absorbed. Once `process_i` is asserted, SHA3 stops accepting new input words, so the final word of the completed window is omitted and the resulting conditioned seed no longer matches the expected seed for that window.\n\n## Trigger Condition\nThe failure occurs when ENTROPY_SRC is configured for FIPS hardware conditioning with `RNG_BIT_ENABLE` selecting one of the four RNG lanes, and a health-test window completes while the final pre-conditioner FIFO word for that window is still being handed to SHA3. Under that boundary condition, the conditioned seed output is generated from incomplete input data and can mismatch."
+    },
+    "reduction": {
+      "category": "temporal",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "temporal",
+      "preserved_contract": "Pulse process_o only when the word marked window_last_i completes a word_valid_i/word_ready_i handshake.",
+      "preserved_mechanism": "A health-test window completion could start conditioning before its final FIFO word had actually been accepted."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_23775_conditioner_done",
+    "upstream": {
+      "base_sha": "0185b840159887dfc1460e09a306d3b292934339",
+      "fix_patch_sha256": "677560f55d149b9317daa11e98641d295984feabfdd7628cea3fdbd0414ed70e",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_CONFIG_INTEG",
+      "merge_commit_sha": "f49daa9d227c093f0172512f6d7b82979756f46a",
+      "modified_files": [
+        "hw/ip/entropy_src/rtl/entropy_src_core.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 23775,
+      "repo": "opentitan",
+      "title": "[entropy_src/rtl] Delay the main_sm_done signal",
+      "url": "https://github.com/lowRISC/opentitan/pull/23775"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nThe CVA6 Instruction Trace Interface (ITI) logic in `core/cva6_iti/iti.sv` contains an inferred latch in the combinational generation of `valid_o`. When one cycle produces a valid ITI output and a later cycle on the same output bit should not produce any ITI output, `valid_o` can retain its previous asserted value instead of reflecting only the current inputs.\n\n## Expected Behavior\n`valid_o` must be fully determined by the current-cycle inputs on every combinational path. If the current cycle does not produce an ITI record for a given output bit, that `valid_o` bit must be `0`, and the logic must not depend on stored state or an inferred latch to preserve a previous value.\n\n## Actual Behavior\nBecause `valid_o` is not assigned on all combinational paths, static analysis reports an inferred latch. As a result, `valid_o` can remain high after a previous ITI-producing cycle even when the current cycle should not mark any ITI output as valid.\n\n## Affected Function\nThe bug affects the output-valid generation logic for the CVA6 Instruction Trace Interface in `core/cva6_iti/iti.sv`.\n\n## Trigger Condition\nThe issue is triggered by a transition from a cycle that generates a valid ITI output to a following cycle in which no ITI output should be generated for the same output bit."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Produce valid_o solely from the current enable_i and slot_valid_i inputs, with no state retention on inactive paths.",
+      "preserved_mechanism": "Incomplete combinational assignment inferred a latch, allowing an instruction-trace valid bit to retain a previous cycle's value."
+    },
+    "schema_version": "1.0",
+    "task_id": "cva6_3107_iti_valid",
+    "upstream": {
+      "base_sha": "9a266a5521e3c25dd1d887b0a5b68a446a84315f",
+      "fix_patch_sha256": "6f4cc8feec9f23dacc82432de3e29268639323c0e13d9e2d02370460464db760",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "d33a4fb97d453c244c84c61b6af0db55dc13a362",
+      "modified_files": [
+        "core/cva6_iti/iti.sv"
+      ],
+      "org": "openhwgroup",
+      "pull_request": 3107,
+      "repo": "cva6",
+      "title": "Fix inferred latch in combinational logic (Issue #3105)",
+      "url": "https://github.com/openhwgroup/cva6/pull/3107"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\nCVA6 reports illegal-instruction exceptions from its CVXIF custom-instruction interface through the `x_exception_o` record produced by `cvxif_fu`. When the RISC-V hypervisor extension (RVH) is enabled, the illegal-instruction path does not fully initialize the hypervisor-specific fields of that record. Trap handling can then consume undefined metadata, and `mtinst` (the machine-trap transformed-instruction CSR) may capture arbitrary values instead of deterministic exception state.\n\n## Expected Behavior\nFor a CVXIF-generated illegal-instruction exception, the exception record must be fully defined before trap CSRs consume it. The cause must remain illegal instruction, the rejected instruction value in `tval` must stay correct when that field is enabled, hypervisor-only payload fields that have no meaningful value on this path must be zero, and the guest-virtual-address flag must match the current virtualization state rather than an undefined or stale value.\n\n## Actual Behavior\nWith RVH enabled, the illegal-instruction path can leave hypervisor-specific metadata in `x_exception_o` undriven. This makes transformed-instruction metadata non-deterministic and can corrupt `mtinst`; other hypervisor exception fields may also depend on arbitrary logic state.\n\n## Affected Function\nThe CVXIF exception-generation logic in `cvxif_fu`, specifically the illegal-instruction exception record emitted on `x_exception_o`.\n\n## Trigger Condition\nThe bug is triggered when the CVXIF functional unit rejects an instruction and raises an illegal-instruction exception while CVA6 is built with the hypervisor extension enabled."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Build a completely defined exception record. On illegal_i, report cause 2, copy instr_i to tval_o, zero htval_o/mtinst_o, and copy virt_i to gva_o.",
+      "preserved_mechanism": "An illegal custom-instruction path left hypervisor exception fields undefined, allowing arbitrary transformed-instruction metadata."
+    },
+    "schema_version": "1.0",
+    "task_id": "cva6_2844_exception_record",
+    "upstream": {
+      "base_sha": "79c7c2c6816eda80ceaf89026bae441953fc7207",
+      "fix_patch_sha256": "c96b6013077e3d4b36c1641fba6041873f7f2b8c647c43c3caa63494c2bd9662",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "b258d278167d0c6350e2b8d180e84936ded60a20",
+      "modified_files": [
+        "core/cvxif_fu.sv",
+        "core/ex_stage.sv"
+      ],
+      "org": "openhwgroup",
+      "pull_request": 2844,
+      "repo": "cva6",
+      "title": "[CVXIF] Initialize exception fields for RVH",
+      "url": "https://github.com/openhwgroup/cva6/pull/2844"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "Observed behavior: in XiangShan's Control and Status Register (CSR) unit, writing `mstatus` with the `XS` bits set changes the read-only extension-status state (`xstatus.xs`), so a subsequent `mstatus` read can report non-zero `XS` and set `SD`. A write to `satp` can also preserve `PPN` bits above the implementation's supported physical-address width. Expected behavior: software writes must not modify the read-only `XS` field, so `mstatus` readback should leave `XS` unchanged and should not set `SD` because of that write. `satp.ppn` should be limited to the implemented physical-page-number width and discard unsupported high bits on readback. Affected function: CSR read/write handling for `mstatus`/`xstatus` and `satp` in XiangShan. Trigger condition: the bug appears when software writes `mstatus` with `XS` bits set, or writes `satp` with high `PPN` bits set on configurations whose physical address width is narrower than the architectural `satp.ppn` field."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Preserve old_mstatus_i[5:4] across writes and accept all other mstatus bits. Keep only satp_ppn_i[11:0], forcing its upper four output bits to zero.",
+      "preserved_mechanism": "CSR writes could modify a read-only status field and preserve page-number bits above the implementation's physical-address width."
+    },
+    "schema_version": "1.0",
+    "task_id": "xiangshan_1323_csr_mask",
+    "upstream": {
+      "base_sha": "b6358f8fdca9b3c1c2bc6904b72859aeddb696e7",
+      "fix_patch_sha256": "20c749c34fb472486f6a6a2f03e5a80dfc57828fb826541f2127bf6a193e5a3c",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_SPEC",
+      "merge_commit_sha": "705cbec3975d95e047cf65c6338bac06dbfaddbe",
+      "modified_files": [
+        "ready-to-run",
+        "scripts/xiangshan.py",
+        "src/main/scala/xiangshan/backend/fu/CSR.scala",
+        "src/main/scala/xiangshan/backend/fu/util/CSRConst.scala"
+      ],
+      "org": "OpenXiangShan",
+      "pull_request": 1323,
+      "repo": "XiangShan",
+      "title": "csr: add write mask to satp.ppn & xstatus.xs",
+      "url": "https://github.com/OpenXiangShan/XiangShan/pull/1323"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "Observed behavior: Rocket Chip can compute the Tile input widths for HartID (the per-hart identifier) and ResetVector (the tile boot address) incorrectly. When a design elaborates and connects per-tile HartID and reset-vector values, especially in a heterogeneous tile configuration, elaboration can fail because the Tile ports are narrower than the supplied signals. Expected behavior: the Tile-facing HartID and ResetVector ports should use the full configured widths, so those connections are width-correct and heterogeneous tile configurations elaborate successfully. Affected function: HartID/ResetVector width calculation for signals entering a Tile. Trigger condition: elaborating a configuration that propagates HartID and reset-vector values into one or more tiles, particularly when different tile types are present."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Preserve the full 16-bit HartID and full 48-bit reset vector on the corresponding Tile-facing outputs.",
+      "preserved_mechanism": "Tile HartID and reset-vector ports could be narrower than the configured values in heterogeneous elaborations."
+    },
+    "schema_version": "1.0",
+    "task_id": "rocket_2543_tile_widths",
+    "upstream": {
+      "base_sha": "c9d851f2ffd9bfee52d3354b6b2e65ba225facb9",
+      "fix_patch_sha256": "49330bc93ced4d6895e8956bb2b3349dba3fb8598afdc86475a8acd0810a91df",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_CONFIG_INTEG",
+      "merge_commit_sha": "4d95a4521681874f9643f6e471618b0864993c1f",
+      "modified_files": [
+        "src/main/scala/tile/Core.scala"
+      ],
+      "org": "chipsalliance",
+      "pull_request": 2543,
+      "repo": "rocket-chip",
+      "title": "HartId/ResetVector: Correct the input width calculation",
+      "url": "https://github.com/chipsalliance/rocket-chip/pull/2543"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "When Rocket Chip is elaborated with Sv57 virtual memory (five page-table levels) and hypervisor support enabled together, the PTW (page-table walker) can build cached page-table-entry addresses by extracting an index from a shifted address fragment that is narrower than the requested slice width. The observed behavior is that hardware elaboration fails with an out-of-range bit-index error in the PTW instead of generating the design. The expected behavior is that the Sv57-plus-hypervisor configuration should elaborate successfully, and PTW cached PTE address generation should not index past the available bits. The affected function is the PTW cached page-table-entry address generation used during hypervisor page-table walks. The trigger condition is enabling both Sv57 (`PgLevels = 5`) and hypervisor support in the same Rocket Chip configuration."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Form the 56-bit address by zero-extending the complete 35-bit VPN fragment with nine high zeros and twelve low page-offset zeros.",
+      "preserved_mechanism": "Sv57 plus hypervisor configuration built a page-table address from a fragment narrower than the slice assumed by the implementation."
+    },
+    "schema_version": "1.0",
+    "task_id": "rocket_3065_ptw_address",
+    "upstream": {
+      "base_sha": "44b0b8249279d25bd75ea693b725d9ff1b96e2ab",
+      "fix_patch_sha256": "1d0c944149dddf5e27926d0cd3d73add5fd1f3551e0ed677622e3dadadd535c1",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_CONFIG_INTEG",
+      "merge_commit_sha": "7c1f50691950e43e530b14263cf2706983a5a9f8",
+      "modified_files": [
+        "src/main/scala/rocket/PTW.scala"
+      ],
+      "org": "chipsalliance",
+      "pull_request": 3065,
+      "repo": "rocket-chip",
+      "title": "PTW: pte_cache_addr vpn_idxs shift/pad/extract for Sv57",
+      "url": "https://github.com/chipsalliance/rocket-chip/pull/3065"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "The Ibex instruction decoder accepts the load encoding with `funct3 = 3'b110` as a normal load instead of flagging it as illegal. In RISC-V, that encoding is `LWU` (`load word unsigned`), but this instruction is not supported by Ibex and must not be decoded as a valid load. The expected behavior is that the decoder continues to accept a normal `LW` instruction, but asserts its illegal-instruction indication for the `LWU` encoding. This bug affects the decoder's load handling whenever a load instruction uses the `funct3 = 3'b110` variant."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "For load opcode 7'b0000011, accept funct3 000,001,010,100,101 only. All other funct3 encodings, including 110, are illegal.",
+      "preserved_mechanism": "The unsupported LWU funct3 encoding was accepted as a normal load instead of being marked illegal."
+    },
+    "schema_version": "1.0",
+    "task_id": "ibex_176_load_decoder",
+    "upstream": {
+      "base_sha": "04f4cd44f6b62a48af65f11143278be00d54132b",
+      "fix_patch_sha256": "ac42b16afb9087dff4e63b496d7d681bbea75b7393392862d3b23103071f8d21",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_SPEC",
+      "merge_commit_sha": "e4383589eb7614f595504fedd3eb2caaad3a74ab",
+      "modified_files": [
+        "rtl/ibex_decoder.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 176,
+      "repo": "ibex",
+      "title": "Decoder: remove reg-reg load, make LWU illegal",
+      "url": "https://github.com/lowRISC/ibex/pull/176"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "The Access Control Range Check (`ac_range_check`) IP filters TileLink Uncached Lightweight (TL-UL) requests against configured address ranges and permissions. If a request matches multiple enabled ranges, the lowest-index matching range has priority and is supposed to determine whether that specific access type is allowed.\n\nThe current RTL can violate that priority rule when overlapping enabled ranges disagree on permissions by access type. In particular, a higher-priority range that denies reads but allows writes can be overridden by a lower-priority overlapping range that allows reads but denies writes, causing a read request that hits both ranges to be forwarded even though the higher-priority range should block it.\n\nExpected behavior is that `ac_range_check` resolves permissions per requested access type using the highest-priority matching range. In the overlapping-range scenario above, the read must be denied: the filtered TL-UL request must not be forwarded, the module must generate its deny response, and, when deny logging is enabled, `LOG_STATUS.deny_range_index` must report the index of the range that actually caused the deny. The same overlap must still allow the write request, because the highest-priority matching range permits writes.\n\nTrigger condition: at least two enabled `ac_range_check` ranges overlap on the same address, the lower-index range has higher priority, and the overlapping ranges grant different access types for that address. The bug is visible when a request uses an access type that the highest-priority matching range denies but a lower-priority matching range allows."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Choose the first enabled matching range, index 0 before index 1. Use only that range's read or write permission for the requested access type.",
+      "preserved_mechanism": "An overlapping lower-priority access-control range could override the per-access permission of the lower-index winning range."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_26589_range_priority",
+    "upstream": {
+      "base_sha": "09dd1474be0e3111ff21d3c0d00a9778c1605e34",
+      "fix_patch_sha256": "7de056b474690603ef67f5a08d33a69f132a4d7ca4986cba07a51eef9c7c95cd",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "25a464bd884852c36425bdb0c075ef1a47d45990",
+      "modified_files": [
+        "hw/ip_templates/ac_range_check/rtl/ac_range_check.sv.tpl",
+        "hw/top_darjeeling/ip_autogen/ac_range_check/rtl/ac_range_check.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 26589,
+      "repo": "opentitan",
+      "title": "[ac_range_check/rtl] Fix permission checking and deny index",
+      "url": "https://github.com/lowRISC/opentitan/pull/26589"
+    }
+  },
+  {
+    "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+    "hwe_bench": {
+      "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+      "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+      "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+      "problem_statement": "## Description\n`prim_fifo_sync` is OpenTitan's synchronous first-in, first-out (FIFO) primitive. When an instance becomes empty after its last queued element is read, the primitive can still expose that old element on its read-data output. This behavior is externally visible in downstream users such as the UART (Universal Asynchronous Receiver/Transmitter) receive FIFO, but the underlying bug is in `prim_fifo_sync` itself.\n\n## Expected Behavior\nWhen a `prim_fifo_sync` instance has no valid entry available, its read interface should represent the empty state unambiguously: `rvalid_o` must be low, and `rdata_o` must be `0` rather than the value of the most recently dequeued entry. This must still hold for a one-entry FIFO configuration after its only queued byte has been read.\n\n## Actual Behavior\nAfter the final queued entry is dequeued, `rvalid_o` drops as expected, but `rdata_o` continues to drive the previous value instead of returning to `0`. As a result, software or logic that samples the read-data output while the FIFO is empty can observe stale data from the last entry.\n\n## Affected Function\nThe affected functionality is the empty-state read-output behavior of the `prim_fifo_sync` primitive, including instances used on software-visible receive paths such as the UART receive FIFO.\n\n## Trigger Condition\nThe bug is triggered by writing at least one element into a `prim_fifo_sync` instance, reading until the FIFO becomes empty, and then observing the read interface before any new write occurs. The benchmarked boundary case includes a single-entry FIFO that is written once and then read once."
+    },
+    "reduction": {
+      "category": "synthesis_equivalence",
+      "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+      "oracle_class": "equivalence",
+      "preserved_contract": "Implement a one-entry FIFO. When empty, valid_o is zero and data_o is zero; when full, data_o is the stored byte until it is read.",
+      "preserved_mechanism": "A one-entry FIFO correctly dropped valid after its last read but continued to expose the stale dequeued byte on its data output."
+    },
+    "schema_version": "1.0",
+    "task_id": "opentitan_2420_fifo_empty_data",
+    "upstream": {
+      "base_sha": "35cef980fb929790838a9d64fba98453ff658a6c",
+      "fix_patch_sha256": "2398d4be66e709d508f7b6bf365edeafc56dac586a5521bc43dac74914973aeb",
+      "level1": "RTL_BUG_FIX",
+      "level2": "RTL_LOGIC",
+      "merge_commit_sha": "9ac2b15f162cc4bf5e6e4226ae659c9d4225e1d0",
+      "modified_files": [
+        "hw/ip/prim/rtl/prim_fifo_sync.sv"
+      ],
+      "org": "lowRISC",
+      "pull_request": 2420,
+      "repo": "opentitan",
+      "title": "[prim_fifo_sync] Make FIFO output zero when empty",
+      "url": "https://github.com/lowRISC/opentitan/pull/2420"
+    }
+  }
+]

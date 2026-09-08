@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe bug is in the OpenTitan ENTROPY_SRC (Entropy Source) IP's hardware-conditioned FIPS seed generation path, specifically the handoff from the health-test completion logic to the SHA3 conditioner when `RNG_BIT_ENABLE` selects a single RNG lane. In this mode, the completion of a health-test window can be signaled before the final word from that window has been accepted from the pre-conditioner FIFO.\n\n## Affected Function\nThe affected logic is the ENTROPY_SRC main state machine and SHA3 conditioning interface that convert health-tested raw entropy into a conditioned seed output in single-lane FIPS operation.\n\n## Expected Behavior\nWhen ENTROPY_SRC is generating hardware-conditioned FIPS seeds from a single RNG lane, SHA3 must not start processing until every word belonging to the completed health-test window has been accepted from the pre-conditioner FIFO. The resulting conditioned seed must therefore be derived from the entire completed window, including its final word.\n\n## Actual Behavior\nIn single-lane mode, the health-test completion pulse can arrive one cycle too early. This causes SHA3 `process_i` to assert before the last word from the pre-conditioner FIFO has been absorbed. Once `process_i` is asserted, SHA3 stops accepting new input words, so the final word of the completed window is omitted and the resulting conditioned seed no longer matches the expected seed for that window.\n\n## Trigger Condition\nThe failure occurs when ENTROPY_SRC is configured for FIPS hardware conditioning with `RNG_BIT_ENABLE` selecting one of the four RNG lanes, and a health-test window completes while the final pre-conditioner FIFO word for that window is still being handed to SHA3. Under that boundary condition, the conditioned seed output is generated from incomplete input data and can mismatch."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Pulse process_o only when the word marked window_last_i completes a word_valid_i/word_ready_i handshake.",
+    "preserved_mechanism": "A health-test window completion could start conditioning before its final FIFO word had actually been accepted."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_23775_conditioner_done",
+  "upstream": {
+    "base_sha": "0185b840159887dfc1460e09a306d3b292934339",
+    "fix_patch_sha256": "677560f55d149b9317daa11e98641d295984feabfdd7628cea3fdbd0414ed70e",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_CONFIG_INTEG",
+    "merge_commit_sha": "f49daa9d227c093f0172512f6d7b82979756f46a",
+    "modified_files": [
+      "hw/ip/entropy_src/rtl/entropy_src_core.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 23775,
+    "repo": "opentitan",
+    "title": "[entropy_src/rtl] Delay the main_sm_done signal",
+    "url": "https://github.com/lowRISC/opentitan/pull/23775"
+  }
+}

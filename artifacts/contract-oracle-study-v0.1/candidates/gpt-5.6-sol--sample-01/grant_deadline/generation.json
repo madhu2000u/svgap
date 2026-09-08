@@ -1,0 +1,10 @@
+{
+  "configuration_label": "gpt-5.6-sol",
+  "generated_at": "2026-08-25T17:34:01.972626+00:00",
+  "interface_version": "codex-cli 0.145.0-alpha.2",
+  "provider": "codex",
+  "requested_model": "gpt-5.6-sol",
+  "sample": 1,
+  "schema_version": "1.0",
+  "task": "grant_deadline"
+}

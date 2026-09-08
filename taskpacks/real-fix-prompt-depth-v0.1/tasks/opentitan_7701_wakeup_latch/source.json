@@ -1,0 +1,35 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "The OpenTitan always-on timer (AON timer) wakeup request path does not satisfy the power manager (`pwrmgr`) wakeup protocol. The power manager does not latch incoming wakeup requests, so each wakeup source must hold its wakeup output high until software acknowledges the event by clearing that source's recorded wakeup cause.\n\nFor the AON timer, when its wakeup threshold expires while sleep mode is active, the timer records the wakeup cause and asserts its wakeup request. If the system then exits sleep because of that wakeup before software clears the AON timer wakeup cause register (`WKUP_CAUSE`), the wakeup request must remain asserted. It should deassert only after software clears `WKUP_CAUSE`. The observed bug is that the AON timer wakeup request can drop as soon as sleep mode is exited, even though the wakeup cause is still set and software has not acknowledged it."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Latch each wakeup_event_i and keep wakeup_o asserted until clear_cause_i, independent of the current sleeping_i value.",
+    "preserved_mechanism": "A timer wakeup request could drop when sleep ended even though software had not cleared the recorded wakeup cause."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_7701_wakeup_latch",
+  "upstream": {
+    "base_sha": "9b381418fc061683538822ae0efe6b7e123488b0",
+    "fix_patch_sha256": "55a91cd4805d566daf3db9ca90b239184b9636c03464a99127935cb120fa1fd9",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "b3d08450722f2cdbd228cccc56209c34f1f0e534",
+    "modified_files": [
+      "hw/ip/aon_timer/rtl/aon_timer.sv",
+      "hw/ip/pinmux/rtl/pinmux.sv",
+      "hw/ip/usbdev/rtl/usbdev_aon_wake.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 7701,
+    "repo": "opentitan",
+    "title": "[wkup] Add assertion to ensure latching of wakeup signals",
+    "url": "https://github.com/lowRISC/opentitan/pull/7701"
+  }
+}

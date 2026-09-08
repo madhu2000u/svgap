@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:b045dc25273778b8ecebf8de752912e872944c5f438b05140fb8fd1ddf4c359f",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "6d63a0b44aabb294d02e484ffa4acd93d3323c8f28342e924359a15461b6f1dd",
+    "evidence/synthesized-reference.log": "0140e2a311730602bffb45436aa116796ea61d6253f4057c41eb23333305e9b6",
+    "evidence/synthesized-reference.ys": "293232b4d340f4334b159f8738173c078a89c2e66be603204986e31db2c0d74f",
+    "generation.json": "06def2a6160b1e2d24d0ddf41be69bfaa00b55c05b5f92eb2af804d4f534fd39",
+    "manifest.toml": "5e90a7097ba56a41173eb64c382873fcd742866ab20a75e09fd3a683b5e7ec4c",
+    "prompt.md": "9d8af761ff5802e8e215056a6a28796aa3ce24cc7e4072a252849c1b4722377e",
+    "reference.sv": "a66bdbfb2779b0d523d0a4a224b7736ebc2c58f17a0931d4f303adb22c465f78",
+    "report.json": "79a7955d6b35f12642a0efd920d0f4b463a8744d4585cc1121a7017b095a6c9e",
+    "task.toml": "d0961258809b2d6547535c8a362d9770864d826cbdb69d88e18ed038e58cd44f",
+    "tb.sv": "f02a096bcde64745a7d8bcb1fd40da8ce7169f1f2ea5ffcce92fff6c27d66627"
+  },
+  "model_configuration": "gpt-5.6-sol",
+  "run_id": "gpt-5.6-sol--sample-01",
+  "schema_version": "2.0",
+  "task_id": "signed_clamp"
+}

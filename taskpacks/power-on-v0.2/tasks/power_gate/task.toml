@@ -1,0 +1,15 @@
+id = "power_gate"
+top = "power_gate"
+testbench = "tb.sv"
+power_on = "reset_required"
+init_attributes_are_power_on = false
+asynchronous_groups = []
+[[clocks]]
+name = "core"
+port = "clk"
+[[resets]]
+name = "power_on_reset"
+port = "rst_n"
+active = "low"
+assertion = "async"
+deassertion = "async"

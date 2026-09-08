@@ -1,0 +1,34 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nCVA6 reports illegal-instruction exceptions from its CVXIF custom-instruction interface through the `x_exception_o` record produced by `cvxif_fu`. When the RISC-V hypervisor extension (RVH) is enabled, the illegal-instruction path does not fully initialize the hypervisor-specific fields of that record. Trap handling can then consume undefined metadata, and `mtinst` (the machine-trap transformed-instruction CSR) may capture arbitrary values instead of deterministic exception state.\n\n## Expected Behavior\nFor a CVXIF-generated illegal-instruction exception, the exception record must be fully defined before trap CSRs consume it. The cause must remain illegal instruction, the rejected instruction value in `tval` must stay correct when that field is enabled, hypervisor-only payload fields that have no meaningful value on this path must be zero, and the guest-virtual-address flag must match the current virtualization state rather than an undefined or stale value.\n\n## Actual Behavior\nWith RVH enabled, the illegal-instruction path can leave hypervisor-specific metadata in `x_exception_o` undriven. This makes transformed-instruction metadata non-deterministic and can corrupt `mtinst`; other hypervisor exception fields may also depend on arbitrary logic state.\n\n## Affected Function\nThe CVXIF exception-generation logic in `cvxif_fu`, specifically the illegal-instruction exception record emitted on `x_exception_o`.\n\n## Trigger Condition\nThe bug is triggered when the CVXIF functional unit rejects an instruction and raises an illegal-instruction exception while CVA6 is built with the hypervisor extension enabled."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Build a completely defined exception record. On illegal_i, report cause 2, copy instr_i to tval_o, zero htval_o/mtinst_o, and copy virt_i to gva_o.",
+    "preserved_mechanism": "An illegal custom-instruction path left hypervisor exception fields undefined, allowing arbitrary transformed-instruction metadata."
+  },
+  "schema_version": "1.0",
+  "task_id": "cva6_2844_exception_record",
+  "upstream": {
+    "base_sha": "79c7c2c6816eda80ceaf89026bae441953fc7207",
+    "fix_patch_sha256": "c96b6013077e3d4b36c1641fba6041873f7f2b8c647c43c3caa63494c2bd9662",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "b258d278167d0c6350e2b8d180e84936ded60a20",
+    "modified_files": [
+      "core/cvxif_fu.sv",
+      "core/ex_stage.sv"
+    ],
+    "org": "openhwgroup",
+    "pull_request": 2844,
+    "repo": "cva6",
+    "title": "[CVXIF] Initialize exception fields for RVH",
+    "url": "https://github.com/openhwgroup/cva6/pull/2844"
+  }
+}

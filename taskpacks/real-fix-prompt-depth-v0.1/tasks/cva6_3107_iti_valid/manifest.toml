@@ -1,0 +1,41 @@
+schema_version = "2.0"
+candidate_id = "cva6_3107_iti_valid"
+
+[design]
+top = "iti_valid"
+sources = ["design.sv"]
+
+[functional]
+commands = [
+  ["iverilog", "-g2012", "-o", "${SVGAP_BUILD}/sim.vvp", "design.sv", "task-testbench.sv"],
+  ["vvp", "${SVGAP_BUILD}/sim.vvp"],
+]
+
+[[oracles]]
+id = "synthesized-reference"
+class = "equivalence"
+backend = "equivalence-yosys"
+contributes_to_gap = true
+required = true
+
+[oracles.options]
+reference_sources = ["reference.sv"]
+reference_top = "iti_valid"
+depth = 2
+rule_id = "REF-EQUIV-001"
+message = "synthesized ITI valid logic differs from the total combinational reference"
+
+[[oracles]]
+id = "ordinary-lint"
+class = "lint"
+backend = "lint-verilator"
+contributes_to_gap = false
+required = false
+
+[oracles.options]
+extra_args = ["-Wno-DECLFILENAME", "-Wno-UNUSEDSIGNAL"]
+
+[intent]
+
+[output]
+report = "report.json"

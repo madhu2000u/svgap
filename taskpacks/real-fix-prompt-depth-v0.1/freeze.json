@@ -1,0 +1,17 @@
+{
+  "canonical_digest": "sha256:abb9fa9d0c187daaff3087b250e71a94d7de9f801520602c1e108ca08fcf6e8a",
+  "categories": {
+    "protocol": 8,
+    "synthesis_equivalence": 8,
+    "temporal": 8
+  },
+  "created_at": "2026-08-25T21:59:59.666013+00:00",
+  "digest_excludes": [
+    "freeze.json"
+  ],
+  "hwe_bench_dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+  "prompt_levels": 4,
+  "schema_version": "1.0",
+  "status": "prospective local freeze; not externally timestamped preregistration",
+  "tasks": 24
+}

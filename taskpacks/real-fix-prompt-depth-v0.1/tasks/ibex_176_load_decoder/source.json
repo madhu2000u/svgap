@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "The Ibex instruction decoder accepts the load encoding with `funct3 = 3'b110` as a normal load instead of flagging it as illegal. In RISC-V, that encoding is `LWU` (`load word unsigned`), but this instruction is not supported by Ibex and must not be decoded as a valid load. The expected behavior is that the decoder continues to accept a normal `LW` instruction, but asserts its illegal-instruction indication for the `LWU` encoding. This bug affects the decoder's load handling whenever a load instruction uses the `funct3 = 3'b110` variant."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "For load opcode 7'b0000011, accept funct3 000,001,010,100,101 only. All other funct3 encodings, including 110, are illegal.",
+    "preserved_mechanism": "The unsupported LWU funct3 encoding was accepted as a normal load instead of being marked illegal."
+  },
+  "schema_version": "1.0",
+  "task_id": "ibex_176_load_decoder",
+  "upstream": {
+    "base_sha": "04f4cd44f6b62a48af65f11143278be00d54132b",
+    "fix_patch_sha256": "ac42b16afb9087dff4e63b496d7d681bbea75b7393392862d3b23103071f8d21",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_SPEC",
+    "merge_commit_sha": "e4383589eb7614f595504fedd3eb2caaad3a74ab",
+    "modified_files": [
+      "rtl/ibex_decoder.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 176,
+    "repo": "ibex",
+    "title": "Decoder: remove reg-reg load, make LWU illegal",
+    "url": "https://github.com/lowRISC/ibex/pull/176"
+  }
+}

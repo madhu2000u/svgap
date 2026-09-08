@@ -1,0 +1,7 @@
+id = "result_hold"
+top = "result_hold"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["properties.sv"]
+oracle_class = "protocol"
+rule_id = "REF-PROT-001"

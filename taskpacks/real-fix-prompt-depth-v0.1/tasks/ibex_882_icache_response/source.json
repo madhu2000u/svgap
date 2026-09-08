@@ -1,0 +1,35 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "`ibex_icache` violates its documented core-side instruction response handshake: `valid_o` can depend on `ready_i`, so the cache may withhold an instruction response that is already available internally until the core raises `ready_i`. The expected behavior is concrete and testable: once the cache has assembled a response for the current fetch, it must assert `valid_o` even while `ready_i` is low; `ready_i` should only control when the core consumes that response. This affects the icache output path back to the core and is exposed when fetch is redirected to a half-word-aligned address. In a design that supports 16-bit compressed instructions, a 32-bit instruction can start on a 16-bit boundary and must then be assembled from two fetch words; that completed 32-bit response must still be presented with `valid_o` independent of `ready_i`."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Buffer each available response. Assert valid as soon as it is buffered, independent of ready, and retain the response until accepted.",
+    "preserved_mechanism": "A completed instruction response could be withheld while the consumer was not ready, coupling response availability to acceptance."
+  },
+  "schema_version": "1.0",
+  "task_id": "ibex_882_icache_response",
+  "upstream": {
+    "base_sha": "d5ee96fff670cfaf15b9d77a629f9ed450cd8ef3",
+    "fix_patch_sha256": "63f13d24d6d2211491a0b6e427f886b486ad1b17ec45f3ce53a3f1e0bc47d798",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "db149880bd0e5a551859f0a854de6417d35261e8",
+    "modified_files": [
+      "dv/uvm/icache/dv/ibex_icache_core_agent/ibex_icache_core_driver.sv",
+      "dv/uvm/icache/dv/ibex_icache_core_agent/ibex_icache_core_protocol_checker.sv",
+      "rtl/ibex_icache.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 882,
+    "repo": "ibex",
+    "title": "[rtl] Various small icache bugfixes",
+    "url": "https://github.com/lowRISC/ibex/pull/882"
+  }
+}

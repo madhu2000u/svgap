@@ -1,0 +1,433 @@
+{
+  "analysis_unit": "candidate report",
+  "by_model": {
+    "deepseek-coder-v2-16b": {
+      "contributing_oracle_statuses": {
+        "fail": 4,
+        "pass": 8,
+        "tool_error": 4
+      },
+      "determinate_functional_passes": 10,
+      "functional_statuses": {
+        "compile_error": 2,
+        "fail": 3,
+        "pass": 11
+      },
+      "gap_fraction": 0.3,
+      "gap_members": 3,
+      "reports": 16,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "command_deadline": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "completion_pulse": {
+            "determinate_functional_passes": 1,
+            "gap_members": 0
+          },
+          "grant_deadline": {
+            "determinate_functional_passes": 2,
+            "gap_members": 2
+          },
+          "irq_pulse": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "opcode_unit": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "result_hold": {
+            "determinate_functional_passes": 1,
+            "gap_members": 1
+          },
+          "signed_clamp": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "stream_hold": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.3,
+        "lower": 0.0,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 99999,
+        "seed": 20260824,
+        "upper": 0.7272727272727273,
+        "zero_denominator_replicates": 1
+      },
+      "tasks": 8
+    },
+    "gpt-5.6-sol": {
+      "contributing_oracle_statuses": {
+        "pass": 16
+      },
+      "determinate_functional_passes": 16,
+      "functional_statuses": {
+        "pass": 16
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 16,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "command_deadline": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "completion_pulse": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "grant_deadline": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "irq_pulse": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "opcode_unit": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "result_hold": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "signed_clamp": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "stream_hold": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.0,
+        "lower": 0.0,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 100000,
+        "seed": 20260824,
+        "upper": 0.0,
+        "zero_denominator_replicates": 0
+      },
+      "tasks": 8
+    },
+    "qwen2.5-coder-7b": {
+      "contributing_oracle_statuses": {
+        "fail": 8,
+        "pass": 8
+      },
+      "determinate_functional_passes": 14,
+      "functional_statuses": {
+        "fail": 2,
+        "pass": 14
+      },
+      "gap_fraction": 0.5714285714285714,
+      "gap_members": 8,
+      "reports": 16,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "command_deadline": {
+            "determinate_functional_passes": 2,
+            "gap_members": 2
+          },
+          "completion_pulse": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "grant_deadline": {
+            "determinate_functional_passes": 2,
+            "gap_members": 2
+          },
+          "irq_pulse": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "opcode_unit": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "result_hold": {
+            "determinate_functional_passes": 2,
+            "gap_members": 2
+          },
+          "signed_clamp": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "stream_hold": {
+            "determinate_functional_passes": 2,
+            "gap_members": 2
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.5714285714285714,
+        "lower": 0.16666666666666666,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 100000,
+        "seed": 20260824,
+        "upper": 0.875,
+        "zero_denominator_replicates": 0
+      },
+      "tasks": 8
+    }
+  },
+  "by_oracle_class": {
+    "equivalence": {
+      "contributing_oracle_statuses": {
+        "pass": 12
+      },
+      "determinate_functional_passes": 12,
+      "functional_statuses": {
+        "pass": 12
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 12,
+      "tasks": 2
+    },
+    "protocol": {
+      "contributing_oracle_statuses": {
+        "fail": 6,
+        "pass": 4,
+        "tool_error": 2
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "fail": 2,
+        "pass": 10
+      },
+      "gap_fraction": 0.5555555555555556,
+      "gap_members": 5,
+      "reports": 12,
+      "tasks": 2
+    },
+    "temporal": {
+      "contributing_oracle_statuses": {
+        "fail": 6,
+        "pass": 16,
+        "tool_error": 2
+      },
+      "determinate_functional_passes": 19,
+      "functional_statuses": {
+        "compile_error": 2,
+        "fail": 3,
+        "pass": 19
+      },
+      "gap_fraction": 0.3157894736842105,
+      "gap_members": 6,
+      "reports": 24,
+      "tasks": 4
+    }
+  },
+  "by_task": {
+    "command_deadline": {
+      "contributing_oracle_statuses": {
+        "fail": 2,
+        "pass": 2,
+        "tool_error": 2
+      },
+      "determinate_functional_passes": 4,
+      "functional_statuses": {
+        "compile_error": 2,
+        "pass": 4
+      },
+      "gap_fraction": 0.5,
+      "gap_members": 2,
+      "reports": 6,
+      "tasks": 1
+    },
+    "completion_pulse": {
+      "contributing_oracle_statuses": {
+        "pass": 6
+      },
+      "determinate_functional_passes": 3,
+      "functional_statuses": {
+        "fail": 3,
+        "pass": 3
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 6,
+      "tasks": 1
+    },
+    "grant_deadline": {
+      "contributing_oracle_statuses": {
+        "fail": 4,
+        "pass": 2
+      },
+      "determinate_functional_passes": 6,
+      "functional_statuses": {
+        "pass": 6
+      },
+      "gap_fraction": 0.6666666666666666,
+      "gap_members": 4,
+      "reports": 6,
+      "tasks": 1
+    },
+    "irq_pulse": {
+      "contributing_oracle_statuses": {
+        "pass": 6
+      },
+      "determinate_functional_passes": 6,
+      "functional_statuses": {
+        "pass": 6
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 6,
+      "tasks": 1
+    },
+    "opcode_unit": {
+      "contributing_oracle_statuses": {
+        "pass": 6
+      },
+      "determinate_functional_passes": 6,
+      "functional_statuses": {
+        "pass": 6
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 6,
+      "tasks": 1
+    },
+    "result_hold": {
+      "contributing_oracle_statuses": {
+        "fail": 4,
+        "pass": 2
+      },
+      "determinate_functional_passes": 5,
+      "functional_statuses": {
+        "fail": 1,
+        "pass": 5
+      },
+      "gap_fraction": 0.6,
+      "gap_members": 3,
+      "reports": 6,
+      "tasks": 1
+    },
+    "signed_clamp": {
+      "contributing_oracle_statuses": {
+        "pass": 6
+      },
+      "determinate_functional_passes": 6,
+      "functional_statuses": {
+        "pass": 6
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 6,
+      "tasks": 1
+    },
+    "stream_hold": {
+      "contributing_oracle_statuses": {
+        "fail": 2,
+        "pass": 2,
+        "tool_error": 2
+      },
+      "determinate_functional_passes": 4,
+      "functional_statuses": {
+        "fail": 1,
+        "pass": 5
+      },
+      "gap_fraction": 0.5,
+      "gap_members": 2,
+      "reports": 6,
+      "tasks": 1
+    }
+  },
+  "cluster_unit": "task",
+  "interpretation": {
+    "gap_denominator": "functional passes with contributing oracle status pass or fail; unknown and tool_error are excluded",
+    "interval": "nonparametric task-cluster bootstrap percentile interval; a finite-task sensitivity analysis, not a population-prevalence interval",
+    "model_comparison": "descriptive only; not powered as a model ranking"
+  },
+  "lint_on_gap_members": {
+    "gap_members": 11,
+    "gap_members_with_any_lint_finding": 1,
+    "statuses": {
+      "pass": 11
+    }
+  },
+  "overall": {
+    "contributing_oracle_statuses": {
+      "fail": 12,
+      "pass": 32,
+      "tool_error": 4
+    },
+    "determinate_functional_passes": 40,
+    "functional_statuses": {
+      "compile_error": 2,
+      "fail": 5,
+      "pass": 41
+    },
+    "gap_fraction": 0.275,
+    "gap_members": 11,
+    "reports": 48,
+    "task_cluster_bootstrap": {
+      "cluster_count": 8,
+      "clusters": {
+        "command_deadline": {
+          "determinate_functional_passes": 4,
+          "gap_members": 2
+        },
+        "completion_pulse": {
+          "determinate_functional_passes": 3,
+          "gap_members": 0
+        },
+        "grant_deadline": {
+          "determinate_functional_passes": 6,
+          "gap_members": 4
+        },
+        "irq_pulse": {
+          "determinate_functional_passes": 6,
+          "gap_members": 0
+        },
+        "opcode_unit": {
+          "determinate_functional_passes": 6,
+          "gap_members": 0
+        },
+        "result_hold": {
+          "determinate_functional_passes": 5,
+          "gap_members": 3
+        },
+        "signed_clamp": {
+          "determinate_functional_passes": 6,
+          "gap_members": 0
+        },
+        "stream_hold": {
+          "determinate_functional_passes": 4,
+          "gap_members": 2
+        }
+      },
+      "confidence_level": 0.95,
+      "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+      "estimate": 0.275,
+      "lower": 0.07317073170731707,
+      "method": "nonparametric task-cluster bootstrap, percentile interval",
+      "replicates_requested": 100000,
+      "replicates_used": 100000,
+      "seed": 20260824,
+      "upper": 0.4878048780487805,
+      "zero_denominator_replicates": 0
+    },
+    "tasks": 8
+  },
+  "schema_version": "1.0"
+}

@@ -1,0 +1,15 @@
+id = "opentitan_13760_alert_pulse"
+top = "alert_pulse"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["properties.sv"]
+oracle_class = "temporal"
+category = "temporal"
+rule_id = "REF-TEMP-002"
+default_prompt_level = "level_2"
+
+[prompt_levels]
+level_0 = "prompts/level_0.md"
+level_1 = "prompts/level_1.md"
+level_2 = "prompts/level_2.md"
+level_3 = "prompts/level_3.md"

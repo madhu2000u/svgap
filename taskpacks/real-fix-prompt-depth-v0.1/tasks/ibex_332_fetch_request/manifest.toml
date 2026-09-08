@@ -1,0 +1,41 @@
+schema_version = "2.0"
+candidate_id = "ibex_332_fetch_request"
+
+[design]
+top = "fetch_request"
+sources = ["design.sv"]
+
+[functional]
+commands = [
+  ["iverilog", "-g2012", "-o", "${SVGAP_BUILD}/sim.vvp", "design.sv", "task-testbench.sv"],
+  ["vvp", "${SVGAP_BUILD}/sim.vvp"],
+]
+
+[[oracles]]
+id = "contract-property"
+class = "protocol"
+backend = "formal-yosys"
+contributes_to_gap = true
+required = true
+
+[oracles.options]
+property_sources = ["properties.sv"]
+property_top = "fetch_request_properties"
+depth = 8
+rule_id = "REF-PROT-001"
+message = "pending fetch request or address changes before grant"
+
+[[oracles]]
+id = "ordinary-lint"
+class = "lint"
+backend = "lint-verilator"
+contributes_to_gap = false
+required = false
+
+[oracles.options]
+extra_args = ["-Wno-DECLFILENAME", "-Wno-UNUSEDSIGNAL"]
+
+[intent]
+
+[output]
+report = "report.json"

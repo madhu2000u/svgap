@@ -1,0 +1,402 @@
+{
+  "analysis_unit": "candidate report",
+  "by_model": {
+    "claude-opus-4-8": {
+      "contributing_oracle_statuses": {
+        "fail": 1,
+        "pass": 23
+      },
+      "determinate_functional_passes": 17,
+      "functional_statuses": {
+        "compile_error": 3,
+        "fail": 4,
+        "pass": 17
+      },
+      "gap_fraction": 0.058823529411764705,
+      "gap_members": 1,
+      "reports": 24,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "reset_config": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_counter": {
+            "determinate_functional_passes": 3,
+            "gap_members": 1
+          },
+          "reset_credits": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_events": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_fsm": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "reset_status": {
+            "determinate_functional_passes": 2,
+            "gap_members": 0
+          },
+          "reset_timer": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "reset_watchdog": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.058823529411764705,
+        "lower": 0.0,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 99995,
+        "seed": 20260824,
+        "upper": 0.17647058823529413,
+        "zero_denominator_replicates": 5
+      },
+      "tasks": 8
+    },
+    "claude-sonnet-5": {
+      "contributing_oracle_statuses": {
+        "fail": 8,
+        "pass": 16
+      },
+      "determinate_functional_passes": 19,
+      "functional_statuses": {
+        "compile_error": 3,
+        "fail": 2,
+        "pass": 19
+      },
+      "gap_fraction": 0.3684210526315789,
+      "gap_members": 7,
+      "reports": 24,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "reset_config": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_counter": {
+            "determinate_functional_passes": 3,
+            "gap_members": 2
+          },
+          "reset_credits": {
+            "determinate_functional_passes": 3,
+            "gap_members": 2
+          },
+          "reset_events": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_fsm": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "reset_status": {
+            "determinate_functional_passes": 3,
+            "gap_members": 2
+          },
+          "reset_timer": {
+            "determinate_functional_passes": 1,
+            "gap_members": 0
+          },
+          "reset_watchdog": {
+            "determinate_functional_passes": 3,
+            "gap_members": 1
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.3684210526315789,
+        "lower": 0.125,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 100000,
+        "seed": 20260824,
+        "upper": 0.5833333333333334,
+        "zero_denominator_replicates": 0
+      },
+      "tasks": 8
+    },
+    "openai-frontier-a": {
+      "contributing_oracle_statuses": {
+        "fail": 6,
+        "pass": 18
+      },
+      "determinate_functional_passes": 21,
+      "functional_statuses": {
+        "fail": 3,
+        "pass": 21
+      },
+      "gap_fraction": 0.2857142857142857,
+      "gap_members": 6,
+      "reports": 24,
+      "task_cluster_bootstrap": {
+        "cluster_count": 8,
+        "clusters": {
+          "reset_config": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_counter": {
+            "determinate_functional_passes": 3,
+            "gap_members": 3
+          },
+          "reset_credits": {
+            "determinate_functional_passes": 3,
+            "gap_members": 1
+          },
+          "reset_events": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_fsm": {
+            "determinate_functional_passes": 3,
+            "gap_members": 1
+          },
+          "reset_status": {
+            "determinate_functional_passes": 3,
+            "gap_members": 0
+          },
+          "reset_timer": {
+            "determinate_functional_passes": 0,
+            "gap_members": 0
+          },
+          "reset_watchdog": {
+            "determinate_functional_passes": 3,
+            "gap_members": 1
+          }
+        },
+        "confidence_level": 0.95,
+        "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+        "estimate": 0.2857142857142857,
+        "lower": 0.06666666666666667,
+        "method": "nonparametric task-cluster bootstrap, percentile interval",
+        "replicates_requested": 100000,
+        "replicates_used": 100000,
+        "seed": 20260824,
+        "upper": 0.5555555555555556,
+        "zero_denominator_replicates": 0
+      },
+      "tasks": 8
+    }
+  },
+  "by_oracle_class": {
+    "structural": {
+      "contributing_oracle_statuses": {
+        "fail": 15,
+        "pass": 57
+      },
+      "determinate_functional_passes": 57,
+      "functional_statuses": {
+        "compile_error": 6,
+        "fail": 9,
+        "pass": 57
+      },
+      "gap_fraction": 0.24561403508771928,
+      "gap_members": 14,
+      "reports": 72,
+      "tasks": 8
+    }
+  },
+  "by_task": {
+    "reset_config": {
+      "contributing_oracle_statuses": {
+        "pass": 9
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "pass": 9
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_counter": {
+      "contributing_oracle_statuses": {
+        "fail": 6,
+        "pass": 3
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "pass": 9
+      },
+      "gap_fraction": 0.6666666666666666,
+      "gap_members": 6,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_credits": {
+      "contributing_oracle_statuses": {
+        "fail": 3,
+        "pass": 6
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "pass": 9
+      },
+      "gap_fraction": 0.3333333333333333,
+      "gap_members": 3,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_events": {
+      "contributing_oracle_statuses": {
+        "pass": 9
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "pass": 9
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_fsm": {
+      "contributing_oracle_statuses": {
+        "fail": 2,
+        "pass": 7
+      },
+      "determinate_functional_passes": 3,
+      "functional_statuses": {
+        "compile_error": 6,
+        "pass": 3
+      },
+      "gap_fraction": 0.3333333333333333,
+      "gap_members": 1,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_status": {
+      "contributing_oracle_statuses": {
+        "fail": 2,
+        "pass": 7
+      },
+      "determinate_functional_passes": 8,
+      "functional_statuses": {
+        "fail": 1,
+        "pass": 8
+      },
+      "gap_fraction": 0.25,
+      "gap_members": 2,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_timer": {
+      "contributing_oracle_statuses": {
+        "pass": 9
+      },
+      "determinate_functional_passes": 1,
+      "functional_statuses": {
+        "fail": 8,
+        "pass": 1
+      },
+      "gap_fraction": 0.0,
+      "gap_members": 0,
+      "reports": 9,
+      "tasks": 1
+    },
+    "reset_watchdog": {
+      "contributing_oracle_statuses": {
+        "fail": 2,
+        "pass": 7
+      },
+      "determinate_functional_passes": 9,
+      "functional_statuses": {
+        "pass": 9
+      },
+      "gap_fraction": 0.2222222222222222,
+      "gap_members": 2,
+      "reports": 9,
+      "tasks": 1
+    }
+  },
+  "cluster_unit": "task",
+  "interpretation": {
+    "gap_denominator": "functional passes with contributing oracle status pass or fail; unknown and tool_error are excluded",
+    "interval": "nonparametric task-cluster bootstrap percentile interval; a finite-task sensitivity analysis, not a population-prevalence interval",
+    "model_comparison": "descriptive only; not powered as a model ranking"
+  },
+  "lint_on_gap_members": {
+    "gap_members": 14,
+    "gap_members_with_any_lint_finding": 0,
+    "statuses": {
+      "not_run": 14
+    }
+  },
+  "overall": {
+    "contributing_oracle_statuses": {
+      "fail": 15,
+      "pass": 57
+    },
+    "determinate_functional_passes": 57,
+    "functional_statuses": {
+      "compile_error": 6,
+      "fail": 9,
+      "pass": 57
+    },
+    "gap_fraction": 0.24561403508771928,
+    "gap_members": 14,
+    "reports": 72,
+    "task_cluster_bootstrap": {
+      "cluster_count": 8,
+      "clusters": {
+        "reset_config": {
+          "determinate_functional_passes": 9,
+          "gap_members": 0
+        },
+        "reset_counter": {
+          "determinate_functional_passes": 9,
+          "gap_members": 6
+        },
+        "reset_credits": {
+          "determinate_functional_passes": 9,
+          "gap_members": 3
+        },
+        "reset_events": {
+          "determinate_functional_passes": 9,
+          "gap_members": 0
+        },
+        "reset_fsm": {
+          "determinate_functional_passes": 3,
+          "gap_members": 1
+        },
+        "reset_status": {
+          "determinate_functional_passes": 8,
+          "gap_members": 2
+        },
+        "reset_timer": {
+          "determinate_functional_passes": 1,
+          "gap_members": 0
+        },
+        "reset_watchdog": {
+          "determinate_functional_passes": 9,
+          "gap_members": 2
+        }
+      },
+      "confidence_level": 0.95,
+      "estimand": "candidate-weighted gap fraction after resampling whole tasks",
+      "estimate": 0.24561403508771928,
+      "lower": 0.08822239422084642,
+      "method": "nonparametric task-cluster bootstrap, percentile interval",
+      "replicates_requested": 100000,
+      "replicates_used": 100000,
+      "seed": 20260824,
+      "upper": 0.42857142857142855,
+      "zero_denominator_replicates": 0
+    },
+    "tasks": 8
+  },
+  "schema_version": "1.0"
+}

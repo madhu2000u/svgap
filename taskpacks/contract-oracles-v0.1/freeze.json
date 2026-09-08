@@ -1,0 +1,17 @@
+{
+  "canonical_digest": "sha256:937bd8fe1297c89b279492700a25684fd4f5d37d510a27059cb9905b66981bff",
+  "created_at": "2026-08-24T23:55:36.303070+00:00",
+  "digest_excludes": [
+    "freeze.json"
+  ],
+  "rules": [
+    "REF-EQUIV-001",
+    "REF-PROT-001",
+    "REF-TEMP-001",
+    "REF-TEMP-002"
+  ],
+  "schema_version": "1.0",
+  "status": "prospective local freeze; not externally timestamped preregistration",
+  "task_clusters_per_rule": 2,
+  "tasks": 8
+}

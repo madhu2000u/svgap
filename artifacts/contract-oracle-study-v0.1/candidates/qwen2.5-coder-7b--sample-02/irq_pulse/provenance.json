@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:7a73fecc9a4c7ee787a7d56fcd0e3a0c85976fef0d9ca2c94698edac2e3f4625",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "39ffa0fe6fd45d2f03b3fcc90b91dbb0fcba8a998593e1711e5f5c60d8a36286",
+    "evidence/contract-property.log": "271a951d25f7ea9927a7236493a49296f1b4bbbf844c31f9f2baec84a939a141",
+    "evidence/contract-property.ys": "366c75a83e4c1d87d12486ea0bdb9956fbe3e160e23962cce39559e22c06ec4c",
+    "generation.json": "c9f412d6038d3e2358385daf26859e8d4750bed5f4d0d597b5d1eed66b1a2075",
+    "manifest.toml": "6622d6c543f46b9ab9bc4ce440090efec85a87e5002f76bef7a77465ea51fe24",
+    "prompt.md": "e0ca641e8fadbc152ae39bd866b13c6e312050b8050f70a0936b3634174d8aad",
+    "properties.sv": "2c1875b18f63fb3c0c55d2d73436e2b526b6a0b78c2b375be40214ce7ec655d8",
+    "report.json": "1bf2888db5e8439b1e0f04734af9fffff2ec2f4c7622f440468096a49668ff04",
+    "task.toml": "9a2e78d33301f0a8d9179d76fa2c0672af580713f4dd9c6c9b3ce68c900bfac7",
+    "tb.sv": "adb524ada490e2fd6ef931f4839fc43c74482eaf4225295808bb04f6142a6d08"
+  },
+  "model_configuration": "qwen2.5-coder-7b",
+  "run_id": "qwen2.5-coder-7b--sample-02",
+  "schema_version": "2.0",
+  "task_id": "irq_pulse"
+}

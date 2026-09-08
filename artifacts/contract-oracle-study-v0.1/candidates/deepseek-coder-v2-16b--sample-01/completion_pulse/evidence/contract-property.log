@@ -1,0 +1,355 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+
+-- Executing script file `build/contract-property.ys' --
+
+1. Executing Verilog-2005 frontend: design.sv
+Parsing formal SystemVerilog input from `design.sv' to AST representation.
+Generating RTLIL representation for module `\completion_pulse'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: properties.sv
+Parsing formal SystemVerilog input from `properties.sv' to AST representation.
+Generating RTLIL representation for module `\completion_pulse_properties'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \completion_pulse_properties
+Used module:     \completion_pulse
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \completion_pulse_properties
+Used module:     \completion_pulse
+Removed 0 unused modules.
+Module completion_pulse_properties directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$properties.sv:5$10 in module completion_pulse_properties.
+Marked 1 switch rules as full_case in process $proc$design.sv:11$1 in module completion_pulse.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 3 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\completion_pulse.$proc$design.sv:11$1'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~5 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\completion_pulse_properties.$proc$properties.sv:5$10'.
+     1/4: $assert$properties.sv:9$21_EN
+     2/4: $assume$properties.sv:8$18_EN
+     3/4: $assume$properties.sv:7$16_EN
+     4/4: $assume$properties.sv:7$14_EN
+Creating decoders for process `\completion_pulse.$proc$design.sv:11$1'.
+     1/2: $0\completed[0:0]
+     2/2: $0\event_processed[0:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\completion_pulse_properties.\f_past_valid' using process `\completion_pulse_properties.$proc$properties.sv:5$10'.
+  created $dff cell `$procdff$38' with positive edge clock.
+Creating register for signal `\completion_pulse_properties.$past$properties.sv:8$5$0' using process `\completion_pulse_properties.$proc$properties.sv:5$10'.
+  created $dff cell `$procdff$39' with positive edge clock.
+Creating register for signal `\completion_pulse_properties.$past$properties.sv:9$6$0' using process `\completion_pulse_properties.$proc$properties.sv:5$10'.
+  created $dff cell `$procdff$40' with positive edge clock.
+Creating register for signal `\completion_pulse.\completed' using process `\completion_pulse.$proc$design.sv:11$1'.
+  created $adff cell `$procdff$45' with positive edge clock and positive level reset.
+Creating register for signal `\completion_pulse.\event_processed' using process `\completion_pulse.$proc$design.sv:11$1'.
+  created $adff cell `$procdff$50' with positive edge clock and positive level reset.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 3 empty switches in `\completion_pulse_properties.$proc$properties.sv:5$10'.
+Removing empty process `completion_pulse_properties.$proc$properties.sv:5$10'.
+Found and cleaned up 2 empty switches in `\completion_pulse.$proc$design.sv:11$1'.
+Removing empty process `completion_pulse.$proc$design.sv:11$1'.
+Cleaned up 5 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+<suppressed ~2 debug messages>
+Optimizing module completion_pulse.
+<suppressed ~4 debug messages>
+
+3.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module completion_pulse.
+<suppressed ~1 debug messages>
+
+3.4. Executing FUTURE pass.
+
+3.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+
+3.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+Removed 4 unused cells and 24 unused wires.
+<suppressed ~5 debug messages>
+
+3.7. Executing CHECK pass (checking for obvious problems).
+Checking module completion_pulse_properties...
+Found and reported 0 problems.
+
+3.8. Executing OPT pass (performing simple optimizations).
+
+3.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+
+3.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\completion_pulse_properties'.
+Computing hashes of 27 cells of `\completion_pulse_properties'.
+Finding duplicate cells in `\completion_pulse_properties'.
+Computing hashes of 26 cells of `\completion_pulse_properties'.
+Finding duplicate cells in `\completion_pulse_properties'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+3.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \completion_pulse_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~11 debug messages>
+
+3.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \completion_pulse_properties.
+Performed a total of 0 changes.
+
+3.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\completion_pulse_properties'.
+Computing hashes of 26 cells of `\completion_pulse_properties'.
+Finding duplicate cells in `\completion_pulse_properties'.
+Removed a total of 0 cells.
+
+3.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+3.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+
+3.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \completion_pulse_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~11 debug messages>
+
+3.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \completion_pulse_properties.
+Performed a total of 0 changes.
+
+3.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\completion_pulse_properties'.
+Computing hashes of 26 cells of `\completion_pulse_properties'.
+Finding duplicate cells in `\completion_pulse_properties'.
+Removed a total of 0 cells.
+
+3.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+
+3.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+
+3.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+3.9. Executing WREDUCE pass (reducing word size of cells).
+
+3.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+
+3.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.12. Executing OPT pass (performing simple optimizations).
+
+3.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module completion_pulse_properties.
+
+3.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\completion_pulse_properties'.
+Computing hashes of 26 cells of `\completion_pulse_properties'.
+Finding duplicate cells in `\completion_pulse_properties'.
+Removed a total of 0 cells.
+
+3.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+
+3.12.4. Finished fast OPT passes.
+
+3.13. Executing SORT pass.
+
+3.14. Printing statistics.
+
+=== completion_pulse_properties ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       25 wires
+       25 wire bits
+       10 public wires
+       10 public wire bits
+       26 cells
+        2   $adff
+        3   $anyseq
+        4   $check
+        3   $dff
+        3   $logic_and
+        3   $logic_not
+        1   $logic_or
+        6   $mux
+        1   $scopeinfo
+
+3.15. Executing CHECK pass (checking for obvious problems).
+Checking module completion_pulse_properties...
+Found and reported 0 problems.
+
+4. Executing CLK2FFLOGIC pass (convert clocked FFs to generic $ff cells).
+
+4.1. Executing PEEPOPT pass (run peephole optimizers).
+Replacing completion_pulse_properties.$flatten\dut.$procdff$45 ($adff): CLK=\clk, D=\dut.event_processed, Q=\dut.completed
+Replacing completion_pulse_properties.$flatten\dut.$procdff$50 ($adff): CLK=\clk, D=$flatten\dut.$0\event_processed[0:0], Q=\dut.event_processed
+Replacing completion_pulse_properties.$procdff$38 ($dff): CLK=\clk, D=1'1, Q=\f_past_valid
+Replacing completion_pulse_properties.$procdff$39 ($dff): CLK=\clk, D=\dut.event_done, Q=$past$properties.sv:8$5$0
+Replacing completion_pulse_properties.$procdff$40 ($dff): CLK=\clk, D=$0$past$properties.sv:9$6$0[0:0]$12, Q=$past$properties.sv:9$6$0
+
+5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \completion_pulse_properties..
+Removed 12 unused cells and 17 unused wires.
+<suppressed ~13 debug messages>
+
+6. Executing SAT pass (solving SAT problems in the circuit).
+Using SAT solver `minisat`.
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$168 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$148 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$146 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$0$past$properties.sv:9$6$0[0:0]$12#sampled$166 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$137#sampled$138 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$130 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\event_processed[0:0]#sampled$128 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$119#sampled$120 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$112 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.event_processed#sampled$110 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$18_EN#sampled$100 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$94 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:7$16_EN#sampled$86 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$80 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:7$14_EN#sampled$72 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$158 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$66 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:9$21_EN#sampled$58 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.event_done#sampled$156 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$52 = 1'1
+Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$\dut.completed#sampled$108 $auto$clk2fflogic.cc:101:sample_data$\dut.event_processed#sampled$126 $auto$clk2fflogic.cc:101:sample_data$\f_past_valid#sampled$144 $auto$clk2fflogic.cc:101:sample_data$$past$properties.sv:8$5$0#sampled$154 $auto$clk2fflogic.cc:101:sample_data$$past$properties.sv:9$6$0#sampled$164 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$52 $auto$clk2fflogic.cc:101:sample_data$\dut.event_done#sampled$156 $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:9$21_EN#sampled$58 $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$66 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$158 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:7$14_EN#sampled$72 $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$80 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:7$16_EN#sampled$86 $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$94 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$18_EN#sampled$100 $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 $auto$clk2fflogic.cc:101:sample_data$\dut.event_processed#sampled$110 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$112 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$119#sampled$120 $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\event_processed[0:0]#sampled$128 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$130 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$137#sampled$138 $auto$clk2fflogic.cc:101:sample_data$$0$past$properties.sv:9$6$0[0:0]$12#sampled$166 $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$146 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$148 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$168 } = 29'00000100111011011010100100011
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 78 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$logic_not$design.sv:27$3_Y#sampled$78 when $auto$rtlil.cc:3302:And$77.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$92 when $auto$rtlil.cc:3302:And$91.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$19_Y#sampled$106 when $auto$rtlil.cc:3302:And$105.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$22_Y#sampled$64 when $auto$rtlil.cc:3302:And$63.
+
+Solving problem with 2877 variables and 7474 clauses..
+SAT proof finished - no model found: SUCCESS!
+
+                  /$$$$$$      /$$$$$$$$     /$$$$$$$    
+                 /$$__  $$    | $$_____/    | $$__  $$   
+                | $$  \ $$    | $$          | $$  \ $$   
+                | $$  | $$    | $$$$$       | $$  | $$   
+                | $$  | $$    | $$__/       | $$  | $$   
+                | $$/$$ $$    | $$          | $$  | $$   
+                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$
+                 \____ $$$|__/|________/|__/|_______/|__/
+                       \__/                              
+
+End of script. Logfile hash: 1c4eda5c61, time: 0.02s, user: 0.01s, system: 0.00s, MEM: 18.12 MB peak
+Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+Time spent: 59% 1x sat (0 sec), 9% 4x read_verilog (0 sec), ...
+

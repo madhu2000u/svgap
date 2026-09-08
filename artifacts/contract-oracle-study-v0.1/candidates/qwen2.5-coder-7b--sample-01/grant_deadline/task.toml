@@ -1,0 +1,7 @@
+id = "grant_deadline"
+top = "grant_deadline"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["properties.sv"]
+oracle_class = "temporal"
+rule_id = "REF-TEMP-001"

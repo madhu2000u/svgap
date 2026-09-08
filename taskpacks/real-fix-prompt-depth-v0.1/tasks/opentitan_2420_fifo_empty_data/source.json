@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\n`prim_fifo_sync` is OpenTitan's synchronous first-in, first-out (FIFO) primitive. When an instance becomes empty after its last queued element is read, the primitive can still expose that old element on its read-data output. This behavior is externally visible in downstream users such as the UART (Universal Asynchronous Receiver/Transmitter) receive FIFO, but the underlying bug is in `prim_fifo_sync` itself.\n\n## Expected Behavior\nWhen a `prim_fifo_sync` instance has no valid entry available, its read interface should represent the empty state unambiguously: `rvalid_o` must be low, and `rdata_o` must be `0` rather than the value of the most recently dequeued entry. This must still hold for a one-entry FIFO configuration after its only queued byte has been read.\n\n## Actual Behavior\nAfter the final queued entry is dequeued, `rvalid_o` drops as expected, but `rdata_o` continues to drive the previous value instead of returning to `0`. As a result, software or logic that samples the read-data output while the FIFO is empty can observe stale data from the last entry.\n\n## Affected Function\nThe affected functionality is the empty-state read-output behavior of the `prim_fifo_sync` primitive, including instances used on software-visible receive paths such as the UART receive FIFO.\n\n## Trigger Condition\nThe bug is triggered by writing at least one element into a `prim_fifo_sync` instance, reading until the FIFO becomes empty, and then observing the read interface before any new write occurs. The benchmarked boundary case includes a single-entry FIFO that is written once and then read once."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Implement a one-entry FIFO. When empty, valid_o is zero and data_o is zero; when full, data_o is the stored byte until it is read.",
+    "preserved_mechanism": "A one-entry FIFO correctly dropped valid after its last read but continued to expose the stale dequeued byte on its data output."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_2420_fifo_empty_data",
+  "upstream": {
+    "base_sha": "35cef980fb929790838a9d64fba98453ff658a6c",
+    "fix_patch_sha256": "2398d4be66e709d508f7b6bf365edeafc56dac586a5521bc43dac74914973aeb",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "9ac2b15f162cc4bf5e6e4226ae659c9d4225e1d0",
+    "modified_files": [
+      "hw/ip/prim/rtl/prim_fifo_sync.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 2420,
+    "repo": "opentitan",
+    "title": "[prim_fifo_sync] Make FIFO output zero when empty",
+    "url": "https://github.com/lowRISC/opentitan/pull/2420"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe bug is in OpenTitan's `prim_arbiter` primitive. If one requester has already been selected but the downstream interface keeps `arb_ready` low, a later higher-priority requester can replace the first requester before any `arb_valid && arb_ready` handshake occurs. This changes the granted requester and `arb_data` for a transfer that is still pending. The problem can appear on TileLink Uncached Lightweight (TL-UL) request paths such as `tlul_socket_m1`, where the downstream side may observe request information change without a new handshake.\n\n## Expected Behavior\nAfter `prim_arbiter` raises `arb_valid` for a requester, that same requester and its associated `arb_data` must remain selected until the transfer is accepted with `arb_valid && arb_ready`. If another requester asserts later while the first transfer is stalled, it must wait for the next arbitration opportunity. On TL-UL paths, this means request fields carried through the arbiter, such as address or write data, must not change while `valid` remains asserted and `ready` is low.\n\n## Actual Behavior\nWhile a transfer is stalled by `arb_ready == 0`, asserting a later higher-priority request can change the arbiter output before the original transfer is accepted. The pending transfer can therefore appear to switch to the newer request, changing the observed grant and forwarded data without an acceptance handshake.\n\n## Affected Function\nThe affected functionality is `prim_arbiter`'s handling of a request that has already been selected but has not yet been accepted.\n\n## Trigger Condition\nThis occurs when a requester is selected, `arb_valid` remains high, the downstream interface applies backpressure with `arb_ready == 0`, and another requester with higher priority becomes active before the stalled transfer is accepted."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Select the highest active requester when idle, then hold the one-hot grant and selected data until ack_i.",
+    "preserved_mechanism": "A later higher-priority request could replace the requester and data of an already-selected transfer before acknowledgement."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_172_sticky_arbiter",
+  "upstream": {
+    "base_sha": "3eaebb67af70c14885e7e8990a39605a4b42da4b",
+    "fix_patch_sha256": "838225097effe8b4b1357e118f45bd6556081b500b4c042410e97581405e3d59",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "97e45dd4388caaf3a67ec3578df944c9a05b0619",
+    "modified_files": [
+      "hw/ip/prim/rtl/prim_arbiter.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 172,
+    "repo": "opentitan",
+    "title": "[prim/arbiter] Keep current request until acked",
+    "url": "https://github.com/lowRISC/opentitan/pull/172"
+  }
+}

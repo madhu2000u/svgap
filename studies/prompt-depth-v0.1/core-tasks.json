@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "selection_policy": "Two prospectively selected tasks per category; no selection from model outcomes.",
+  "tasks": [
+    "ibex_332_fetch_request",
+    "opentitan_23607_csrng_command",
+    "ibex_1816_debug_cause",
+    "opentitan_23775_conditioner_done",
+    "cva6_3107_iti_valid",
+    "opentitan_26589_range_priority"
+  ],
+  "pilot_tasks": [
+    "ibex_332_fetch_request",
+    "ibex_1816_debug_cause",
+    "cva6_3107_iti_valid"
+  ]
+}

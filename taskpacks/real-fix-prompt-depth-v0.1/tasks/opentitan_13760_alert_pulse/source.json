@@ -1,0 +1,34 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe affected module is the OpenTitan Entropy Source IP, specifically the shared recoverable alert output (`recov_alert`) associated with the Entropy Source `*_FIELD_ALERTS` checks. These checks detect invalid MuBi (multi-bit boolean) encodings written into MuBi-protected control fields.\n\n## Expected Behavior\nIf software writes an invalid MuBi value to a protected Entropy Source control field, the corresponding `*_FIELD_ALERTS` status bit should latch and `recov_alert` should be emitted as a single alert pulse for that event. After the alert receiver completes the alert handshake, `recov_alert` should return low even if the invalid register value is still present, so one bad programmed state does not immediately retrigger additional recoverable alerts. This behavior must hold for firmware-controlled MuBi fields such as `FIPS_ENABLE`.\n\n## Actual Behavior\n`recov_alert` behaves as a level derived from the latched field-alert condition instead of as a pulse. After an invalid MuBi value is written, the alert keeps re-firing or staying asserted until software corrects the bad register value, so a single field-validation failure produces repeated recoverable alerts.\n\n## Trigger Condition\nThe bug is triggered by programming an invalid MuBi encoding into a MuBi-protected Entropy Source control field that raises a `*_FIELD_ALERTS` condition, including the `FIPS_ENABLE` case."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Emit one alert_o pulse on the rising edge of bad_field_i. Do not retrigger while the same bad condition remains high.",
+    "preserved_mechanism": "A recoverable alert was driven as a level from a latched invalid-field condition, repeatedly alerting for one software error."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_13760_alert_pulse",
+  "upstream": {
+    "base_sha": "45f56546c54cae125a8c7bd077cdf596adb27940",
+    "fix_patch_sha256": "0bd078bc6dc0bc14ac43b76f690c98b1b6293be65925e6b8e9777ef1e06c34e7",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "e9ea5d1f887e1e184da6b6ef45422a2dcf86067d",
+    "modified_files": [
+      "hw/ip/entropy_src/entropy_src.core",
+      "hw/ip/entropy_src/rtl/entropy_src_core.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 13760,
+    "repo": "opentitan",
+    "title": "[entropy_src/rtl] create recov alert pulses",
+    "url": "https://github.com/lowRISC/opentitan/pull/13760"
+  }
+}

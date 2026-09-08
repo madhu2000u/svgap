@@ -1,0 +1,40 @@
+{
+  "cumulative": true,
+  "held_constant": [
+    "module interface",
+    "smoke test",
+    "hidden oracle",
+    "reference"
+  ],
+  "levels": [
+    {
+      "id": "level_0",
+      "label": "issue symptom",
+      "ordinal": 0,
+      "sha256": "bc3afe577d3e7e826b15e15e9df568d57738e57663cc8e57404c864be880f31d",
+      "words": 92
+    },
+    {
+      "id": "level_1",
+      "label": "explicit behavior",
+      "ordinal": 1,
+      "sha256": "f4f93321e77cd5fef11d350346811cc57cc2574186c46cd77cc58daae667fe26",
+      "words": 117
+    },
+    {
+      "id": "level_2",
+      "label": "cycle-exact contract",
+      "ordinal": 2,
+      "sha256": "ae530b63b63b62fd85928e3b46763157c225404da8d60718a106133015b01313",
+      "words": 132
+    },
+    {
+      "id": "level_3",
+      "label": "verification checklist",
+      "ordinal": 3,
+      "sha256": "f008407ba128c00a71f0c37f13c8a424f3d50104ffbd4d2f3bccd25ec09ddb03",
+      "words": 161
+    }
+  ],
+  "schema_version": "1.0"
+}
