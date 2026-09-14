@@ -84,18 +84,21 @@ jobs:
       - uses: actions/checkout@v6
       - name: Build and start dev container
         run: |
-          export USER_ID=$(id -u) GID=$(id -g)
+          env UID="$(id -u)" GID="$(id -g)" 
           docker compose up -d
-      
+
       - name: Smoke test dev container setup
         run: |
+          echo "ci-bind-mount-ok" > ci-bind-mount-probe
           docker compose exec -T svgap-dev bash -c '
             set -euo pipefail
+            export HOME=/tmp
+            export PIP_CACHE_DIR=/tmp/pip-cache
+            mkdir -p "$PIP_CACHE_DIR"
             cd /workspace
+            test "$(cat /workspace/ci-bind-mount-probe)" = "ci-bind-mount-ok"
             python -m venv .venv
-            chmod -R u+rwx .venv
             .venv/bin/python -m pip install -e ".[dev]" -q
-            chmod -R u+x .venv/bin/*
             .venv/bin/svgap doctor
             source /workspace/.venv/bin/activate
             test "$(command -v svgap)" = "/workspace/.venv/bin/svgap"
