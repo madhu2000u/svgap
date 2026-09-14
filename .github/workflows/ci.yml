@@ -83,26 +83,23 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Build and start dev container
-        run: |
-          env UID="$(id -u)" GID="$(id -g)" 
-          docker compose up -d
+        run: docker compose up -d
 
       - name: Smoke test dev container setup
         run: |
-          echo "ci-bind-mount-ok" > ci-bind-mount-probe
           docker compose exec -T svgap-dev bash -c '
             set -euo pipefail
             export HOME=/tmp
             export PIP_CACHE_DIR=/tmp/pip-cache
             mkdir -p "$PIP_CACHE_DIR"
-            cd /workspace
-            test "$(cat /workspace/ci-bind-mount-probe)" = "ci-bind-mount-ok"
-            python -m venv .venv
-            .venv/bin/python -m pip install -e ".[dev]" -q
-            .venv/bin/svgap doctor
-            source /workspace/.venv/bin/activate
-            test "$(command -v svgap)" = "/workspace/.venv/bin/svgap"
-            .venv/bin/svgap demo
+            python -m venv /tmp/svgap-venv
+            cp -r /workspace /tmp/svgap-src
+            cd /tmp/svgap-src
+            /tmp/svgap-venv/bin/python -m pip install -e ".[dev]" -q
+            /tmp/svgap-venv/bin/svgap doctor
+            source /tmp/svgap-venv/bin/activate
+            test "$(command -v svgap)" = "/tmp/svgap-venv/bin/svgap"
+            /tmp/svgap-venv/bin/svgap demo
           '
 
       - name: Tear down
