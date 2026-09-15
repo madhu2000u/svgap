@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:d7a491ddd0291283a5d14f6d2f4e3d17069f411dd3e912b770d6a1b500b9af76",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "024bfaa48fa1e336118802fad11fe459ce7226f59d8ff02a36bdc047a0c822c0",
+    "evidence/contract-property.log": "01c669bbbc8db7a2ba22120d94d256234af34a73453e33eb4f2f6cab5482c29e",
+    "evidence/contract-property.ys": "d75566b4a1d85c4b2a425744db900a92d860a2bf8fc4be390367499903b7b9f7",
+    "generation.json": "88971cd815d7a239a95b891eb3bf44cd51a8402b792c337e886524fd9fbc90bf",
+    "manifest.toml": "e97930f1df40118abd97c9db4d09e50f66f23682f61a9f9ec287ff1239babc69",
+    "prompt.md": "ee98ea13eaed63424975dc95acf930fb766768722c46c92efd038c737d4702ff",
+    "properties.sv": "6c5ba1276b6bf06514109a593382d9b05f4e9da30cf6cd249841e59c5643e5ec",
+    "report.json": "621126802abf50a4be152d7445dae64ec06b09ee1ea129809485286d9ad3382e",
+    "task.toml": "da93839c2747db38cf2c9bb7a7d4cbd1f8d0150dfcab2d0b75c4f4dcc148e244",
+    "tb.sv": "b8d5a43e90ddcb3c91fdcbfb6224ed2d9b940dba5db5735f99d6cab2f9fb811a"
+  },
+  "model_configuration": "gpt-5.6-sol",
+  "run_id": "gpt-5.6-sol--sample-01",
+  "schema_version": "2.0",
+  "task_id": "command_deadline"
+}

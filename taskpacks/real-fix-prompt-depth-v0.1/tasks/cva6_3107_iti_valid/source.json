@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe CVA6 Instruction Trace Interface (ITI) logic in `core/cva6_iti/iti.sv` contains an inferred latch in the combinational generation of `valid_o`. When one cycle produces a valid ITI output and a later cycle on the same output bit should not produce any ITI output, `valid_o` can retain its previous asserted value instead of reflecting only the current inputs.\n\n## Expected Behavior\n`valid_o` must be fully determined by the current-cycle inputs on every combinational path. If the current cycle does not produce an ITI record for a given output bit, that `valid_o` bit must be `0`, and the logic must not depend on stored state or an inferred latch to preserve a previous value.\n\n## Actual Behavior\nBecause `valid_o` is not assigned on all combinational paths, static analysis reports an inferred latch. As a result, `valid_o` can remain high after a previous ITI-producing cycle even when the current cycle should not mark any ITI output as valid.\n\n## Affected Function\nThe bug affects the output-valid generation logic for the CVA6 Instruction Trace Interface in `core/cva6_iti/iti.sv`.\n\n## Trigger Condition\nThe issue is triggered by a transition from a cycle that generates a valid ITI output to a following cycle in which no ITI output should be generated for the same output bit."
+  },
+  "reduction": {
+    "category": "synthesis_equivalence",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "equivalence",
+    "preserved_contract": "Produce valid_o solely from the current enable_i and slot_valid_i inputs, with no state retention on inactive paths.",
+    "preserved_mechanism": "Incomplete combinational assignment inferred a latch, allowing an instruction-trace valid bit to retain a previous cycle's value."
+  },
+  "schema_version": "1.0",
+  "task_id": "cva6_3107_iti_valid",
+  "upstream": {
+    "base_sha": "9a266a5521e3c25dd1d887b0a5b68a446a84315f",
+    "fix_patch_sha256": "6f4cc8feec9f23dacc82432de3e29268639323c0e13d9e2d02370460464db760",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_LOGIC",
+    "merge_commit_sha": "d33a4fb97d453c244c84c61b6af0db55dc13a362",
+    "modified_files": [
+      "core/cva6_iti/iti.sv"
+    ],
+    "org": "openhwgroup",
+    "pull_request": 3107,
+    "repo": "cva6",
+    "title": "Fix inferred latch in combinational logic (Issue #3105)",
+    "url": "https://github.com/openhwgroup/cva6/pull/3107"
+  }
+}

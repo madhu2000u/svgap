@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "Reading the `cause` field of the RISC-V Debug Control and Status Register (`DCSR.cause`) can report the wrong reason for entering debug mode. In the failing behavior, Ibex records a single-step cause (`DBG_CAUSE_STEP`) even though debug mode was entered because of an external debug request (`debug_req_i`), which should be reported as `DBG_CAUSE_HALTREQ`. This affects the debug-entry cause recording logic in `ibex_controller`. The bug is triggered when the core decides to enter debug mode because `debug_req_i` is asserted, but `debug_req_i` is de-asserted before the later cycle that saves the cause into `DCSR.cause`; the issue was observed after a debug return instruction (`dret`) followed by immediate re-entry into debug mode. In that situation, `DCSR.cause` must still read back as `DBG_CAUSE_HALTREQ`, because the debug entry was caused by the halt request rather than by single-step execution."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "Capture the halt-request cause when debug entry is decided and use that captured cause when save_cause_i arrives later.",
+    "preserved_mechanism": "A debug halt request could disappear before a later CSR-save cycle, causing the saved entry cause to describe the wrong event."
+  },
+  "schema_version": "1.0",
+  "task_id": "ibex_1816_debug_cause",
+  "upstream": {
+    "base_sha": "7b1be3354d650bc5b23dff6f439459c353288e4f",
+    "fix_patch_sha256": "747b30bc2b8de5d588bbffd3364e6b1a27b66df791ccf60cd474d6cc9c6ec184",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_TIMING_SYNC",
+    "merge_commit_sha": "75a93dbed0dbe340b637c82e2a8e3ba1b841ecc3",
+    "modified_files": [
+      "rtl/ibex_controller.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 1816,
+    "repo": "ibex",
+    "title": "[rtl] Change how we record debug causes",
+    "url": "https://github.com/lowRISC/ibex/pull/1816"
+  }
+}

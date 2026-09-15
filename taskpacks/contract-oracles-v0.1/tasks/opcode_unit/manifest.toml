@@ -1,0 +1,41 @@
+schema_version = "2.0"
+candidate_id = "opcode_unit"
+
+[design]
+top = "opcode_unit"
+sources = ["design.sv"]
+
+[functional]
+commands = [
+  ["iverilog", "-g2012", "-o", "${SVGAP_BUILD}/sim.vvp", "design.sv", "task-testbench.sv"],
+  ["vvp", "${SVGAP_BUILD}/sim.vvp"],
+]
+
+[[oracles]]
+id = "synthesized-reference"
+class = "equivalence"
+backend = "equivalence-yosys"
+contributes_to_gap = true
+required = true
+
+[oracles.options]
+reference_sources = ["reference.sv"]
+reference_top = "opcode_unit"
+depth = 1
+rule_id = "REF-EQUIV-001"
+message = "the synthesized candidate differs from the complete opcode reference"
+
+[[oracles]]
+id = "ordinary-lint"
+class = "lint"
+backend = "lint-verilator"
+contributes_to_gap = false
+required = false
+
+[oracles.options]
+extra_args = ["-Wno-DECLFILENAME"]
+
+[intent]
+
+[output]
+report = "report.json"

@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "During memory-mapped I/O (MMIO) instruction fetches in the Instruction Fetch Unit (IFU), the MMIO state machine can leave its instruction TLB (iTLB) request step before the current iTLB response is valid. If the iTLB returns the translation one or more cycles after the request handshake, the IFU can treat stale response bits from an earlier request as the current result and resend the MMIO fetch on the uncache path with the wrong physical address. The affected logic is the IFU MMIO fetch/resend state machine around the iTLB handshake. The expected behavior is that, after issuing an iTLB request for an MMIO fetch, the IFU waits for the corresponding iTLB response to become valid before consuming the translation result or issuing the resend, so a delayed iTLB response still produces the correct resend address."
+  },
+  "reduction": {
+    "category": "temporal",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "temporal",
+    "preserved_contract": "After request_i, remain pending until tlb_valid_i. Pulse done_o only when the corresponding translation is valid.",
+    "preserved_mechanism": "An MMIO fetch state machine could leave its translation step before the current iTLB response was valid."
+  },
+  "schema_version": "1.0",
+  "task_id": "xiangshan_3329_itlb_wait",
+  "upstream": {
+    "base_sha": "9230e37915224bb9de6f570c351fe04f5a5a3027",
+    "fix_patch_sha256": "38ca2a24ccfbbe29a62ef135e4435a2b10806c040ad43f9c68465751ee4536e9",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "7b7232f9835c5d30c12e3212e9676f79b283dccd",
+    "modified_files": [
+      "src/main/scala/xiangshan/frontend/IFU.scala"
+    ],
+    "org": "OpenXiangShan",
+    "pull_request": 3329,
+    "repo": "XiangShan",
+    "title": "IFU: fix mmio fsm for itlb handshake",
+    "url": "https://github.com/OpenXiangShan/XiangShan/pull/3329"
+  }
+}

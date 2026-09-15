@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:ee199ed2b316584c67e5f3315e4d8283267b03b2d3c4a294b86414c7c1618bb1",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "fbad2ba7105fcaac06bdf0b2ba09a64a1f0c78fee3b6d1127cf8ab7c88332d32",
+    "evidence/contract-property.log": "6a7609dfa9ece1d73490ff9420fd8bdeb43bcc84ffc377d19385a7eb1bd179e2",
+    "evidence/contract-property.ys": "0a7bbbd864badca38bf966137ba000094792c66bc5939e52a94d42a9bc7d9f78",
+    "generation.json": "3072b12466d98c300da1f4b967a8677b537c92c5e7dca5d8dabe6c61bc22715b",
+    "manifest.toml": "e68b797b7575681a2dd559ebb5d1b78cbfd988220303eb5261161f406d7796a2",
+    "prompt.md": "b4407ba20a6419f0b32ea6200f9b385f2943e815d089774102fc0dea973a9db5",
+    "properties.sv": "fc0d157173697b669529e7820698c6108a8f3c5ba1b8534f71b2bffa28579ac4",
+    "report.json": "3314b034c88d58d02fd8fa517b98c21150a6e314b7f11d06d2171372cbd4caa2",
+    "task.toml": "6bdb9c190df57df03fed394dd8eae9d5d9bd388517e757d5a05bd166e6d97afd",
+    "tb.sv": "e83f0df7f123beb66fd48fc6a10253edbb5dcfe5a401f37c343f735a847ffa80"
+  },
+  "model_configuration": "deepseek-coder-v2-16b",
+  "run_id": "deepseek-coder-v2-16b--sample-01",
+  "schema_version": "2.0",
+  "task_id": "completion_pulse"
+}

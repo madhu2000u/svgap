@@ -1,0 +1,21 @@
+{
+  "candidate_bundle_digest": "sha256:dbeff2fec379985de97a6c866e0dab77b806d89fd00d10c79ce3123caec6dee5",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "4c8f380ab5f131a6bf83907b70141e90373248f2f227d6ad46ba31d88d496707",
+    "evidence/contract-property-counterexample.vcd": "33cb0219f4a170f423bbb3aa8ea6acc6e1a41fded86958ec83d4ac7792f5007d",
+    "evidence/contract-property.log": "c6706cc6725db023f0fc6df0c9b8966c3c21a485a9e91b99b1f0f3b459662a1f",
+    "evidence/contract-property.ys": "d75566b4a1d85c4b2a425744db900a92d860a2bf8fc4be390367499903b7b9f7",
+    "generation.json": "f57a033ecf46d4e517c2f0f59492a06ee50167e1650ca1c24d26b152870fdd15",
+    "manifest.toml": "e97930f1df40118abd97c9db4d09e50f66f23682f61a9f9ec287ff1239babc69",
+    "prompt.md": "ee98ea13eaed63424975dc95acf930fb766768722c46c92efd038c737d4702ff",
+    "properties.sv": "6c5ba1276b6bf06514109a593382d9b05f4e9da30cf6cd249841e59c5643e5ec",
+    "report.json": "3fc2b9de137cf249438ffcdbf9b324a74ec59b54bee151350165247459d1c9dc",
+    "task.toml": "da93839c2747db38cf2c9bb7a7d4cbd1f8d0150dfcab2d0b75c4f4dcc148e244",
+    "tb.sv": "b8d5a43e90ddcb3c91fdcbfb6224ed2d9b940dba5db5735f99d6cab2f9fb811a"
+  },
+  "model_configuration": "qwen2.5-coder-7b",
+  "run_id": "qwen2.5-coder-7b--sample-01",
+  "schema_version": "2.0",
+  "task_id": "command_deadline"
+}

@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:edd5db4212f6a9604ca41f940ea2bd808d3ea95b2798ad0534a508d570dcd9fa",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "4008e6c42349a6a1b6ff1fea781aed95fb6c1f137ee361cf722dc99265f82687",
+    "evidence/contract-property.log": "ab49ca2f8c8686075fe05571e5264742b01f521736bc41068365661cd84ded5e",
+    "evidence/contract-property.ys": "4480a3fe705ce568be0cfd6a92d5bd547ad9d0fe5f3c829511b50357685a63d0",
+    "generation.json": "d654cdb1bee661726401705671c3d5626004470a94dc17354232da6010f0409e",
+    "manifest.toml": "f61af027b33d1d21b1d153690fd09afeca05a5a1134f3dda026a0928f678f91d",
+    "prompt.md": "d924973aaaf8c6dad212c23192d0e6eb1a9cde182004c68848af99cfb35ff895",
+    "properties.sv": "fd26a102577dd48fc3b1b01eca6ec363a739dc8fb347e6f54a0a0b2a1f27b494",
+    "report.json": "be34994d3b86e3c1fdbd6addd88079b7965521c665a4c228ea8861b365398f4e",
+    "task.toml": "1d446efe4639297ef37e95a9151112b4e9d47bf635147c1760a7211301592fa4",
+    "tb.sv": "b741655262fe5d9d8cde8920cf2439ef4e0dc46c43212b103266820512414512"
+  },
+  "model_configuration": "gpt-5.6-sol",
+  "run_id": "gpt-5.6-sol--sample-01",
+  "schema_version": "2.0",
+  "task_id": "grant_deadline"
+}

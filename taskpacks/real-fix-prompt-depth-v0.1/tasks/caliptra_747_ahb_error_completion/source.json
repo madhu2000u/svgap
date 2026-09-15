@@ -1,0 +1,42 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "In Caliptra's `ahb_slv_sif` block, which bridges the AMBA Advanced High-performance Bus (AHB) to an internal client request interface, the downstream request-valid signal `dv` remains asserted for one extra clock after an outstanding transfer receives an error response. The bug is triggered when an AHB transfer has already been accepted, the internal client holds the request for at least one cycle, and then the client reports an error during the first AHB error-response cycle while the AHB bus is still not ready. The observed incorrect behavior is that `dv` stays high on that error cycle instead of clearing. The expected behavior is that as soon as the outstanding request completes with an error, `dv` must deassert in that same cycle and remain low until a new valid AHB transfer is accepted."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Assert dv_o for an accepted transfer and clear it as soon as either a normal or error completion is sampled.",
+    "preserved_mechanism": "An internal AHB request-valid signal remained asserted for an extra cycle after an outstanding request completed with an error."
+  },
+  "schema_version": "1.0",
+  "task_id": "caliptra_747_ahb_error_completion",
+  "upstream": {
+    "base_sha": "888de1024627aae02f2c90a9c21544e52a45678b",
+    "fix_patch_sha256": "67a1142d8bc1214ef87bed1fcc58482146d7d4df24cfd906069b0efc21f13a8b",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "f14fde905ae7b50d7b062d90806c125413f564ea",
+    "modified_files": [
+      ".github/workflow_metadata/pr_hash",
+      ".github/workflow_metadata/pr_timestamp",
+      "src/axi/rtl/axi_dma_ctrl.sv",
+      "src/libs/rtl/ahb_slv_sif.sv",
+      "src/soc_ifc/rtl/mbox.sv",
+      "src/soc_ifc/rtl/sha512_acc_top.sv",
+      "src/soc_ifc/rtl/soc_ifc_top.sv",
+      "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/sequences/mbox/soc_ifc/soc_ifc_env_mbox_uc_reg_access_sequence.svh",
+      "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/soc_ifc_env_pkg.sv",
+      "src/soc_ifc/uvmf_soc_ifc/uvmf_template_output/verification_ip/environment_packages/soc_ifc_env_pkg/src/soc_ifc_predictor.svh"
+    ],
+    "org": "chipsalliance",
+    "pull_request": 747,
+    "repo": "caliptra-rtl",
+    "title": "[RTL] Bug fixes for AHB slave module, fe/uds hw load signals, and AXI wstrb usage",
+    "url": "https://github.com/chipsalliance/caliptra-rtl/pull/747"
+  }
+}

@@ -1,0 +1,77 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+
+-- Executing script file `build/contract-property.ys' --
+
+1. Executing Verilog-2005 frontend: design.sv
+Parsing formal SystemVerilog input from `design.sv' to AST representation.
+Generating RTLIL representation for module `\stream_hold'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: properties.sv
+Parsing formal SystemVerilog input from `properties.sv' to AST representation.
+Generating RTLIL representation for module `\stream_hold_properties'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \stream_hold_properties
+Used module:     \stream_hold
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \stream_hold_properties
+Used module:     \stream_hold
+Removed 0 unused modules.
+Module stream_hold_properties directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$properties.sv:8$12 in module stream_hold_properties.
+Marked 3 switch rules as full_case in process $proc$design.sv:23$3 in module stream_hold.
+Marked 1 switch rules as full_case in process $proc$design.sv:15$1 in module stream_hold.
+Removed a total of 0 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 7 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\stream_hold.$proc$design.sv:15$1'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~5 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\stream_hold_properties.$proc$properties.sv:8$12'.
+     1/4: $assert$properties.sv:13$21_EN
+     2/4: $assert$properties.sv:12$20_EN
+     3/4: $assume$properties.sv:10$18_EN
+     4/4: $assume$properties.sv:10$16_EN
+Creating decoders for process `\stream_hold.$proc$design.sv:23$3'.
+     1/6: $3\next_state[31:0]
+     2/6: $2\next_state[31:0]
+     3/6: $1\next_state[31:0]
+     4/6: $1\m_data[7:0]
+     5/6: $1\m_valid[0:0]
+     6/6: $1\s_ready[0:0]
+Creating decoders for process `\stream_hold.$proc$design.sv:15$1'.
+     1/1: $0\state[31:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+ERROR: Latch inferred for signal `\stream_hold.\s_ready' from always_comb process `\stream_hold.$proc$design.sv:23$3'.

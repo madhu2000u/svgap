@@ -1,0 +1,43 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "In Caliptra's AXI subordinate arbiter (`axi_sub_arb`), overlapping read and write traffic can be arbitrated incorrectly when a read request has already been selected but is still blocked by downstream backpressure. If a write request becomes valid in the same cycle that the downstream hold is released, the arbiter can switch to the write too early and the pending read can be lost. This affects the AXI block that merges read and write requests onto a shared downstream request interface. The expected behavior is testable: once a read or write beat has won arbitration, that winner must remain selected until the downstream interface actually accepts that beat; only after the accepted transfer completes may the arbiter apply its normal write-over-read priority to choose the next request. Under this trigger condition, the stalled read must complete first, and the write may be issued only afterward."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Apply write-over-read priority only when choosing a new beat. Latch the winner and its address until the downstream transfer is accepted.",
+    "preserved_mechanism": "A newly arriving write could replace a previously selected read while the shared downstream request was stalled."
+  },
+  "schema_version": "1.0",
+  "task_id": "caliptra_757_axi_sub_arbiter",
+  "upstream": {
+    "base_sha": "d1a3be59fdadce8169398fd77acc717dc33d282c",
+    "fix_patch_sha256": "461a4711257e5655ac64551fa2a90f8fdd7e32c4ae1ea79255b416b32fc1f94c",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "38173c67b106fe49465344e24cf7214123d041f4",
+    "modified_files": [
+      "docs/CaliptraIntegrationSpecification.md",
+      "src/axi/rtl/axi_dma_reg.rdl",
+      "src/axi/rtl/axi_sub_arb.sv",
+      "src/entropy_src/config/compile.yml",
+      "src/entropy_src/config/entropy_src_tb.vf",
+      "src/integration/rtl/caliptra_top.sv",
+      "src/integration/tb/caliptra_top_tb.sv",
+      "src/integration/uvmf_caliptra_top/uvmf_template_output/project_benches/caliptra_top/tb/testbench/hdl_top.sv",
+      "src/soc_ifc/rtl/soc_ifc_reg.sv",
+      "src/soc_ifc/rtl/soc_ifc_subsystem_reg.rdl",
+      "src/soc_ifc/stimulus/testsuites/uvmf_soc_ifc_promote_regression.yml"
+    ],
+    "org": "chipsalliance",
+    "pull_request": 757,
+    "repo": "caliptra-rtl",
+    "title": "[RTL] AXI Sub Arb fix. Add recovery inf synchros. Export trace signals. Move SS dbg unlock reg to pwrgood.",
+    "url": "https://github.com/chipsalliance/caliptra-rtl/pull/757"
+  }
+}

@@ -18,7 +18,13 @@ TASKPACKS: dict[str, dict[str, Any]] = {
         "version": "0.2",
         "smoke_task": "reset_counter",
         "full_samples": 3,
-    }
+    },
+    "power-on-v0.2": {
+        "directory": "power-on-v0.2",
+        "version": "0.2",
+        "smoke_task": "power_enable",
+        "full_samples": 3,
+    },
 }
 
 

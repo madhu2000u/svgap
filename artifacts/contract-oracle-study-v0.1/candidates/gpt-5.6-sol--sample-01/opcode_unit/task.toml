@@ -1,0 +1,7 @@
+id = "opcode_unit"
+top = "opcode_unit"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["reference.sv"]
+oracle_class = "equivalence"
+rule_id = "REF-EQUIV-001"

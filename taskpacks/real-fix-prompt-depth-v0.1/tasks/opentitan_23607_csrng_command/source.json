@@ -1,0 +1,35 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe Entropy Distribution Network (EDN) hardware-controlled command path to the Cryptographically Secure Random Number Generator (CSRNG) can violate the CSRNG command valid/ready protocol when CSRNG reports an acknowledge/status error while an EDN hardware command is already pending. The affected logic is the EDN path that issues hardware-controlled CSRNG commands, including the boot request mode sequence.\n\n## Expected Behavior\nAfter EDN asserts the CSRNG command-valid signal for a hardware command, it must keep that request asserted until CSRNG raises the corresponding ready signal and the valid/ready handshake completes. If CSRNG reports an acknowledge/status error before that handshake completes, EDN must still finish the outstanding handshake first. Only after the handshake is complete should EDN record the CSRNG acknowledge error, raise its recovery status, and move into its reject/error state.\n\n## Actual Behavior\nIf CSRNG signals an acknowledge/status error while the request is stalled and CSRNG is still not ready, EDN can drop the command-valid signal immediately. This cancels the in-flight hardware command before the handshake completes and violates the EDN-to-CSRNG valid/ready protocol.\n\n## Trigger Conditions\nThis happens when EDN is issuing a hardware-controlled CSRNG command, CSRNG is backpressuring the interface so the request is waiting with valid high and ready low, and a CSRNG acknowledge/status error is reported during that stall. A representative case is boot request mode, where EDN has started a boot-time instantiate or generate command and CSRNG is not yet ready to accept it."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Hold command valid and payload until ready completes the handshake. An error may be recorded but cannot cancel the in-flight command.",
+    "preserved_mechanism": "An acknowledge-status error could cancel a pending CSRNG command while the receiver was still applying backpressure."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_23607_csrng_command",
+  "upstream": {
+    "base_sha": "a480eb1f0efef6d6b9f5a00c4d880e0ccb0f6d01",
+    "fix_patch_sha256": "08bcb5f9d8abeb40d020c3fd0ad47201f946f952930e1e3565bc3cf5f18b673e",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "04a79b68da9a3605982ef276745cc4de71aea022",
+    "modified_files": [
+      "hw/ip/edn/dv/edn_sim_cfg.hjson",
+      "hw/ip/edn/dv/env/seq_lib/edn_alert_vseq.sv",
+      "hw/ip/edn/rtl/edn_core.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 23607,
+    "repo": "opentitan",
+    "title": "[edn] Hold csrng_req_valid until valid/ready handshake completes",
+    "url": "https://github.com/lowRISC/opentitan/pull/23607"
+  }
+}

@@ -1,0 +1,18 @@
+read_verilog -sv "reference.sv"
+prep -top opcode_unit -flatten
+techmap
+opt_clean
+rename -top gold
+design -stash gold_design
+read_verilog -sv "design.sv"
+prep -top opcode_unit -flatten
+techmap
+opt_clean
+rename -top gate
+design -stash gate_design
+design -copy-from gold_design -as gold gold
+design -copy-from gate_design -as gate gate
+miter -equiv -make_assert -make_outputs -flatten gold gate equiv_miter
+prep -top equiv_miter -flatten
+select -assert-min 1 t:$assert
+sat -verify -prove-asserts -seq 1 -set-init-zero -show-ports -dump_vcd "build/synthesized-reference-counterexample.vcd"

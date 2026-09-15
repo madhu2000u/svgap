@@ -10,8 +10,9 @@ from the functional semantics and absent from the benchmark metadata.
 
 SV-Gap makes that handoff failure explicit for generated RTL. Clock-domain and
 reset-domain safety are the first case study because standard RTL simulation
-does not reproduce analog metastability or recovery/removal timing, while a CDC
-or RDC analysis requires declared clock and reset relationships.
+does not reproduce analog metastability or recovery/removal timing. The current
+contract also carries power-on/X behavior, protocol persistence, temporal
+response and pulse properties, and synthesized-reference equivalence.
 
 ## Central result
 
@@ -28,14 +29,13 @@ or RDC analysis requires declared clock and reset relationships.
                        PASS          FAIL
 ```
 
-Five controlled witness families instantiate this construction: a stable
-single-bit crossing, combinational logic before synchronization, an incoherent
-multi-bit crossing, asynchronous reset release, and un-reset power-on state.
-In every family, both
-members pass the supplied functional simulation while the configured structural
-rule separates them. The power-on pair is hidden by nominal X-optimistic control
-semantics. The deliberately balanced `5/10` result validates the measurement
-harness; it is not a defect-rate estimate.
+Twenty-two controlled witness pairs instantiate this construction across 21
+stable finding IDs. Both members of each pair pass the supplied functional
+simulation while the configured production oracle separates the safe and
+unsafe cases. Seventeen pairs exercise structural classes; five exercise
+protocol/temporal or reference-equivalence semantics. These deliberately
+controlled pairs validate the measurement harness; they are not a defect-rate
+estimate.
 
 ## Why this is a trust problem
 
@@ -53,9 +53,10 @@ SV-Gap represents that mismatch as a layered record:
 functional result + production intent + structural result + evidence
 ```
 
-Structural analysis may return `pass`, `fail`, `unknown`, or `tool_error`.
-Missing intent and analyzer limitations therefore remain visible instead of
-being converted into apparent success.
+Each oracle may return `pass`, `fail`, `unknown`, or `tool_error`. Missing
+intent and analyzer limitations therefore remain visible instead of being
+converted into apparent success. Ordinary lint remains a separate contextual
+class and cannot silently substitute for a configured specialized oracle.
 
 ## Public benchmark inventory
 
@@ -72,6 +73,13 @@ intent, and no harness contains recognizable scoring
 that perturbs unknown internal initial state. This second detector is also a
 descriptive heuristic, not a validated census.
 
+A third audit finds at least 98 tasks with an explicit temporal, persistence,
+progress, or protocol contract but no recognizable native property/formal
+score. It also finds 16 explicit-equivalence tasks with original RTL and Yosys
+synthesis but no recognizable equivalence or post-synthesis behavioral
+comparison. These are conservative missing-evidence lower bounds, not counts of
+incorrect generated designs.
+
 ## Generated-RTL demonstration
 
 A frozen reset-release taskpack generated 72 outputs across eight tasks and
@@ -86,6 +94,15 @@ The result demonstrates recurrence within the taskpack and supplies public
 artifacts for inspection. It does not estimate the frequency of the pattern in
 all generated RTL. A blinded synthetic panel reproduced the case-level split,
 but synthetic agreement is robustness evidence rather than human signoff.
+
+A second frozen study generated 48 fresh, unrepaired outputs over eight
+protocol, temporal, and synthesized-equivalence tasks. Forty-one pass the
+finite functional harness; 40 receive a determinate contributing-oracle result;
+and 11 fail the configured protocol or temporal property. All 11 retain
+Verilator lint status `pass`. Both equivalence tasks produce bounded null
+results (`0/12`). A whole-task bootstrap gives a 7.3%–48.8% finite-task
+sensitivity interval around `11/40`; it is not a population-prevalence
+interval.
 
 ## Contribution
 
@@ -106,7 +123,7 @@ evidence would resolve the disagreement.
 
 ## Interpretation boundary
 
-SV-Gap v0.2 is not silicon signoff and its reference rules are intentionally
+SV-Gap is not silicon signoff and its reference rules are intentionally
 narrow. The framework is useful even when a team substitutes a commercial or
 independent open checker: the durable contribution is the intent and evidence
 contract, not the completeness of one backend.
@@ -117,8 +134,11 @@ contract, not the completeness of one backend.
 - Public benchmark inventory: `reports/audits/`
 - Reset taskpack: `taskpacks/reset-replication-v0.1/`
 - Generated candidates: `artifacts/reset-replication-v0.1/`
+- Expanded contract taskpack: `taskpacks/contract-oracles-v0.1/`
+- Expanded candidate artifact: `artifacts/contract-oracle-study-v0.1/`
 - Ordinary RTL lint baseline: `docs/rdc-lint-baseline-result.md` and
   `reports/rdc-lint-baseline-v0.1/`
-- Result and limitations: `docs/reset-replication-result.md` and
-  `docs/limitations.md`
+- Results: `docs/reset-replication-result.md` and
+  `docs/contract-oracle-study-result.md`
+- Limitations: `docs/limitations.md`
 - Machine-readable contracts: `schemas/`

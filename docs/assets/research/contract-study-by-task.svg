@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" role="img" aria-labelledby="title desc">
+<title id="title">Expanded contract-oracle study outcomes by task</title>
+<desc id="desc">Forty-eight candidates across eight task clusters are shown as specialized pass, gap member, functional pass with indeterminate specialized oracle, or functional nonpass.</desc>
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#172033" flood-opacity="0.10"/>
+  </filter>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8793A5"/>
+  </marker>
+  <style>
+    text { font-family: Inter, "IBM Plex Sans", Helvetica, Arial, sans-serif; fill: #172033; }
+    .title { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; }
+    .subtitle { font-size: 16px; fill: #5E6B7D; }
+    .heading { font-size: 17px; font-weight: 700; }
+    .body { font-size: 15px; }
+    .small { font-size: 13px; fill: #5E6B7D; }
+    .tiny { font-size: 11px; fill: #5E6B7D; }
+    .number { font-size: 25px; font-weight: 750; }
+    .mono { font-family: "IBM Plex Mono", Menlo, Consolas, monospace; }
+  </style>
+</defs>
+<rect width="1280" height="800" fill="#FFFFFF"/>
+<text x="60" y="58" class="title" text-anchor="start">Where the expanded oracles changed the answer</text>
+<text x="60" y="88" class="subtitle" text-anchor="start">48 fresh, unrepaired generations · 3 model configurations · 2 calls per model-task cell.</text>
+<rect x="60" y="112" width="18" height="18" rx="4" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<text x="87" y="126" class="small" text-anchor="start">functional pass + oracle pass</text>
+<rect x="315" y="112" width="18" height="18" rx="4" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<text x="342" y="126" class="small" text-anchor="start">gap member</text>
+<rect x="570" y="112" width="18" height="18" rx="4" fill="#D49B28" stroke="#D49B28" stroke-width="1" opacity="1"/>
+<text x="597" y="126" class="small" text-anchor="start">functional pass + indeterminate</text>
+<rect x="855" y="112" width="18" height="18" rx="4" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<text x="882" y="126" class="small" text-anchor="start">functional nonpass</text>
+<text x="1215" y="126" class="tiny" text-anchor="end">each block = 1 candidate</text>
+<line x1="50" y1="146" x2="1220" y2="146" stroke="#E0E6EF" stroke-width="1"/>
+<text x="60" y="191" class="heading" text-anchor="start">Stream hold</text>
+<rect x="223" y="170" width="104" height="28" rx="14" fill="#E8F0FF" stroke="#E8F0FF" stroke-width="1" opacity="1"/>
+<text x="275" y="189" class="tiny" text-anchor="middle" fill="#356AE6" style="fill:#356AE6" font-weight="700">protocol</text>
+<rect x="365" y="160" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="160" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="160" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="611" y="160" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="693" y="160" width="66" height="48" rx="7" fill="#D49B28" stroke="#D49B28" stroke-width="1" opacity="1"/>
+<rect x="775" y="160" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<text x="900" y="182" class="heading" text-anchor="start" fill="#D7653B" style="fill:#D7653B">2 / 4</text>
+<text x="980" y="182" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="900" y="203" class="tiny" text-anchor="start">1 functional nonpass</text>
+<text x="60" y="263" class="heading" text-anchor="start">Result hold</text>
+<rect x="223" y="242" width="104" height="28" rx="14" fill="#E8F0FF" stroke="#E8F0FF" stroke-width="1" opacity="1"/>
+<text x="275" y="261" class="tiny" text-anchor="middle" fill="#356AE6" style="fill:#356AE6" font-weight="700">protocol</text>
+<rect x="365" y="232" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="232" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="232" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="611" y="232" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="693" y="232" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="775" y="232" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<text x="900" y="254" class="heading" text-anchor="start" fill="#D7653B" style="fill:#D7653B">3 / 5</text>
+<text x="980" y="254" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="900" y="275" class="tiny" text-anchor="start">1 functional nonpass</text>
+<line x1="50" y1="290" x2="1220" y2="290" stroke="#E0E6EF" stroke-width="1"/>
+<text x="60" y="335" class="heading" text-anchor="start">Command deadline</text>
+<rect x="223" y="314" width="104" height="28" rx="14" fill="#FFF3D6" stroke="#FFF3D6" stroke-width="1" opacity="1"/>
+<text x="275" y="333" class="tiny" text-anchor="middle" fill="#956708" style="fill:#956708" font-weight="700">temporal</text>
+<rect x="365" y="304" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="304" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="304" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="611" y="304" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="693" y="304" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<rect x="775" y="304" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<text x="900" y="326" class="heading" text-anchor="start" fill="#D7653B" style="fill:#D7653B">2 / 4</text>
+<text x="980" y="326" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="900" y="347" class="tiny" text-anchor="start">2 functional nonpass</text>
+<text x="60" y="407" class="heading" text-anchor="start">Grant deadline</text>
+<rect x="223" y="386" width="104" height="28" rx="14" fill="#FFF3D6" stroke="#FFF3D6" stroke-width="1" opacity="1"/>
+<text x="275" y="405" class="tiny" text-anchor="middle" fill="#956708" style="fill:#956708" font-weight="700">temporal</text>
+<rect x="365" y="376" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="376" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="376" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="611" y="376" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="693" y="376" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<rect x="775" y="376" width="66" height="48" rx="7" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<text x="900" y="398" class="heading" text-anchor="start" fill="#D7653B" style="fill:#D7653B">4 / 6</text>
+<text x="980" y="398" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="60" y="479" class="heading" text-anchor="start">IRQ pulse</text>
+<rect x="223" y="458" width="104" height="28" rx="14" fill="#FFF3D6" stroke="#FFF3D6" stroke-width="1" opacity="1"/>
+<text x="275" y="477" class="tiny" text-anchor="middle" fill="#956708" style="fill:#956708" font-weight="700">temporal</text>
+<rect x="365" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="611" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="693" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="775" y="448" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<text x="900" y="470" class="heading" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0 / 6</text>
+<text x="980" y="470" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="60" y="551" class="heading" text-anchor="start">Completion pulse</text>
+<rect x="223" y="530" width="104" height="28" rx="14" fill="#FFF3D6" stroke="#FFF3D6" stroke-width="1" opacity="1"/>
+<text x="275" y="549" class="tiny" text-anchor="middle" fill="#956708" style="fill:#956708" font-weight="700">temporal</text>
+<rect x="365" y="520" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="520" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="520" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="611" y="520" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<rect x="693" y="520" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<rect x="775" y="520" width="66" height="48" rx="7" fill="#A9B4C3" stroke="#A9B4C3" stroke-width="1" opacity="1"/>
+<text x="900" y="542" class="heading" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0 / 3</text>
+<text x="980" y="542" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="900" y="563" class="tiny" text-anchor="start">3 functional nonpass</text>
+<line x1="50" y1="578" x2="1220" y2="578" stroke="#E0E6EF" stroke-width="1"/>
+<text x="60" y="623" class="heading" text-anchor="start">Opcode unit</text>
+<rect x="223" y="602" width="104" height="28" rx="14" fill="#DDF5F0" stroke="#DDF5F0" stroke-width="1" opacity="1"/>
+<text x="275" y="621" class="tiny" text-anchor="middle" fill="#087362" style="fill:#087362" font-weight="700">equivalence</text>
+<rect x="365" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="611" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="693" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="775" y="592" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<text x="900" y="614" class="heading" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0 / 6</text>
+<text x="980" y="614" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<text x="60" y="695" class="heading" text-anchor="start">Signed clamp</text>
+<rect x="223" y="674" width="104" height="28" rx="14" fill="#DDF5F0" stroke="#DDF5F0" stroke-width="1" opacity="1"/>
+<text x="275" y="693" class="tiny" text-anchor="middle" fill="#087362" style="fill:#087362" font-weight="700">equivalence</text>
+<rect x="365" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="447" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="529" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="611" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="693" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<rect x="775" y="664" width="66" height="48" rx="7" fill="#1F9D8A" stroke="#1F9D8A" stroke-width="1" opacity="1"/>
+<text x="900" y="686" class="heading" text-anchor="start" fill="#5E6B7D" style="fill:#5E6B7D">0 / 6</text>
+<text x="980" y="686" class="small" text-anchor="start">gaps / determinate functional passes</text>
+<rect x="50" y="744" width="1180" height="40" rx="9" fill="#172033" stroke="#172033" stroke-width="1" opacity="1"/>
+<text x="70" y="770" class="heading" text-anchor="start" fill="#FFFFFF" style="fill:#FFFFFF">Overall: 11 / 40 = 27.5%</text>
+<text x="460" y="770" class="body" text-anchor="start" fill="#DCE5F3" style="fill:#DCE5F3">All 11 gap members had Verilator lint status pass; equivalence was a 0 / 12 bounded null.</text>
+</svg>

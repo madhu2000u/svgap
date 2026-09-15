@@ -5,6 +5,33 @@ versioning once the manifest and report contracts reach public v0.1.
 
 ## Unreleased
 
+## 0.3.0-alpha.14 - 2026-09-08
+
+### Added
+
+- Expanded contract-oracle generation study v0.1: 48 fresh, unrepaired RTL
+  candidates across eight task clusters, three model configurations, and two
+  calls per model-task cell, each evaluated by an Icarus functional smoke test,
+  one contributing specialized oracle, and contextual Verilator lint. The
+  configured oracles changed the outcome for 11 of 40 functionally accepted
+  candidates with a determinate specialized result. This is a
+  taskpack-conditional automated detection fraction, not an estimate of defect
+  prevalence in generated RTL.
+- Frozen candidate-level replay artifact for the study under
+  `artifacts/contract-oracle-study-v0.1/`, with content hashes and a
+  deterministic artifact verifier, alongside the frozen `contract-oracles-v0.1`
+  taskpack.
+- Whole-task clustered sensitivity analysis for the reset and expanded-contract
+  studies: a 100,000-replicate bootstrap resampled over whole tasks and
+  reported as explicit dependence-aware intervals, plus source-generated paper
+  figures.
+- Real-fix prompt-depth study taskpack and runner, and the `power-on-v0.2`
+  taskpack.
+- `docs/contract-oracle-study-result.md`, documenting the expanded study with
+  per-oracle-class strata and directly inspectable counterexamples.
+
+## 0.3.0-alpha.13 - 2026-08-24
+
 ### Added
 
 - Report and manifest schema v2 with ordered multi-oracle evidence,
@@ -16,13 +43,36 @@ versioning once the manifest and report contracts reach public v0.1.
   depth; pulse, toggle, handshake, reconvergence, and async-FIFO CDC;
   independent reset domains, reset gating, reset reconvergence; X-masking
   control flow, selective reset, and uninitialized memory.
+- `formal-yosys` bounded protocol/temporal properties and
+  `equivalence-yosys` synthesized reference miters, with five paired witnesses
+  and four stable finding IDs.
+- A reproducible 508-task temporal/equivalence benchmark audit. It establishes
+  conservative lower bounds of 98 explicit temporal contracts without
+  recognizable property/formal scoring and 16 explicit equivalence contracts
+  with synthesis but no equivalence or post-synthesis comparison.
 
 ### Changed
 
+- Schema-v2 profiles now require at least one contributing oracle rather than
+  specifically requiring a `structural` class, allowing temporal, protocol,
+  and equivalence profiles without mislabeling their evidence.
 - `reference-naja` publishes its supported-rule coverage and abstains with
   `unknown` when an expanded Yosys-only intent class is requested.
 - The Yosys flow runs `opt_dff` so synchronous reset pins and values remain
   inspectable for selective-reset checks.
+
+### Fixed
+
+- Yosys structural fan-in tracing now visits each net once instead of
+  enumerating every path through reconvergent combinational logic, preventing
+  one candidate from stalling a complete evaluation batch.
+- On POSIX, functional, structural Yosys, bounded-formal, and equivalence tool
+  commands run in isolated process groups and reap descendants on timeout, so
+  inherited output pipes cannot defeat the configured wall-clock limit.
+- The bounded-formal script no longer requests a redundant post-0.33
+  `chformal` lowering pass, preserving compatibility with Ubuntu's Yosys 0.33.
+- Verilator backend arguments are applied after `--Wall`, allowing a manifest
+  to override a default warning such as `DECLFILENAME` deterministically.
 
 ## 0.3.0-alpha.12 - 2026-08-17
 

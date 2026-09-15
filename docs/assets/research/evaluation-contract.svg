@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">SV-Gap evaluation contract</title>
+<desc id="desc">A candidate RTL design is evaluated by a functional harness, a contributing specialized oracle, and contextual lint before a schema-versioned evidence report is produced.</desc>
+<defs>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#172033" flood-opacity="0.10"/>
+  </filter>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8793A5"/>
+  </marker>
+  <style>
+    text { font-family: Inter, "IBM Plex Sans", Helvetica, Arial, sans-serif; fill: #172033; }
+    .title { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; }
+    .subtitle { font-size: 16px; fill: #5E6B7D; }
+    .heading { font-size: 17px; font-weight: 700; }
+    .body { font-size: 15px; }
+    .small { font-size: 13px; fill: #5E6B7D; }
+    .tiny { font-size: 11px; fill: #5E6B7D; }
+    .number { font-size: 25px; font-weight: 750; }
+    .mono { font-family: "IBM Plex Mono", Menlo, Consolas, monospace; }
+  </style>
+</defs>
+<rect width="1280" height="720" fill="#FFFFFF"/>
+<text x="60" y="58" class="title" text-anchor="start">One candidate, several independent questions</text>
+<text x="60" y="88" class="subtitle" text-anchor="start">SV-Gap preserves functional evidence and adds only the production contracts explicitly declared by the task.</text>
+<rect x="55" y="145" width="200" height="400" rx="14" fill="#F7F9FC" stroke="#E8EDF4" stroke-width="1" opacity="1" filter="url(#shadow)"/>
+<text x="80" y="182" class="heading" text-anchor="start">Task contract</text>
+<circle cx="83" cy="225" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="100" y="230" class="body" text-anchor="start" font-weight="700">Prompt</text>
+<text x="100" y="251" class="small" text-anchor="start">required behavior</text>
+<circle cx="83" cy="295" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="100" y="300" class="body" text-anchor="start" font-weight="700">Intent</text>
+<text x="100" y="321" class="small" text-anchor="start">clock, reset, state</text>
+<circle cx="83" cy="365" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="100" y="370" class="body" text-anchor="start" font-weight="700">Property</text>
+<text x="100" y="391" class="small" text-anchor="start">protocol / temporal</text>
+<circle cx="83" cy="435" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="100" y="440" class="body" text-anchor="start" font-weight="700">Reference</text>
+<text x="100" y="461" class="small" text-anchor="start">equivalence target</text>
+<circle cx="83" cy="505" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="100" y="510" class="body" text-anchor="start" font-weight="700">Policy</text>
+<text x="100" y="531" class="small" text-anchor="start">which oracle contributes</text>
+<line x1="260" y1="345" x2="300" y2="345" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="310" y="245" width="205" height="200" rx="14" fill="#E8F0FF" stroke="#B8CCFF" stroke-width="1" opacity="1" filter="url(#shadow)"/>
+<text x="412" y="285" class="heading" text-anchor="middle">Candidate RTL</text>
+<text x="412" y="325" class="small" text-anchor="middle">generated or supplied</text>
+<rect x="345" y="355" width="135" height="48" rx="8" fill="#FFFFFF" stroke="#B8CCFF" stroke-width="1" opacity="1"/>
+<text x="412" y="385" class="body mono" text-anchor="middle">design.sv</text>
+<line x1="515" y1="345" x2="552" y2="345" stroke="#A9B4C3" stroke-width="2"/>
+<line x1="552" y1="210" x2="552" y2="480" stroke="#A9B4C3" stroke-width="2"/>
+<line x1="552" y1="210" x2="590" y2="210" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="552" y1="345" x2="590" y2="345" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="552" y1="480" x2="590" y2="480" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="595" y="135" width="295" height="110" rx="12" fill="#E8F0FF" stroke="#B8CCFF" stroke-width="1" opacity="1"/>
+<rect x="595" y="135" width="8" height="110" rx="4" fill="#356AE6" stroke="#356AE6" stroke-width="1" opacity="1"/>
+<text x="622" y="166" class="heading" text-anchor="start">Functional harness</text>
+<text x="622" y="194" class="small" text-anchor="start">Icarus simulation</text>
+<text x="622" y="219" class="small" text-anchor="start">pass / fail / compile error</text>
+<rect x="595" y="270" width="295" height="110" rx="12" fill="#FBE9E1" stroke="#F1BBA5" stroke-width="1" opacity="1"/>
+<rect x="595" y="270" width="8" height="110" rx="4" fill="#D7653B" stroke="#D7653B" stroke-width="1" opacity="1"/>
+<text x="622" y="301" class="heading" text-anchor="start">Specialized oracle</text>
+<text x="622" y="329" class="small" text-anchor="start">CDC · RDC · protocol · temporal · equivalence</text>
+<text x="622" y="354" class="small" text-anchor="start">contributes to gap when configured</text>
+<rect x="595" y="405" width="295" height="110" rx="12" fill="#EEF2F6" stroke="#D1D9E4" stroke-width="1" opacity="1"/>
+<rect x="595" y="405" width="8" height="110" rx="4" fill="#5E6B7D" stroke="#5E6B7D" stroke-width="1" opacity="1"/>
+<text x="622" y="436" class="heading" text-anchor="start">Ordinary RTL lint</text>
+<text x="622" y="464" class="small" text-anchor="start">Verilator or Verible</text>
+<text x="622" y="489" class="small" text-anchor="start">contextual; never silently substitutes</text>
+<path d="M 890 190 C 930 190, 930 345, 970 345" fill="none" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 890 325 C 930 325, 930 345, 970 345" fill="none" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 890 460 C 930 460, 930 345, 970 345" fill="none" stroke="#A9B4C3" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="980" y="145" width="245" height="400" rx="14" fill="#FFFFFF" stroke="#C8D2E1" stroke-width="1" opacity="1" filter="url(#shadow)"/>
+<text x="1102" y="182" class="heading" text-anchor="middle">Evidence report</text>
+<text x="1102" y="207" class="small mono" text-anchor="middle">schema v2</text>
+<rect x="1010" y="220" width="185" height="44" rx="7" fill="#E8F0FF" stroke="#E8F0FF" stroke-width="1" opacity="1"/>
+<circle cx="1029" cy="242" r="5" fill="#356AE6" stroke="#356AE6" stroke-width="0"/>
+<text x="1044" y="247" class="small mono" text-anchor="start">functional</text>
+<rect x="1010" y="280" width="185" height="44" rx="7" fill="#FBE9E1" stroke="#FBE9E1" stroke-width="1" opacity="1"/>
+<circle cx="1029" cy="302" r="5" fill="#D7653B" stroke="#D7653B" stroke-width="0"/>
+<text x="1044" y="307" class="small mono" text-anchor="start">oracle_results[]</text>
+<rect x="1010" y="340" width="185" height="44" rx="7" fill="#EEF2F6" stroke="#EEF2F6" stroke-width="1" opacity="1"/>
+<circle cx="1029" cy="362" r="5" fill="#5E6B7D" stroke="#5E6B7D" stroke-width="0"/>
+<text x="1044" y="367" class="small mono" text-anchor="start">findings + provenance</text>
+<rect x="1008" y="420" width="188" height="82" rx="10" fill="#172033" stroke="#172033" stroke-width="1" opacity="1"/>
+<text x="1102" y="448" class="heading" text-anchor="middle" fill="#FFFFFF" style="fill:#FFFFFF">gap member</text>
+<text x="1102" y="474" class="small" text-anchor="middle" fill="#DCE5F3" style="fill:#DCE5F3">functional pass</text>
+<text x="1102" y="492" class="small" text-anchor="middle" fill="#DCE5F3" style="fill:#DCE5F3">+ contributing fail</text>
+<rect x="55" y="603" width="1170" height="64" rx="10" fill="#F7F9FC" stroke="#E8EDF4" stroke-width="1" opacity="1"/>
+<text x="75" y="630" class="heading" text-anchor="start">Interpretation</text>
+<text x="190" y="630" class="body" text-anchor="start">A lint pass is not a specialized-oracle pass. A tool error is not a pass. Only configured evidence defines membership.</text>
+<text x="75" y="652" class="small" text-anchor="start">21 stable finding IDs · 22 paired calibration witnesses · open backends with explicit non-signoff boundaries</text>
+</svg>

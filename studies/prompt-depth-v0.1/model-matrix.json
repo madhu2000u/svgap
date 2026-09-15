@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Compare explicit-prompt requirements across model depths; do not rank models.",
+  "controls": {
+    "calls_per_cell": 1,
+    "codex_reasoning_effort": "medium",
+    "network_tools": "disabled",
+    "ollama_seed": 260825,
+    "ollama_temperature": 0.0,
+    "tools": "disabled except the provider's internal reasoning path"
+  },
+  "configurations": [
+    {
+      "label": "codex-gpt-5.6-sol-medium",
+      "provider": "codex",
+      "model": "gpt-5.6-sol",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.6-terra-medium",
+      "provider": "codex",
+      "model": "gpt-5.6-terra",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.6-luna-medium",
+      "provider": "codex",
+      "model": "gpt-5.6-luna",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.5-medium",
+      "provider": "codex",
+      "model": "gpt-5.5",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.4-medium",
+      "provider": "codex",
+      "model": "gpt-5.4",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.4-mini-medium",
+      "provider": "codex",
+      "model": "gpt-5.4-mini",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "codex-gpt-5.3-spark-medium",
+      "provider": "codex",
+      "model": "gpt-5.3-codex-spark",
+      "options": {"reasoning_effort": "medium", "sample": 1}
+    },
+    {
+      "label": "ollama-deepseek-coder-v2-16b-t0",
+      "provider": "ollama",
+      "model": "deepseek-coder-v2:16b",
+      "options": {"temperature": 0.0, "seed_base": 260824, "sample": 1}
+    },
+    {
+      "label": "ollama-qwen2.5-coder-7b-t0",
+      "provider": "ollama",
+      "model": "qwen2.5-coder:7b",
+      "options": {"temperature": 0.0, "seed_base": 260824, "sample": 1}
+    }
+  ]
+}

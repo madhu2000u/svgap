@@ -1,0 +1,34 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\nThe OpenTitan ROM Controller (`rom_ctrl`) performs a boot-time integrity check by reading ROM words in order and presenting them to KMAC (Keccak Message Authentication Code). The affected functionality is the `rom_ctrl_counter` / ROM-address generation path that drives `rom_addr_o` for this ROM-to-KMAC stream.\n\n## Expected Behavior\nWhen a ROM word is already valid and KMAC accepts it by asserting ready, `rom_addr_o` must advance to the next sequential ROM word in that same cycle so the next ROM fetch starts immediately. In particular, if the first pending word is at address 0 and KMAC changes from not ready to ready, `rom_addr_o` must become 1 immediately rather than remaining at 0 for an extra cycle.\n\n## Actual Behavior\nAfter KMAC applies back-pressure and then becomes ready again, the ROM Controller keeps `rom_addr_o` on the previous address for one extra cycle. In the reset-start case, address 0 is presented for an extra cycle when KMAC first accepts data, so the first ROM word is fetched twice instead of the read stream advancing immediately to the next word.\n\n## Trigger Condition\nThis bug is triggered while `rom_ctrl` is streaming ROM contents to KMAC and KMAC temporarily deasserts ready while a valid ROM word is pending, then reasserts ready. A concrete edge case is immediately after reset release: the first ROM word is pending at address 0, KMAC is initially not ready, and then KMAC asserts ready."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Advance the ROM address once for each valid/ready word handshake, including the first handshake after a stall.",
+    "preserved_mechanism": "After KMAC released backpressure, the ROM stream address remained on the accepted word for one extra cycle and fetched it twice."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_6473_rom_kmac_counter",
+  "upstream": {
+    "base_sha": "ca950b43a0e9ef5013b8e2e5de765bc34fb59b74",
+    "fix_patch_sha256": "8934b3f29b7feff360028d7e443d7ef2ad36f8ce6afcb9d9c55fdc2486236deb",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "dd0157d326dba00c8cb8227c643074708c67099a",
+    "modified_files": [
+      "hw/ip/rom_ctrl/rtl/rom_ctrl_counter.sv",
+      "hw/ip/rom_ctrl/rtl/rom_ctrl_fsm.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 6473,
+    "repo": "opentitan",
+    "title": "[rom_ctrl] Fix KMAC back pressure handling",
+    "url": "https://github.com/lowRISC/opentitan/pull/6473"
+  }
+}

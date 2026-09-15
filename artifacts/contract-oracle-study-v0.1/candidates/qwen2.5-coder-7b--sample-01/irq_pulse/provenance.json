@@ -1,0 +1,20 @@
+{
+  "candidate_bundle_digest": "sha256:0830d936b565bbb6ac0c29d52900f73a95efdd2a3a76df5257d90d3f355c86d5",
+  "evaluator_source_digest": "sha256:d944412c03f2118e65c34a72f93f57b96c6b863d5d3e8ee36e5464dd6c7e46ca",
+  "files": {
+    "design.sv": "d9282c4f7ea5b4746b9da9b263414679908f87e47366c076a4d634de40af8367",
+    "evidence/contract-property.log": "66ea1653307d69a5fbaaf9075a80b3c6e02be27c34ed94258f4cefcef0a6550d",
+    "evidence/contract-property.ys": "366c75a83e4c1d87d12486ea0bdb9956fbe3e160e23962cce39559e22c06ec4c",
+    "generation.json": "8433d8f3813fa1491fdec9e8a5bf56f56e2cb65da2275086422ac7ceabf0e01d",
+    "manifest.toml": "6622d6c543f46b9ab9bc4ce440090efec85a87e5002f76bef7a77465ea51fe24",
+    "prompt.md": "e0ca641e8fadbc152ae39bd866b13c6e312050b8050f70a0936b3634174d8aad",
+    "properties.sv": "2c1875b18f63fb3c0c55d2d73436e2b526b6a0b78c2b375be40214ce7ec655d8",
+    "report.json": "8f277b90beb6daa6e62019ada37547a566a54bcdbfc81cf6e54d9316661977ed",
+    "task.toml": "9a2e78d33301f0a8d9179d76fa2c0672af580713f4dd9c6c9b3ce68c900bfac7",
+    "tb.sv": "adb524ada490e2fd6ef931f4839fc43c74482eaf4225295808bb04f6142a6d08"
+  },
+  "model_configuration": "qwen2.5-coder-7b",
+  "run_id": "qwen2.5-coder-7b--sample-01",
+  "schema_version": "2.0",
+  "task_id": "irq_pulse"
+}

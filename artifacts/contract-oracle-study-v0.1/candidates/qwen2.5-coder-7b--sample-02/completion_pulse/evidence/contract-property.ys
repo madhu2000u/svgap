@@ -1,0 +1,7 @@
+read_verilog -formal -sv "design.sv"
+read_verilog -formal -sv "properties.sv"
+prep -top completion_pulse_properties -flatten
+clk2fflogic
+select -assert-min 1 t:$assert
+opt_clean
+sat -verify -prove-asserts -seq 8 -set-init-zero -set-assumes -show-ports -dump_vcd "build/contract-property-counterexample.vcd"

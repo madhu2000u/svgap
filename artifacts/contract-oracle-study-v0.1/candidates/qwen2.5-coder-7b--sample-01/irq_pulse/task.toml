@@ -1,0 +1,7 @@
+id = "irq_pulse"
+top = "irq_pulse"
+testbench = "tb.sv"
+manifest = "manifest.toml"
+support_files = ["properties.sv"]
+oracle_class = "temporal"
+rule_id = "REF-TEMP-002"

@@ -1,0 +1,33 @@
+{
+  "derivation": "standalone real-fix-derived reduction; not a full upstream regression",
+  "hwe_bench": {
+    "dataset_sha256": "518c7781fea12e9c658f8b1b46e7736a68828da1269c983bb016722b14c5737a",
+    "dataset_url": "https://huggingface.co/datasets/henryen/hwe-bench/resolve/main/hwe_bench_full.jsonl",
+    "license": "Apache-2.0 for HWE-Bench dataset metadata; upstream RTL retains its own license",
+    "problem_statement": "## Description\n`prim_packer` is an OpenTitan primitive that packs masked input data into fixed-width output words and connects them with valid/ready handshakes on both its input and output sides. Its backpressure handling is incorrect when a single accepted input transfer already fills one complete output word while the downstream side is stalled.\n\n## Expected Behavior\nIf an accepted input transfer causes `prim_packer` to buffer at least one complete `OutW`-bit output word, `valid_o` must assert and remain asserted until the downstream side accepts that word with `ready_i`. While that full output word is pending and `ready_i` is low, `ready_o` must deassert so the upstream side cannot send another input transfer, unless the pending output word is accepted in the same cycle.\n\nThis must also hold when one input transfer alone provides the full output word, for example when `InW == OutW` and `mask_i` selects the entire input word.\n\n## Actual Behavior\nIn the current implementation, when `ready_i` is low and one accepted input transfer already provides a full output word, `prim_packer` can behave as though no complete output word is pending on the following cycle. `valid_o` can drop even though a complete output word is already buffered, and `ready_o` can remain asserted instead of applying backpressure.\n\n## Trigger Condition\nThe bug is triggered when the downstream interface is stalled (`ready_i` low) at the same time that an accepted input transfer makes the buffered data reach or exceed one full `OutW`-bit output word. A minimal case is `InW == OutW`, `valid_i` asserted for one input transfer, `mask_i` all ones, and `ready_i` held low until the pending output word is accepted.\n\n## Affected Function\nThe affected logic is the `prim_packer` primitive's output-valid generation and upstream-ready/backpressure behavior when a complete packed output word has been buffered but has not yet been acknowledged by the downstream interface."
+  },
+  "reduction": {
+    "category": "protocol",
+    "limitations": "Reauthored interface and minimal environment isolate one contract; this does not reproduce upstream integration, performance, or full regression behavior.",
+    "oracle_class": "protocol",
+    "preserved_contract": "Treat an all-masked input as one complete buffered word. Hold the word and apply upstream backpressure until it is accepted.",
+    "preserved_mechanism": "A full packed word could stop appearing valid and upstream ready could remain asserted when the downstream interface was stalled."
+  },
+  "schema_version": "1.0",
+  "task_id": "opentitan_634_masked_packer",
+  "upstream": {
+    "base_sha": "e2dc7da55c962d5c9e76e2c06cdd24f6b8185160",
+    "fix_patch_sha256": "ac5a28ba8de34d2fb1bc710080ea09797655717a5c1de8d796cf5ee6a0889319",
+    "level1": "RTL_BUG_FIX",
+    "level2": "RTL_INTERFACE",
+    "merge_commit_sha": "d91831ff0fbcd59519019ae67687eb5122ef9a75",
+    "modified_files": [
+      "hw/ip/prim/rtl/prim_packer.sv"
+    ],
+    "org": "lowRISC",
+    "pull_request": 634,
+    "repo": "opentitan",
+    "title": "[prim/packer] Enhance the behavior based on FPV result",
+    "url": "https://github.com/lowRISC/opentitan/pull/634"
+  }
+}

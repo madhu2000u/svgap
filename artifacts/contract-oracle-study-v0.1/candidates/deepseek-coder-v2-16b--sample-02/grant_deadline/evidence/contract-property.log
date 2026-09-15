@@ -1,0 +1,447 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.66 (git sha1 7f8fdfd8d7bc08c749a2a969388d3425d4f369d5, clang++ 21.0.0 -fPIC -O3)
+
+-- Executing script file `build/contract-property.ys' --
+
+1. Executing Verilog-2005 frontend: design.sv
+Parsing formal SystemVerilog input from `design.sv' to AST representation.
+Generating RTLIL representation for module `\grant_deadline'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: properties.sv
+Parsing formal SystemVerilog input from `properties.sv' to AST representation.
+Generating RTLIL representation for module `\grant_deadline_properties'.
+Successfully finished Verilog frontend.
+
+3. Executing PREP pass.
+
+3.1. Executing HIERARCHY pass (managing design hierarchy).
+
+3.1.1. Analyzing design hierarchy..
+Top module:  \grant_deadline_properties
+Used module:     \grant_deadline
+
+3.1.2. Analyzing design hierarchy..
+Top module:  \grant_deadline_properties
+Used module:     \grant_deadline
+Removed 0 unused modules.
+Module grant_deadline_properties directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3.2. Executing PROC pass (convert processes to netlists).
+
+3.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 4 switch rules as full_case in process $proc$properties.sv:6$17 in module grant_deadline_properties.
+Marked 2 switch rules as full_case in process $proc$design.sv:48$9 in module grant_deadline.
+Marked 1 switch rules as full_case in process $proc$design.sv:37$7 in module grant_deadline.
+Removed 1 dead cases from process $proc$design.sv:21$3 in module grant_deadline.
+Marked 3 switch rules as full_case in process $proc$design.sv:21$3 in module grant_deadline.
+Marked 1 switch rules as full_case in process $proc$design.sv:13$1 in module grant_deadline.
+Removed a total of 1 dead cases.
+
+3.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 4 redundant assignments.
+Promoted 2 assignments to connections.
+
+3.2.4. Executing PROC_INIT pass (extract init attributes).
+
+3.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\grant_deadline.$proc$design.sv:48$9'.
+Found async reset \rst_n in `\grant_deadline.$proc$design.sv:37$7'.
+Found async reset \rst_n in `\grant_deadline.$proc$design.sv:13$1'.
+
+3.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~10 debug messages>
+
+3.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\grant_deadline_properties.$proc$properties.sv:6$17'.
+     1/6: $assert$properties.sv:13$28_EN
+     2/6: $assume$properties.sv:9$22_EN
+     3/6: $assume$properties.sv:8$21_EN
+     4/6: $assume$properties.sv:8$19_EN
+     5/6: $0\age[1:0]
+     6/6: $0\pending[0:0]
+Creating decoders for process `\grant_deadline.$proc$design.sv:48$9'.
+     1/1: $0\grant[0:0]
+Creating decoders for process `\grant_deadline.$proc$design.sv:37$7'.
+     1/2: $0\request_d2[0:0]
+     2/2: $0\request_d1[0:0]
+Creating decoders for process `\grant_deadline.$proc$design.sv:21$3'.
+     1/3: $3\next_state[0:0]
+     2/3: $2\next_state[0:0]
+     3/3: $1\next_state[0:0]
+Creating decoders for process `\grant_deadline.$proc$design.sv:13$1'.
+     1/1: $0\state[0:0]
+
+3.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\grant_deadline.\next_state' from process `\grant_deadline.$proc$design.sv:21$3'.
+
+3.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\grant_deadline_properties.\f_past_valid' using process `\grant_deadline_properties.$proc$properties.sv:6$17'.
+  created $dff cell `$procdff$87' with positive edge clock.
+Creating register for signal `\grant_deadline_properties.\pending' using process `\grant_deadline_properties.$proc$properties.sv:6$17'.
+  created $dff cell `$procdff$88' with positive edge clock.
+Creating register for signal `\grant_deadline_properties.\age' using process `\grant_deadline_properties.$proc$properties.sv:6$17'.
+  created $dff cell `$procdff$89' with positive edge clock.
+Creating register for signal `\grant_deadline.\grant' using process `\grant_deadline.$proc$design.sv:48$9'.
+  created $adff cell `$procdff$94' with positive edge clock and positive level reset.
+Creating register for signal `\grant_deadline.\request_d1' using process `\grant_deadline.$proc$design.sv:37$7'.
+  created $adff cell `$procdff$99' with positive edge clock and positive level reset.
+Creating register for signal `\grant_deadline.\request_d2' using process `\grant_deadline.$proc$design.sv:37$7'.
+  created $adff cell `$procdff$104' with positive edge clock and positive level reset.
+Creating register for signal `\grant_deadline.\state' using process `\grant_deadline.$proc$design.sv:13$1'.
+  created $adff cell `$procdff$109' with positive edge clock and positive level reset.
+
+3.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 6 empty switches in `\grant_deadline_properties.$proc$properties.sv:6$17'.
+Removing empty process `grant_deadline_properties.$proc$properties.sv:6$17'.
+Found and cleaned up 1 empty switch in `\grant_deadline.$proc$design.sv:48$9'.
+Removing empty process `grant_deadline.$proc$design.sv:48$9'.
+Removing empty process `grant_deadline.$proc$design.sv:37$7'.
+Found and cleaned up 3 empty switches in `\grant_deadline.$proc$design.sv:21$3'.
+Removing empty process `grant_deadline.$proc$design.sv:21$3'.
+Removing empty process `grant_deadline.$proc$design.sv:13$1'.
+Cleaned up 10 empty switches.
+
+3.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+<suppressed ~5 debug messages>
+Optimizing module grant_deadline.
+<suppressed ~15 debug messages>
+
+3.3. Executing FLATTEN pass (flatten design).
+Deleting now unused module grant_deadline.
+<suppressed ~1 debug messages>
+
+3.4. Executing FUTURE pass.
+
+3.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+
+3.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+Removed 11 unused cells and 54 unused wires.
+<suppressed ~12 debug messages>
+
+3.7. Executing CHECK pass (checking for obvious problems).
+Checking module grant_deadline_properties...
+Found and reported 0 problems.
+
+3.8. Executing OPT pass (performing simple optimizations).
+
+3.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+
+3.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\grant_deadline_properties'.
+Computing hashes of 47 cells of `\grant_deadline_properties'.
+Finding duplicate cells in `\grant_deadline_properties'.
+Removed a total of 0 cells.
+
+3.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \grant_deadline_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $flatten\dut.$procmux$76.
+    dead port 1/2 on $mux $flatten\dut.$procmux$82.
+Removed 2 multiplexer ports.
+<suppressed ~28 debug messages>
+
+3.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \grant_deadline_properties.
+Performed a total of 0 changes.
+
+3.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\grant_deadline_properties'.
+Computing hashes of 45 cells of `\grant_deadline_properties'.
+Finding duplicate cells in `\grant_deadline_properties'.
+Computing hashes of 44 cells of `\grant_deadline_properties'.
+Finding duplicate cells in `\grant_deadline_properties'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+3.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~1 debug messages>
+
+3.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+
+3.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+3.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \grant_deadline_properties..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~25 debug messages>
+
+3.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \grant_deadline_properties.
+Performed a total of 0 changes.
+
+3.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\grant_deadline_properties'.
+Computing hashes of 44 cells of `\grant_deadline_properties'.
+Finding duplicate cells in `\grant_deadline_properties'.
+Removed a total of 0 cells.
+
+3.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+
+3.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+
+3.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+3.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 30 bits (of 32) from port B of cell grant_deadline_properties.$lt$properties.sv:13$29 ($lt).
+
+3.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+
+3.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+3.12. Executing OPT pass (performing simple optimizations).
+
+3.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module grant_deadline_properties.
+
+3.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\grant_deadline_properties'.
+Computing hashes of 44 cells of `\grant_deadline_properties'.
+Finding duplicate cells in `\grant_deadline_properties'.
+Removed a total of 0 cells.
+
+3.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+
+3.12.4. Finished fast OPT passes.
+
+3.13. Executing SORT pass.
+
+3.14. Printing statistics.
+
+=== grant_deadline_properties ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       43 wires
+       49 wire bits
+       15 public wires
+       16 public wire bits
+       44 cells
+        1   $add
+        4   $adff
+        3   $anyseq
+        4   $check
+        3   $dff
+        4   $logic_and
+        5   $logic_not
+        1   $lt
+       16   $mux
+        1   $not
+        1   $pmux
+        1   $scopeinfo
+
+3.15. Executing CHECK pass (checking for obvious problems).
+Checking module grant_deadline_properties...
+Found and reported 0 problems.
+
+4. Executing CLK2FFLOGIC pass (convert clocked FFs to generic $ff cells).
+
+4.1. Executing PEEPOPT pass (run peephole optimizers).
+Replacing grant_deadline_properties.$flatten\dut.$procdff$104 ($adff): CLK=\clk, D=\dut.request_d1, Q=\dut.request_d2
+Replacing grant_deadline_properties.$flatten\dut.$procdff$109 ($adff): CLK=\clk, D=\dut.next_state, Q=\dut.state
+Replacing grant_deadline_properties.$flatten\dut.$procdff$94 ($adff): CLK=\clk, D=$flatten\dut.$0\grant[0:0], Q=\dut.grant
+Replacing grant_deadline_properties.$flatten\dut.$procdff$99 ($adff): CLK=\clk, D=\dut.request, Q=\dut.request_d1
+Replacing grant_deadline_properties.$procdff$87 ($dff): CLK=\clk, D=1'1, Q=\f_past_valid
+Replacing grant_deadline_properties.$procdff$88 ($dff): CLK=\clk, D=$0\pending[0:0], Q=\pending
+Replacing grant_deadline_properties.$procdff$89 ($dff): CLK=\clk, D=$0\age[1:0], Q=\age
+
+5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \grant_deadline_properties..
+Removed 12 unused cells and 19 unused wires.
+<suppressed ~13 debug messages>
+
+6. Executing SAT pass (solving SAT problems in the circuit).
+Using SAT solver `minisat`.
+
+Setting up time step 1:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$243 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$241 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$0\age[1:0]#sampled$261 = 2'00
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$232#sampled$233 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$225 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.request#sampled$223 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$214#sampled$215 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$207 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\grant[0:0]#sampled$205 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$196#sampled$197 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$189 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.next_state#sampled$187 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$178#sampled$179 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$171 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.request_d1#sampled$169 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:9$22_EN#sampled$159 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$253 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$153 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$21_EN#sampled$145 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$0\pending[0:0]#sampled$251 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$139 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$19_EN#sampled$131 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$125 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:13$28_EN#sampled$117 = 1'0
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$263 = 1'1
+Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$111 = 1'1
+Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$\dut.request_d2#sampled$167 $auto$clk2fflogic.cc:101:sample_data$\dut.state#sampled$185 $auto$clk2fflogic.cc:101:sample_data$\dut.grant#sampled$203 $auto$clk2fflogic.cc:101:sample_data$\dut.request_d1#sampled$221 $auto$clk2fflogic.cc:101:sample_data$\f_past_valid#sampled$239 $auto$clk2fflogic.cc:101:sample_data$\pending#sampled$249 $auto$clk2fflogic.cc:101:sample_data$\age#sampled$259 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$111 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$263 $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:13$28_EN#sampled$117 $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$125 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$19_EN#sampled$131 $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$139 $auto$clk2fflogic.cc:101:sample_data$$0\pending[0:0]#sampled$251 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$21_EN#sampled$145 $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$153 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$253 $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:9$22_EN#sampled$159 $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 $auto$clk2fflogic.cc:101:sample_data$\dut.request_d1#sampled$169 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$171 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$178#sampled$179 $auto$clk2fflogic.cc:101:sample_data$\dut.next_state#sampled$187 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$189 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$196#sampled$197 $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\grant[0:0]#sampled$205 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$207 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$214#sampled$215 $auto$clk2fflogic.cc:101:sample_data$\dut.request#sampled$223 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$225 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$232#sampled$233 $auto$clk2fflogic.cc:101:sample_data$$0\age[1:0]#sampled$261 $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$241 $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$243 } = 39'000000001101101100111010100100100100001
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 2:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 3:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 4:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 5:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 6:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 7:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 8:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 9:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Setting up time step 10:
+Final constraint equation: { } = { }
+Imported 112 cells to SAT database.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137 when $auto$rtlil.cc:3302:And$136.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151 when $auto$rtlil.cc:3302:And$150.
+Import constraint from assume cell: $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165 when $auto$rtlil.cc:3302:And$164.
+Import proof for assert: $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123 when $auto$rtlil.cc:3302:And$122.
+
+Solving problem with 6031 variables and 15808 clauses..
+SAT proof finished - model found: FAIL!
+
+   ______                   ___       ___       _ _            _ _ 
+  (_____ \                 / __)     / __)     (_) |          | | |
+   _____) )___ ___   ___ _| |__    _| |__ _____ _| | _____  __| | |
+  |  ____/ ___) _ \ / _ (_   __)  (_   __|____ | | || ___ |/ _  |_|
+  | |   | |  | |_| | |_| || |       | |  / ___ | | || ____( (_| |_ 
+  |_|   |_|   \___/ \___/ |_|       |_|  \_____|_|\_)_____)\____|_|
+
+
+  Time Signal Name                                                                                                                                                                                               Dec       Hex           Bin
+  ---- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------- --------- -------------
+  init $auto$clk2fflogic.cc:101:sample_data$$0\age[1:0]#sampled$261                                                                                                                                                0         0            00
+  init $auto$clk2fflogic.cc:101:sample_data$$0\pending[0:0]#sampled$251                                                                                                                                            0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$assert$properties.sv:13$28_EN#sampled$117                 0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$19_EN#sampled$131                  0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:8$21_EN#sampled$145                  0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$assume$properties.sv:9$22_EN#sampled$159                  0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$flatten\dut.$0\grant[0:0]#sampled$205                                                                                                                                 0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:8$20_Y#sampled$137                1         1             1
+  init $auto$clk2fflogic.cc:101:sample_data$$logic_not$properties.sv:9$23_Y#sampled$165                1         1             1
+  init $auto$clk2fflogic.cc:101:sample_data$$lt$properties.sv:13$29_Y#sampled$123                      1         1             1
+  init $auto$clk2fflogic.cc:101:sample_data$1'1#sampled$241                                                                                                                                                        0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\age#sampled$259                                                                                                                                                       0         0            00
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.grant#sampled$203                                                                                                                                                 0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.next_state#sampled$187                                                                                                                                            0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.request#sampled$223                                                                                                                                               0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.request_d1#sampled$169                                                                                                                                            0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.request_d1#sampled$221                                                                                                                                            0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.request_d2#sampled$167                                                                                                                                            0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.rst_n#sampled$151                                                                                                                                                 1         1             1
+  init $auto$clk2fflogic.cc:101:sample_data$\dut.state#sampled$185                                                                                                                                                 0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\f_past_valid#sampled$239                                                                                                                                              0         0             0
+  init $auto$clk2fflogic.cc:101:sample_data$\pending#sampled$249                                                                                                                                                   0         0             0
+  init $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$178#sampled$179                                                                                                                              0         0             0
+  init $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$196#sampled$197                                                                                                                              0         0             0
+  init $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$214#sampled$215                                                                                                                              0         0             0
+  init $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3255:Not$232#sampled$233                                                                                                                              0         0             0
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$111                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$125                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$139                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$153                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$171                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$189                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$207                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$225                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$243                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$253                                                                                                                                                1         1             1
+  init $auto$clk2fflogic.cc:87:sample_control_edge$\clk#sampled$263                                                                                                                                                1         1             1
+Dumping SAT model to VCD file build/contract-property-counterexample.vcd
+
+
+ERROR: Called with -verify and proof did fail!
